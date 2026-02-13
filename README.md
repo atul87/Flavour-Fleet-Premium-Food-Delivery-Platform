@@ -1,129 +1,180 @@
-# 🔥 Flavour Fleet — Premium Food Delivery Platform
+# 🍔 Flavour Fleet — Premium Food Delivery Platform
 
 ![Flavour Fleet Hero](./assets/screenshots/report_homepage.png)
 
-> **A modern, full-stack food delivery application built with Flask, MongoDB, and Vanilla JS.**  
-> Features a beautiful glassmorphic UI, real-time cart management, secure authentication, and a robust REST API.
+A full-stack, responsive food delivery web application with intuitive UI, secure authentication, cart management, order tracking, and a modern design system. Built to showcase professional frontend & backend architecture with production-grade features.
+
+**GitHub:** <https://github.com/atul87/Flavour-Fleet-Premium-Food-Delivery-Platform>
 
 ---
 
-## ✨ Key Features
+## 📌 Table of Contents
 
-### 🖥️ Frontend Experience
-
-- **10 Interactive Pages**: Home, Menu, Restaurants, Offers, Cart, Checkout, Login, Profile, Evolution & Tracking.
-- **Advanced Filtering**: Composable filters (Veg Only + Category + Search) work seamlessly together.
-- **Real-time Cart**: Instant updates, badge sync, local storage persistence, and promo code validation.
-- **Secure Authentication**: Login/Signup with **password strength indicator**, session management, and visual feedback.
-- **User Profile**: Order history, avatar upload (with validation), and profile management.
-- **Smart UX**: Lazy loading images, skeleton loaders, toast notifications, and empty states.
-- **Responsive Design**: Fully optimized for mobile (<375px), tablet, and desktop with a custom CSS design system.
-
-### ⚙️ Backend Power
-
-- **REST API**: 20+ endpoints for Auth, Menu, Cart, Orders, and Offers.
-- **Database**: MongoDB with optimized indexing for fast queries.
-- **Security**: bcrypt password hashing, input validation, and secure session handling.
-- **Order Management**: Complete flow from placement to tracking with status updates.
+- [🚀 About the Project](#-about-the-project)
+- [💡 Key Features](#-key-features)
+- [🧠 Tech Stack](#-tech-stack)
+- [📁 Project Structure](#-project-structure)
+- [⚙️ Local Setup & Installation](#-local-setup--installation)
+- [📊 Usage](#-usage)
+- [🛠 Architecture & Design](#-architecture--design)
+- [📈 Roadmap](#-roadmap)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
 
 ---
 
-## 🎨 Screenshots Gallery
+## 🚀 About the Project
+
+Flavour Fleet is a premium-quality food delivery platform designed to simulate real-world applications with professional architecture and UX. It includes a REST API backend, client-side state management, authentication flows, responsive design, and performance optimizations.
+
+This project was built with the goal of demonstrating full-stack engineering skills and applying frontend + backend best practices.
+
+---
+
+## 💡 Key Features
+
+✔ **User Authentication**: Login, signup, password reset with strength indicator  
+✔ **Secure Backend**: Python Flask with session handling and bcrypt hashing  
+✔ **Smart Catalogue**: Browsing with composable filters (Veg/Non-Veg + Category + Search)  
+✔ **Real-time Cart**: Instant sync, local storage persistence, and promo code system  
+✔ **Checkout Flow**: Form validation, order summary, and success animation  
+✔ **Order Tracking**: Visual timeline for order status updates  
+✔ **Performance**: Lazy loading images, skeleton loaders, and optimized assets  
+✔ **Responsive Design**: Mobile-first approach supporting devices <375px to desktop  
+
+---
+
+## 🧠 Tech Stack
+
+**Frontend:**  
+✔ HTML5, CSS3 (Custom Design System), Vanilla JavaScript  
+✔ Glassmorphism UI, CSS Animations, Responsive Layouts
+
+**Backend:**  
+✔ Python Flask REST API  
+✔ PyMongo for MongoDB interaction
+
+**Database:**  
+✔ MongoDB (Local/Atlas)
+
+**Dev Tools:**  
+✔ Git, VS Code  
+✔ Flask-CORS, Dotenv
+
+---
+
+## 📁 Project Structure
+
+```bash
+Website/
+├── backend/
+│   ├── app.py              # Main Flask Application
+│   ├── seed_data.py        # Database Seeder
+│   └── requirements.txt    # Python Dependencies
+├── js/
+│   ├── api.js              # API Client Wrapper
+│   ├── auth.js             # Authentication Logic
+│   ├── cart.js             # Cart Management
+│   └── main.js             # Core UI Interactions
+├── css/
+│   ├── style.css           # Main Design System
+│   └── animations.css      # Keyframe Animations
+├── assets/
+│   ├── images/             # Food Assets
+│   └── screenshots/        # Project Screenshots
+└── index.html              # Entry Point
+```
+
+---
+
+## ⚙️ Local Setup & Installation
+
+### 📥 Clone
+
+```bash
+git clone https://github.com/atul87/Flavour-Fleet-Premium-Food-Delivery-Platform.git
+cd Flavour-Fleet-Premium-Food-Delivery-Platform
+```
+
+### 🧰 Backend Setup
+
+1. **Install Dependencies**
+
+```bash
+cd backend
+pip install -r requirements.txt
+```
+
+1. **Seed the Database** (Populates menu, restaurants, offers)
+
+```bash
+python seed_data.py
+```
+
+1. **Start the Server**
+
+```bash
+python app.py
+```
+
+> The server will start at `http://localhost:5000`
+
+### 🌐 Frontend
+
+Open `http://localhost:5000` in your browser.
+
+---
+
+## 📊 Usage
+
+1. **Sign Up/Login**: Create an account to access profile and ordering features.
+2. **Browse & Filter**: Use the "Veg Only" toggle or category pills to find your favorite dishes.
+3. **Add to Cart**: Select items, adjust quantities, and view your cart summary.
+4. **Checkout**: Enter delivery details and place your order.
+5. **Track Order**: Watch the real-time status updates on the tracking page.
+
+---
+
+## 🛠 Architecture & Design
+
+This project adheres to clear separation of concerns:
+
+- **Modular Backend**: API endpoints organized by resource (Auth, Menu, Cart, Orders).
+- **Frontend Logic**: Split by domain responsibility (`auth.js` for user session, `cart.js` for state).
+- **Design System**: Centralized CSS variables for colors, typography, and spacing to ensure consistency.
+
+---
+
+## 📸 Screenshots
 
 | **Menu & Filtering** | **Offers & Promos** |
 |:---:|:---:|
 | ![Menu Page](./assets/screenshots/report_menu.png) | ![Offers Page](./assets/screenshots/report_offers.png) |
-| *Browse 100+ dishes with advanced filtering* | *Exclusive deals with countdown timers* |
 
 | **Secure Login** | **User Profile** |
 |:---:|:---:|
 | ![Login Page](./assets/screenshots/report_login.png) | ![Profile Page](./assets/screenshots/report_profile.png) |
-| *Authentication with password strength meter* | *Manage profile and view order history* |
-
-| **Order Tracking** | **Real-time Updates** |
-|:---:|:---:|
-| ![Tracking Page](./assets/screenshots/report_tracking.png) | *Live timeline status updates* |
 
 ---
 
-## 🛠️ Tech Stack
+## 📈 Roadmap
 
-- **Frontend**: HTML5, CSS3 (Custom Design System), JavaScript (ES6+)
-- **Backend**: Python 3.8+, Flask, Flask-CORS
-- **Database**: MongoDB (PyMongo)
-- **Authentication**: JWT / Session-based with bcrypt
-- **Tools**: Git, VS Code
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Python 3.8 or higher
-- MongoDB installed and running locally on port `27017`
-
-### Installation
-
-1. **Clone the repository**
-
-    ```bash
-    git clone https://github.com/atul87/Flavour-Fleet-Premium-Food-Delivery-Platform.git
-    cd Flavour-Fleet-Premium-Food-Delivery-Platform
-    ```
-
-2. **Set up the Backend**
-
-    ```bash
-    cd backend
-    pip install -r requirements.txt
-    ```
-
-3. **Seed the Database** (Populates menu, restaurants, offers)
-
-    ```bash
-    python seed_data.py
-    ```
-
-4. **Run the Application**
-
-    ```bash
-    python app.py
-    ```
-
-    The server will start at `http://localhost:5000`.
+- [x] User Authentication
+- [x] Composable Filters
+- [x] Real-time Cart
+- [ ] Payment Gateway Integration (Stripe/Razorpay)
+- [ ] Admin Dashboard
+- [ ] WebSocket Live Tracking
 
 ---
 
-## � Project Structure
+## 🤝 Contributing
 
-```
-Website/
-├── assets/             # Images, uploads, and screenshots
-├── backend/            # Flask server, models, and seed scripts
-├── css/                # Custom CSS design system & animations
-├── js/                 # Frontend logic (Auth, Cart, API, Main)
-├── index.html          # Homepage
-├── menu.html           # Menu with filters
-├── ...                 # Other HTML pages
-└── README.md           # Project documentation
-```
-
----
-
-## � Future Roadmap
-
-- [ ] **Payment Gateway**: Integration with Stripe/Razorpay.
-- [ ] **Admin Dashboard**: For managing menu items and orders.
-- [ ] **Live Order Tracking**: WebSocket integration for real-time updates.
-- [ ] **PWA Support**: Offline capabilities and installability.
+Contributions are welcome! Please fork the repository and submit a pull request.
+Follow code style guidelines and include tests for any new features.
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-**Built with ❤️ by Atul**
+MIT License © 2026 Atul
