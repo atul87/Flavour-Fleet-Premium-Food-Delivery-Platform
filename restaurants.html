@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Explore 500+ restaurants on Flavour Fleet. Filter by cuisine, rating, and delivery time.">
+    <title>Restaurants — Flavour Fleet</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="index.html" class="nav-logo"><span class="logo-icon">🔥</span><span>Flavour Fleet</span></a>
+            <div class="nav-links" id="nav-links">
+                <a href="index.html">Home</a>
+                <a href="restaurants.html" class="active">Restaurants</a>
+                <a href="menu.html">Menu</a>
+                <a href="offers.html" class="offers-link">Offers <span class="offers-badge">NEW</span></a>
+                <a href="tracking.html">Track Order</a>
+            </div>
+            <div class="nav-actions">
+                <div class="nav-search"><span class="search-icon">🔍</span><input type="text"
+                        placeholder="Search restaurants..." id="search-input"></div>
+                <button class="icon-btn theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+                </button>
+                <a href="cart.html" class="icon-btn nav-cart" aria-label="Cart">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="9" cy="21" r="1" />
+                        <circle cx="20" cy="21" r="1" />
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                    </svg>
+                    <span class="cart-count" id="cart-count">0</span>
+                </a>
+                <a href="profile.html" class="icon-btn nav-profile" aria-label="Profile">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                </a>
+                <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+        <div class="container">
+            <h1>🍽️ All Restaurants</h1>
+            <p>Discover 500+ restaurants — from local favourites to premium dining</p>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <section class="section">
+        <div class="container">
+
+            <!-- Filters -->
+            <div
+                style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--space-md);margin-bottom:var(--space-xl)">
+                <div class="category-pills" style="margin-bottom:0">
+                    <button class="pill active" data-category="all">All</button>
+                    <button class="pill" data-category="pizza">🍕 Pizza</button>
+                    <button class="pill" data-category="burger">🍔 Burgers</button>
+                    <button class="pill" data-category="sushi">🍣 Japanese</button>
+                    <button class="pill" data-category="indian">🍛 Indian</button>
+                    <button class="pill" data-category="mexican">🌮 Mexican</button>
+                    <button class="pill" data-category="pasta">🍝 Italian</button>
+                    <button class="pill" data-category="chinese">🥡 Chinese</button>
+                    <button class="pill" data-category="healthy">🥗 Healthy</button>
+                    <button class="pill" data-category="dessert">🍰 Desserts</button>
+                </div>
+                <div class="filter-toggles">
+                    <div class="toggle-group">
+                        <label>🟢 Veg Only</label>
+                        <label class="toggle-switch"><input type="checkbox" id="veg-toggle"><span
+                                class="slider"></span></label>
+                    </div>
+                    <select id="sort-select"
+                        style="padding:0.5rem 1rem;border-radius:var(--radius-md);background:var(--glass-bg);border:1px solid var(--glass-border);color:var(--text-primary);font-size:0.9rem">
+                        <option>Sort by: Recommended</option>
+                        <option>Rating: High to Low</option>
+                        <option>Delivery Time</option>
+                        <option>Price: Low to High</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Restaurants Grid — 16 restaurants -->
+            <div class="restaurants-grid"
+                style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:var(--space-lg)">
+
+                <!-- Pizza -->
+                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="pizza">
+                    <div class="card-image"><img loading="lazy" src="assets/images/pizza.png" alt="Pizza Paradise"><span
+                            class="delivery-badge">🕐 25-35 min</span><button class="fav-btn"
+                            onclick="event.preventDefault()">♡</button></div>
+                    <div class="card-body">
+                        <h3>Pizza Paradise</h3>
+                        <p class="cuisine">Italian • Pizza • Pasta</p>
+                        <div class="card-meta"><span class="rating">⭐ 4.9 (2.1K)</span><span class="delivery-time">$2.99
+                                delivery</span></div>
+                    </div>
+                </a>
+                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="pizza">
+                    <div class="card-image"><img loading="lazy" src="assets/images/pizza.png" alt="Naples Fire Pizza"><span
+                            class="delivery-badge">🕐 20-30 min</span><button class="fav-btn"
+                            onclick="event.preventDefault()">♡</button></div>
+                    <div class="card-body">
+                        <h3>Naples Fire Pizza</h3>
+                        <p class="cuisine">Neapolitan • Wood-fired • Calzone</p>
+                        <div class="card-meta"><span class="rating">⭐ 4.7 (890)</span><span class="delivery-time">$1.99
+                                delivery</span></div>
+                    </div>
+                </a>
+
+                <!-- Burgers -->
+                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="burger">
+                    <div class="card-image"><img loading="lazy" src="assets/images/burger.png" alt="Burger Palace"><span
+                            class="delivery-badge">🕐 20-30 min</span><button class="fav-btn"
+                            onclick="event.preventDefault()">♡</button></div>
+                    <div class="card-body">
+                        <h3>Burger Palace</h3>
+                        <p class="cuisine">American • Burgers • Fries</p>
+                        <div class="card-meta"><span class="rating">⭐ 4.8 (1.8K)</span><span class="delivery-time">$1.99
+                                delivery</span></div>
+                    </div>
+                </a>
+                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="burger">
+                    <div class="card-image"><img loading="lazy" src="assets/images/burger.png" alt="Smash Burger Co."><span
+                            class="delivery-badge">🕐 15-25 min</span><button class="fav-btn"
+                            onclick="event.preventDefault()">♡</button></div>
+                    <div class="card-body">
+                        <h3>Smash Burger Co.</h3>
+                        <p class="cuisine">Smash Burgers • Shakes • Wings</p>
+                        <div class="card-meta"><span class="rating">⭐ 4.6 (650)</span><span class="delivery-time">FREE
+                                delivery</span></div>
+                    </div>
+                </a>
+
+                <!-- Japanese -->
+                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="sushi">
+                    <div class="card-image"><img loading="lazy" src="assets/images/sushi.png" alt="Tokyo Bites"><span
+                            class="delivery-badge">🕐 30-40 min</span><button class="fav-btn"
+                            onclick="event.preventDefault()">♡</button></div>
+                    <div class="card-body">
+                        <h3>Tokyo Bites</h3>
+                        <p class="cuisine">Japanese • Sushi • Ramen</p>
+                        <div class="card-meta"><span class="rating">⭐ 4.9 (1.5K)</span><span class="delivery-time">$3.49
+                                delivery</span></div>
+                    </div>
+                </a>
+                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="sushi">
+                    <div class="card-image"><img loading="lazy" src="assets/images/sushi.png" alt="Sakura Sushi Bar"><span
+                            class="delivery-badge">🕐 25-35 min</span><button class="fav-btn"
+                            onclick="event.preventDefault()">♡</button></div>
+                    <div class="card-body">
+                        <h3>Sakura Sushi Bar</h3>
+                        <p class="cuisine">Omakase • Sashimi • Tempura</p>
+                        <div class="card-meta"><span class="rating">⭐ 4.8 (980)</span><span class="delivery-time">$2.99
+                                delivery</span></div>
+                    </div>
+                </a>
+
+                <!-- Indian -->
+                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="indian">
+                    <div class="card-image"><img loading="lazy" src="assets/images/curry.png" alt="Spice Garden"><span
+                            class="delivery-badge">🕐 25-40 min</span><button class="fav-btn"
+                            onclick="event.preventDefault()">♡</button></div>
+                    <div class="card-body">
+                        <h3>Spice Garden</h3>
+                        <p class="cuisine">Indian • Curry • Naan • Biryani</p>
+                        <div class="card-meta"><span class="rating">⭐ 4.8 (1.3K)</span><span class="delivery-time">$2.49
+                                delivery</span></div>
+                    </div>
+                </a>
+                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="indian">
+                    <div class="card-image"><img loading="lazy" src="assets/images/curry.png" alt="Tandoori Nights"><span
+                            class="delivery-badge">🕐 30-45 min</span><button class="fav-btn"
+                            onclick="event.preventDefault()">♡</button></div>
+                    <div class="card-body">
+                        <h3>Tandoori Nights</h3>
+                        <p class="cuisine">Tandoori • Mughlai • Kebabs</p>
+                        <div class="card-meta"><span class="rating">⭐ 4.7 (760)</span><span class="delivery-time">$2.99
+                                delivery</span></div>
+                    </div>
+                </a>
+
+                <!-- Mexican -->
+                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="mexican">
+                    <div class="card-image"><img loading="lazy" src="assets/images/tacos.png" alt="El Fuego Cantina"><span
+                            class="delivery-badge">🕐 15-25 min</span><button class="fav-btn"
+                            onclick="event.preventDefault()">♡</button></div>
+                    <div class="card-body">
+                        <h3>El Fuego Cantina</h3>
+                        <p class="cuisine">Mexican • Tacos • Burritos</p>
+                        <div class="card-meta"><span class="rating">⭐ 4.7 (1.1K)</span><span class="delivery-time">$1.49
+                                delivery</span></div>
+                    </div>
+                </a>
+                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="mexican">
+                    <div class="card-image"><img loading="lazy" src="assets/images/tacos.png" alt="Guac & Roll"><span
+                            class="delivery-badge">🕐 20-30 min</span><button class="fav-btn"
+                            onclick="event.preventDefault()">♡</button></div>
+                    <div class="card-body">
+                        <h3>Guac & Roll</h3>
+                        <p class="cuisine">Tex-Mex • Quesadillas • Nachos</p>
+                        <div class="card-meta"><span class="rating">⭐ 4.5 (420)</span><span class="delivery-time">FREE
+                                delivery</span></div>
+                    </div>
+                </a>
+
+                <!-- Italian / Pasta -->
+                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="pasta">
+                    <div class="card-image"><img loading="lazy" src="assets/images/pasta.png" alt="Bella Cucina"><span
+                            class="delivery-badge">🕐 30-45 min</span><button class="fav-btn"
+                            onclick="event.preventDefault()">♡</button></div>
+                    <div class="card-body">
+                        <h3>Bella Cucina</h3>
+                        <p class="cuisine">Italian • Pasta • Risotto</p>
+                        <div class="card-meta"><span class="rating">⭐ 4.9 (1.7K)</span><span class="delivery-time">$2.99
+                                delivery</span></div>
+                    </div>
+                </a>
+                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="pasta">
+                    <div class="card-image"><img loading="lazy" src="assets/images/pasta.png" alt="Trattoria Nonna"><span
+                            class="delivery-badge">🕐 35-50 min</span><button class="fav-btn"
+                            onclick="event.preventDefault()">♡</button></div>
+                    <div class="card-body">
+                        <h3>Trattoria Nonna</h3>
+                        <p class="cuisine">Homestyle Italian • Lasagna • Tiramisu</p>
+                        <div class="card-meta"><span class="rating">⭐ 4.8 (540)</span><span class="delivery-time">$3.49
+                                delivery</span></div>
+                    </div>
+                </a>
+
+                <!-- Chinese -->
+                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="chinese">
+                    <div class="card-image"><img loading="lazy" src="assets/images/chinese.png" alt="Golden Dragon"><span
+                            class="delivery-badge">🕐 20-30 min</span><button class="fav-btn"
+                            onclick="event.preventDefault()">♡</button></div>
+                    <div class="card-body">
+                        <h3>Golden Dragon</h3>
+                        <p class="cuisine">Chinese • Dim Sum • Noodles</p>
+                        <div class="card-meta"><span class="rating">⭐ 4.6 (930)</span><span class="delivery-time">$1.99
+                                delivery</span></div>
+                    </div>
+                </a>
+                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="chinese">
+                    <div class="card-image"><img loading="lazy" src="assets/images/chinese.png" alt="Wok This Way"><span
+                            class="delivery-badge">🕐 15-25 min</span><button class="fav-btn"
+                            onclick="event.preventDefault()">♡</button></div>
+                    <div class="card-body">
+                        <h3>Wok This Way</h3>
+                        <p class="cuisine">Stir-fry • Fried Rice • Dumplings</p>
+                        <div class="card-meta"><span class="rating">⭐ 4.5 (380)</span><span class="delivery-time">FREE
+                                delivery</span></div>
+                    </div>
+                </a>
+
+                <!-- Healthy -->
+                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="healthy">
+                    <div class="card-image"><img loading="lazy" src="assets/images/salad.png" alt="Green Bowl Co."><span
+                            class="delivery-badge">🕐 15-25 min</span><button class="fav-btn"
+                            onclick="event.preventDefault()">♡</button></div>
+                    <div class="card-body">
+                        <h3>Green Bowl Co.</h3>
+                        <p class="cuisine">Salads • Bowls • Smoothies</p>
+                        <div class="card-meta"><span class="rating">⭐ 4.7 (620)</span><span class="delivery-time">$1.49
+                                delivery</span></div>
+                    </div>
+                </a>
+
+                <!-- Dessert -->
+                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="dessert">
+                    <div class="card-image"><img loading="lazy" src="assets/images/dessert.png" alt="Sweet Tooth Bakery"><span
+                            class="delivery-badge">🕐 20-35 min</span><button class="fav-btn"
+                            onclick="event.preventDefault()">♡</button></div>
+                    <div class="card-body">
+                        <h3>Sweet Tooth Bakery</h3>
+                        <p class="cuisine">Cakes • Ice Cream • Waffles</p>
+                        <div class="card-meta"><span class="rating">⭐ 4.9 (1.4K)</span><span class="delivery-time">$2.49
+                                delivery</span></div>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo"><span class="logo-icon">🔥</span><span>Flavour Fleet</span></div>
+                    <p>Delivering happiness, one meal at a time.</p>
+                    <div class="footer-social"><a href="#">📘</a><a href="#">🐦</a><a href="#">📸</a></div>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="menu.html">Menu</a></li>
+                        <li><a href="tracking.html">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Cuisines</h4>
+                    <ul>
+                        <li><a href="#">Italian</a></li>
+                        <li><a href="#">Japanese</a></li>
+                        <li><a href="#">Indian</a></li>
+                        <li><a href="#">Mexican</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Flavour Fleet. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <a href="cart.html" class="fab-cart" id="fab-cart" title="View Cart">🛒<span class="fab-count"
+            id="fab-count">0</span></a>
+    <div class="toast-container" id="toast-container"></div>
+    <div class="page-loader" id="page-loader">
+        <div class="loader-spinner"></div>
+        <p>Preparing your feast...</p>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // FAB count
+        function updateFabCount() { const c = Cart.getCart().reduce((s, i) => s + i.quantity, 0); const el = document.getElementById('fab-count'); if (el) { el.textContent = c; el.style.display = c > 0 ? 'flex' : 'none' } }
+        document.addEventListener('DOMContentLoaded', updateFabCount);
+    </script>
+</body>
+
+</html>

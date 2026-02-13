@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Exclusive deals & offers on Flavour Fleet — save big on your favourite meals with promo codes, combos, and limited-time discounts.">
+    <title>Offers & Deals — Flavour Fleet</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        /* ====== OFFERS PAGE STYLES ====== */
+
+        /* Hero Banner */
+        .offers-hero {
+            padding: 120px 0 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, rgba(255, 107, 53, 0.08) 0%, transparent 100%);
+        }
+
+        .offers-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .offers-hero h1 {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: var(--space-sm);
+            position: relative;
+        }
+
+        .offers-hero .hero-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto var(--space-xl);
+            position: relative;
+        }
+
+        .offers-hero .countdown-banner {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-md);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: var(--glass-blur);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-xl);
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .countdown-banner .timer {
+            display: flex;
+            gap: var(--space-xs);
+        }
+
+        .countdown-banner .timer-box {
+            background: var(--primary);
+            color: #fff;
+            padding: 0.3rem 0.5rem;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 1rem;
+            min-width: 36px;
+            text-align: center;
+        }
+
+        .countdown-banner .timer-sep {
+            color: var(--primary);
+            font-weight: 700;
+            line-height: 1.8;
+        }
+
+        /* Featured Mega Deal */
+        .mega-deal {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-2xl);
+            align-items: center;
+            padding: var(--space-2xl);
+            border-radius: var(--radius-xl);
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.12), rgba(255, 209, 102, 0.06));
+            border: 1px solid rgba(255, 107, 53, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mega-deal::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .mega-deal .mega-info {
+            position: relative;
+            z-index: 1;
+        }
+
+        .mega-deal .mega-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: var(--primary);
+            color: #fff;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: var(--space-md);
+        }
+
+        .mega-deal h2 {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            margin-bottom: var(--space-sm);
+        }
+
+        .mega-deal .mega-desc {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: var(--space-lg);
+            max-width: 450px;
+        }
+
+        .mega-deal .mega-code {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: 0.6rem 1.2rem;
+            background: var(--glass-bg);
+            border: 2px dashed var(--primary);
+            border-radius: var(--radius-md);
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 2px;
+            margin-bottom: var(--space-lg);
+        }
+
+        .mega-deal .mega-code button {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .mega-deal .mega-code button:hover {
+            background: var(--primary-dark);
+        }
+
+        .mega-deal .mega-image {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .mega-deal .mega-image img {
+            max-width: 100%;
+            height: auto;
+            max-height: 280px;
+            border-radius: var(--radius-lg);
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3));
+        }
+
+        .mega-deal .mega-discount {
+            font-size: 5rem;
+            font-weight: 900;
+            font-family: var(--font-heading);
+            line-height: 1;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Deals Grid */
+        .deals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--space-xl);
+        }
+
+        .offer-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-normal);
+            position: relative;
+        }
+
+        .offer-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-xl);
+            border-color: rgba(255, 107, 53, 0.2);
+        }
+
+        .offer-card .offer-header {
+            padding: var(--space-xl) var(--space-xl) var(--space-md);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .offer-card .offer-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .offer-card .offer-icon.orange {
+            background: rgba(255, 107, 53, 0.12);
+        }
+
+        .offer-card .offer-icon.teal {
+            background: rgba(46, 196, 182, 0.12);
+        }
+
+        .offer-card .offer-icon.purple {
+            background: rgba(156, 102, 255, 0.12);
+        }
+
+        .offer-card .offer-icon.pink {
+            background: rgba(255, 102, 156, 0.12);
+        }
+
+        .offer-card .offer-icon.gold {
+            background: rgba(255, 209, 102, 0.12);
+        }
+
+        .offer-card .offer-icon.blue {
+            background: rgba(66, 133, 244, 0.12);
+        }
+
+        .offer-card .offer-pct {
+            font-size: 1.6rem;
+            font-weight: 900;
+            font-family: var(--font-heading);
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .offer-card .offer-body {
+            padding: 0 var(--space-xl);
+        }
+
+        .offer-card .offer-body h3 {
+            font-size: 1.15rem;
+            margin-bottom: var(--space-xs);
+        }
+
+        .offer-card .offer-body p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: var(--space-md);
+        }
+
+        .offer-card .offer-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-md) var(--space-xl) var(--space-xl);
+        }
+
+        .offer-card .offer-code {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: var(--glass-bg);
+            border: 1px dashed var(--primary);
+            border-radius: var(--radius-sm);
+            color: var(--primary);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .offer-code:hover {
+            background: rgba(255, 107, 53, 0.1);
+        }
+
+        .offer-card .offer-valid {
+            color: var(--text-muted);
+            font-size: 0.78rem;
+        }
+
+        .offer-card .offer-tag {
+            position: absolute;
+            top: 14px;
+            right: -28px;
+            transform: rotate(45deg);
+            background: var(--secondary);
+            color: #fff;
+            padding: 0.2rem 2rem;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Promo Code Banner */
+        .promo-banner {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: var(--space-xl);
+            align-items: center;
+            padding: var(--space-2xl);
+            border-radius: var(--radius-xl);
+            background: linear-gradient(135deg, rgba(46, 196, 182, 0.1), rgba(102, 209, 255, 0.05));
+            border: 1px solid rgba(46, 196, 182, 0.15);
+        }
+
+        .promo-banner h3 {
+            font-size: 1.3rem;
+            margin-bottom: var(--space-xs);
+        }
+
+        .promo-banner p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .promo-banner .promo-input-wrap {
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .promo-banner .promo-input-wrap input {
+            padding: 0.7rem 1rem;
+            border-radius: var(--radius-md);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            width: 200px;
+        }
+
+        .promo-banner .promo-input-wrap input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Category section */
+        .cuisine-offers {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .cuisine-offer-card {
+            text-align: center;
+            padding: var(--space-xl);
+            border-radius: var(--radius-lg);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-normal);
+            cursor: pointer;
+        }
+
+        .cuisine-offer-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .cuisine-offer-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius-full);
+            object-fit: cover;
+            margin-bottom: var(--space-md);
+            border: 3px solid var(--glass-border);
+        }
+
+        .cuisine-offer-card h4 {
+            font-size: 0.95rem;
+            margin-bottom: var(--space-xs);
+        }
+
+        .cuisine-offer-card .cuisine-discount {
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        /* FAQ Accordion */
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-md);
+            overflow: hidden;
+            transition: all var(--transition-normal);
+        }
+
+        .faq-item:hover {
+            border-color: rgba(255, 107, 53, 0.2);
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-lg) var(--space-xl);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: color var(--transition-fast);
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            color: var(--text-primary);
+        }
+
+        .faq-question:hover {
+            color: var(--primary);
+        }
+
+        .faq-question .faq-toggle {
+            font-size: 1.2rem;
+            color: var(--primary);
+            transition: transform var(--transition-normal);
+            flex-shrink: 0;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-answer.open {
+            max-height: 200px;
+        }
+
+        .faq-answer p {
+            padding: 0 var(--space-xl) var(--space-lg);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .mega-deal {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .mega-deal .mega-desc {
+                margin: 0 auto var(--space-lg);
+            }
+
+            .promo-banner {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .promo-banner .promo-input-wrap {
+                justify-content: center;
+            }
+
+            .promo-banner .promo-input-wrap input {
+                width: 160px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">🔥</span>
+                <span>Flavour Fleet</span>
+            </a>
+            <div class="nav-links" id="nav-links">
+                <a href="index.html">Home</a>
+                <a href="restaurants.html">Restaurants</a>
+                <a href="menu.html">Menu</a>
+                <a href="offers.html" class="active offers-link">Offers <span class="offers-badge">NEW</span></a>
+                <a href="tracking.html">Track Order</a>
+            </div>
+            <div class="nav-actions">
+                <div class="nav-search">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" placeholder="Search deals..." id="search-input">
+                </div>
+                <button class="icon-btn theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+                </button>
+                <a href="cart.html" class="icon-btn nav-cart" aria-label="Cart">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="9" cy="21" r="1" />
+                        <circle cx="20" cy="21" r="1" />
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                    </svg>
+                    <span class="cart-count" id="cart-count">0</span>
+                </a>
+                <a href="profile.html" class="icon-btn nav-profile" aria-label="Profile">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                </a>
+                <div class="hamburger" id="hamburger">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- OFFERS HERO -->
+    <section class="offers-hero">
+        <div class="container animate-on-scroll">
+            <h1>🎉 Exclusive Offers & Deals</h1>
+            <p class="hero-subtitle">Save big on every order — daily deals, promo codes, and seasonal specials just for
+                you!</p>
+            <div class="countdown-banner">
+                <span>⏰ Flash Sale ends in:</span>
+                <div class="timer">
+                    <span class="timer-box" id="hours">05</span>
+                    <span class="timer-sep">:</span>
+                    <span class="timer-box" id="minutes">42</span>
+                    <span class="timer-sep">:</span>
+                    <span class="timer-box" id="seconds">18</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MEGA DEAL -->
+    <section class="section">
+        <div class="container">
+            <div class="mega-deal animate-on-scroll">
+                <div class="mega-info">
+                    <span class="mega-badge">🔥 Deal of the Day</span>
+                    <h2>First Order? Get <span style="color:var(--primary)">50% OFF</span></h2>
+                    <p class="mega-desc">New to Flavour Fleet? Enjoy a massive 50% discount on your first order (up to
+                        $25). Order from any restaurant — we've got you covered!</p>
+                    <div class="mega-code">
+                        FIRST50
+                        <button onclick="copyCode('FIRST50', this)">Copy</button>
+                    </div>
+                    <div style="display:flex;gap:var(--space-md);flex-wrap:wrap">
+                        <a href="menu.html" class="btn btn-primary">Order Now →</a>
+                        <a href="restaurants.html" class="btn btn-outline">Browse Restaurants</a>
+                    </div>
+                </div>
+                <div class="mega-image">
+                    <div class="mega-discount">50%<br><span
+                            style="font-size:2rem;-webkit-text-fill-color:var(--text-secondary)">OFF</span></div>
+                    <img loading="lazy" src="assets/images/dessert.png" alt="50% off deal">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOT DEALS SCROLL -->
+    <section class="section" style="background:var(--bg-secondary)">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <span class="badge">🔥 Limited Time</span>
+                <h2>Flash Deals — Grab 'em Quick!</h2>
+                <p>These deals won't last long. Tap to apply!</p>
+            </div>
+            <div class="deals-scroll animate-on-scroll">
+                <div class="deal-card gradient-1" onclick="copyCode('WELCOME40')">
+                    <div class="deal-discount"><span class="pct">40%</span> OFF</div>
+                    <div class="deal-title">Welcome Discount</div>
+                    <div class="deal-desc">40% off your first order. Max discount $20. All restaurants.</div>
+                    <span class="deal-code">WELCOME40</span>
+                    <img loading="lazy" src="assets/images/pizza.png" alt="" class="deal-img">
+                </div>
+                <div class="deal-card gradient-2" onclick="copyCode('LUNCH99')">
+                    <div class="deal-discount"><span class="pct">₹99</span> FLAT</div>
+                    <div class="deal-title">Lunch Combo Deal</div>
+                    <div class="deal-desc">Any main + drink + dessert at just ₹99. 11AM–3PM only.</div>
+                    <span class="deal-code">LUNCH99</span>
+                    <img loading="lazy" src="assets/images/curry.png" alt="" class="deal-img">
+                </div>
+                <div class="deal-card gradient-3" onclick="copyCode('FREEDELI')">
+                    <div class="deal-discount"><span class="pct">FREE</span> 🚚</div>
+                    <div class="deal-title">Free Delivery</div>
+                    <div class="deal-desc">Zero delivery charges on orders above $15. All week long!</div>
+                    <span class="deal-code">FREEDELI</span>
+                    <img loading="lazy" src="assets/images/burger.png" alt="" class="deal-img">
+                </div>
+                <div class="deal-card gradient-4" onclick="copyCode('BOGO2026')">
+                    <div class="deal-discount"><span class="pct">BOGO</span></div>
+                    <div class="deal-title">Buy 1 Get 1 Free</div>
+                    <div class="deal-desc">Order any pizza, get the second one free! Weekends only.</div>
+                    <span class="deal-code">BOGO2026</span>
+                    <img loading="lazy" src="assets/images/pasta.png" alt="" class="deal-img">
+                </div>
+                <div class="deal-card gradient-2" onclick="copyCode('NIGHT30')">
+                    <div class="deal-discount"><span class="pct">30%</span> OFF</div>
+                    <div class="deal-title">Late Night Cravings</div>
+                    <div class="deal-desc">30% off between 10PM–2AM. Because midnight cravings deserve deals!</div>
+                    <span class="deal-code">NIGHT30</span>
+                    <img loading="lazy" src="assets/images/sushi.png" alt="" class="deal-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ALL OFFERS GRID -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <span class="badge">🎁 All Offers</span>
+                <h2>Current Promotions</h2>
+                <p>Browse all active deals and save on every order</p>
+            </div>
+            <div class="deals-grid animate-on-scroll">
+
+                <div class="offer-card tilt-card">
+                    <span class="offer-tag">Popular</span>
+                    <div class="offer-header">
+                        <div class="offer-icon orange">🍕</div>
+                        <div class="offer-pct">40% OFF</div>
+                    </div>
+                    <div class="offer-body">
+                        <h3>First Order Special</h3>
+                        <p>Get 40% off on your very first order. Valid on all restaurants and cuisines!</p>
+                    </div>
+                    <div class="offer-footer">
+                        <span class="offer-code" onclick="copyCode('WELCOME40', this)">WELCOME40</span>
+                        <span class="offer-valid">Valid till Mar 31</span>
+                    </div>
+                </div>
+
+                <div class="offer-card tilt-card">
+                    <div class="offer-header">
+                        <div class="offer-icon teal">🚚</div>
+                        <div class="offer-pct">FREE</div>
+                    </div>
+                    <div class="offer-body">
+                        <h3>Free Delivery All Week</h3>
+                        <p>No delivery fee on orders above $15. Save your money for more food!</p>
+                    </div>
+                    <div class="offer-footer">
+                        <span class="offer-code" onclick="copyCode('FREEDEL', this)">FREEDEL</span>
+                        <span class="offer-valid">No expiry</span>
+                    </div>
+                </div>
+
+                <div class="offer-card tilt-card">
+                    <span class="offer-tag">Hot</span>
+                    <div class="offer-header">
+                        <div class="offer-icon purple">🍔</div>
+                        <div class="offer-pct">BOGO</div>
+                    </div>
+                    <div class="offer-body">
+                        <h3>Buy 1 Get 1 Free</h3>
+                        <p>Order any burger or pizza, get the second one absolutely free. Weekends only!</p>
+                    </div>
+                    <div class="offer-footer">
+                        <span class="offer-code" onclick="copyCode('BOGO2026', this)">BOGO2026</span>
+                        <span class="offer-valid">Weekends Only</span>
+                    </div>
+                </div>
+
+                <div class="offer-card tilt-card">
+                    <div class="offer-header">
+                        <div class="offer-icon pink">🌙</div>
+                        <div class="offer-pct">30% OFF</div>
+                    </div>
+                    <div class="offer-body">
+                        <h3>Late Night Cravings</h3>
+                        <p>30% discount on all orders placed between 10 PM and 2 AM. Night owls rejoice!</p>
+                    </div>
+                    <div class="offer-footer">
+                        <span class="offer-code" onclick="copyCode('NIGHT30', this)">NIGHT30</span>
+                        <span class="offer-valid">10PM – 2AM</span>
+                    </div>
+                </div>
+
+                <div class="offer-card tilt-card">
+                    <div class="offer-header">
+                        <div class="offer-icon gold">👨‍👩‍👧‍👦</div>
+                        <div class="offer-pct">$10 OFF</div>
+                    </div>
+                    <div class="offer-body">
+                        <h3>Family Feast</h3>
+                        <p>Flat $10 off on family-sized orders above $40. Feed the whole gang for less!</p>
+                    </div>
+                    <div class="offer-footer">
+                        <span class="offer-code" onclick="copyCode('FAMILY10', this)">FAMILY10</span>
+                        <span class="offer-valid">Valid till Apr 30</span>
+                    </div>
+                </div>
+
+                <div class="offer-card tilt-card">
+                    <span class="offer-tag">New</span>
+                    <div class="offer-header">
+                        <div class="offer-icon blue">🥗</div>
+                        <div class="offer-pct">25% OFF</div>
+                    </div>
+                    <div class="offer-body">
+                        <h3>Healthy Eats Week</h3>
+                        <p>25% off on all salads, smoothie bowls, and healthy menu items. Eat clean, save green!</p>
+                    </div>
+                    <div class="offer-footer">
+                        <span class="offer-code" onclick="copyCode('HEALTHY25', this)">HEALTHY25</span>
+                        <span class="offer-valid">This week only</span>
+                    </div>
+                </div>
+
+                <div class="offer-card tilt-card">
+                    <div class="offer-header">
+                        <div class="offer-icon orange">☕</div>
+                        <div class="offer-pct">₹99 FLAT</div>
+                    </div>
+                    <div class="offer-body">
+                        <h3>Breakfast Combo</h3>
+                        <p>Any breakfast item + coffee for just ₹99. Available 7 AM – 11 AM daily.</p>
+                    </div>
+                    <div class="offer-footer">
+                        <span class="offer-code" onclick="copyCode('BREKKY99', this)">BREKKY99</span>
+                        <span class="offer-valid">7AM – 11AM</span>
+                    </div>
+                </div>
+
+                <div class="offer-card tilt-card">
+                    <div class="offer-header">
+                        <div class="offer-icon teal">💳</div>
+                        <div class="offer-pct">15% OFF</div>
+                    </div>
+                    <div class="offer-body">
+                        <h3>Pay Online & Save</h3>
+                        <p>Extra 15% off (up to $8) when you pay via UPI, cards, or wallet. No cash hassle!</p>
+                    </div>
+                    <div class="offer-footer">
+                        <span class="offer-code" onclick="copyCode('ONLINE15', this)">ONLINE15</span>
+                        <span class="offer-valid">All payment modes</span>
+                    </div>
+                </div>
+
+                <div class="offer-card tilt-card">
+                    <div class="offer-header">
+                        <div class="offer-icon purple">🎂</div>
+                        <div class="offer-pct">FREE CAKE</div>
+                    </div>
+                    <div class="offer-body">
+                        <h3>Birthday Surprise</h3>
+                        <p>It's your birthday? Get a free chocolate lava cake with any order over $20!</p>
+                    </div>
+                    <div class="offer-footer">
+                        <span class="offer-code" onclick="copyCode('BDAY2026', this)">BDAY2026</span>
+                        <span class="offer-valid">Your B-day month</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CUISINE-SPECIFIC OFFERS -->
+    <section class="section" style="background:var(--bg-secondary)">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <span class="badge">🍽️ By Cuisine</span>
+                <h2>Cuisine-Specific Deals</h2>
+                <p>Extra savings when you order from your favourite cuisines</p>
+            </div>
+            <div class="cuisine-offers animate-on-scroll">
+                <a href="menu.html" class="cuisine-offer-card tilt-card">
+                    <img loading="lazy" src="assets/images/pizza.png" alt="Italian">
+                    <h4>Italian</h4>
+                    <span class="cuisine-discount">20% OFF on all pizzas</span>
+                </a>
+                <a href="menu.html" class="cuisine-offer-card tilt-card">
+                    <img loading="lazy" src="assets/images/sushi.png" alt="Japanese">
+                    <h4>Japanese</h4>
+                    <span class="cuisine-discount">BOGO on sushi rolls</span>
+                </a>
+                <a href="menu.html" class="cuisine-offer-card tilt-card">
+                    <img loading="lazy" src="assets/images/curry.png" alt="Indian">
+                    <h4>Indian</h4>
+                    <span class="cuisine-discount">Free naan with curry</span>
+                </a>
+                <a href="menu.html" class="cuisine-offer-card tilt-card">
+                    <img loading="lazy" src="assets/images/burger.png" alt="American">
+                    <h4>American</h4>
+                    <span class="cuisine-discount">15% OFF burgers</span>
+                </a>
+                <a href="menu.html" class="cuisine-offer-card tilt-card">
+                    <img loading="lazy" src="assets/images/tacos.png" alt="Mexican">
+                    <h4>Mexican</h4>
+                    <span class="cuisine-discount">Free guac upgrade</span>
+                </a>
+                <a href="menu.html" class="cuisine-offer-card tilt-card">
+                    <img loading="lazy" src="assets/images/pasta.png" alt="Pasta">
+                    <h4>Pasta</h4>
+                    <span class="cuisine-discount">$5 OFF any pasta</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- HAVE A PROMO CODE -->
+    <section class="section">
+        <div class="container">
+            <div class="promo-banner animate-on-scroll">
+                <div>
+                    <h3>🎟️ Have a Promo Code?</h3>
+                    <p>Enter it here to check if it's valid and see your savings instantly.</p>
+                </div>
+                <div class="promo-input-wrap">
+                    <input type="text" placeholder="Enter code..." id="promo-check-input">
+                    <button class="btn btn-primary" onclick="checkPromo()">Apply</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" style="background:var(--bg-secondary)">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <span class="badge">❓ FAQ</span>
+                <h2>Frequently Asked Questions</h2>
+                <p>Everything you need to know about our offers</p>
+            </div>
+            <div class="faq-list animate-on-scroll">
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        How do I apply a promo code?
+                        <span class="faq-toggle">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Head to the Cart page, enter your promo code in the coupon field, and click "Apply". The
+                            discount will be reflected in your order total instantly.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        Can I use multiple promo codes?
+                        <span class="faq-toggle">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Only one promo code can be used per order. We recommend using the one with the highest
+                            savings for your order size!</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        Why isn't my promo code working?
+                        <span class="faq-toggle">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Promo codes may have minimum order requirements, time restrictions (e.g., lunch deals), or
+                            may be valid only for specific restaurants. Check the offer terms for details.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        How often are new deals added?
+                        <span class="faq-toggle">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We add new deals every week! Flash deals rotate daily, and seasonal offers are updated
+                            monthly. Keep checking back for fresh savings.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        Do deals work with all restaurants?
+                        <span class="faq-toggle">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Most promo codes work across all restaurants unless stated otherwise. Cuisine-specific deals
+                            apply only to the relevant category.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section" style="background:linear-gradient(135deg,rgba(255,107,53,0.1),rgba(46,196,182,0.05))">
+        <div class="container text-center animate-on-scroll">
+            <h2 style="font-size:clamp(2rem,4vw,3rem);margin-bottom:var(--space-md)">Ready to Save Big? 🎉</h2>
+            <p style="color:var(--text-secondary);max-width:500px;margin:0 auto var(--space-xl)">Pick a deal, grab a
+                code, and order your favourite meal at unbeatable prices!</p>
+            <div style="display:flex;gap:var(--space-md);justify-content:center;flex-wrap:wrap">
+                <a href="menu.html" class="btn btn-primary btn-lg">Order Now →</a>
+                <a href="restaurants.html" class="btn btn-outline btn-lg">Browse Restaurants</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo"><span class="logo-icon">🔥</span><span>Flavour Fleet</span></div>
+                    <p>Delivering happiness, one meal at a time. Fresh food from 500+ restaurants to your doorstep.</p>
+                    <div class="footer-social"><a href="#">📘</a><a href="#">🐦</a><a href="#">📸</a><a href="#">▶️</a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="restaurants.html">Restaurants</a></li>
+                        <li><a href="menu.html">Menu</a></li>
+                        <li><a href="offers.html">Offers</a></li>
+                        <li><a href="tracking.html">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Top Cuisines</h4>
+                    <ul>
+                        <li><a href="restaurants.html">Italian</a></li>
+                        <li><a href="restaurants.html">Japanese</a></li>
+                        <li><a href="restaurants.html">Indian</a></li>
+                        <li><a href="restaurants.html">Mexican</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Flavour Fleet. All rights reserved. Made with ❤️ by Atul</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- FAB + TOAST + LOADER -->
+    <a href="cart.html" class="fab-cart" id="fab-cart" title="View Cart">🛒<span class="fab-count"
+            id="fab-count">0</span></a>
+    <div class="toast-container" id="toast-container"></div>
+    <div class="page-loader" id="page-loader">
+        <div class="loader-spinner"></div>
+        <p>Loading offers...</p>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // ====== COUNTDOWN TIMER ======
+        function startCountdown() {
+            // Countdown for ~6 hours from now
+            let totalSeconds = 5 * 3600 + 42 * 60 + 18;
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+
+            setInterval(() => {
+                if (totalSeconds <= 0) totalSeconds = 6 * 3600; // reset
+                totalSeconds--;
+                const h = Math.floor(totalSeconds / 3600);
+                const m = Math.floor((totalSeconds % 3600) / 60);
+                const s = totalSeconds % 60;
+                hoursEl.textContent = String(h).padStart(2, '0');
+                minutesEl.textContent = String(m).padStart(2, '0');
+                secondsEl.textContent = String(s).padStart(2, '0');
+            }, 1000);
+        }
+
+        // ====== COPY PROMO CODE ======
+        function copyCode(code, btn) {
+            navigator.clipboard.writeText(code).then(() => {
+                showToast(`Copied: ${code} — paste it at checkout!`, 'success');
+                if (btn) {
+                    const orig = btn.textContent;
+                    btn.textContent = 'Copied!';
+                    setTimeout(() => btn.textContent = orig, 2000);
+                }
+            }).catch(() => {
+                showToast(`Code: ${code}`, 'info');
+            });
+        }
+
+        // ====== CHECK PROMO ======
+        function checkPromo() {
+            const input = document.getElementById('promo-check-input');
+            const code = input.value.trim().toUpperCase();
+            if (!code) {
+                showToast('Please enter a promo code', 'error');
+                return;
+            }
+            const validCodes = {
+                'FIRST50': '50% off your first order (up to $25)',
+                'WELCOME40': '40% off first order (up to $20)',
+                'WELCOME10': '10% off your order',
+                'SAVE5': '$5 flat off your order',
+                'FREEDEL': 'Free delivery on orders above $15',
+                'FREEDELI': 'Free delivery on all orders',
+                'BOGO2026': 'Buy 1 Get 1 Free on pizza',
+                'NIGHT30': '30% off late night orders (10PM-2AM)',
+                'FAMILY10': '$10 off family orders above $40',
+                'HEALTHY25': '25% off healthy menu items',
+                'BREKKY99': 'Breakfast combo at ₹99',
+                'ONLINE15': '15% off on online payments',
+                'BDAY2026': 'Free chocolate lava cake on your birthday!',
+                'LUNCH99': 'Lunch combo at ₹99'
+            };
+            if (validCodes[code]) {
+                showToast(`✅ Valid! ${validCodes[code]}`, 'success');
+            } else {
+                showToast('❌ Invalid code. Check the deals above for valid codes!', 'error');
+            }
+            input.value = '';
+        }
+
+        // ====== FAQ ACCORDION ======
+        function toggleFAQ(btn) {
+            const answer = btn.nextElementSibling;
+            const toggle = btn.querySelector('.faq-toggle');
+            const isOpen = answer.classList.contains('open');
+
+            // Close all
+            document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+            document.querySelectorAll('.faq-toggle').forEach(t => t.textContent = '+');
+
+            if (!isOpen) {
+                answer.classList.add('open');
+                toggle.textContent = '−';
+            }
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            startCountdown();
+            Cart.updateCartBadge();
+        });
+    </script>
+</body>
+
+</html>
