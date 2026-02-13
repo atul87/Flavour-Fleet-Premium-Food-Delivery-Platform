@@ -48,3 +48,9 @@ Thumbs.db
 # Temp
 tmp/
 temp/
+
+# Competitor Repo Clone
+temp_competitor/
+
+# Artifacts
+.gemini/
