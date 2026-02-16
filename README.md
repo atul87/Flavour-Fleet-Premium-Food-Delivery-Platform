@@ -10,16 +10,22 @@ A full-stack, responsive food delivery web application with intuitive UI, secure
 
 ## 📌 Table of Contents
 
-- [🚀 About the Project](#-about-the-project)
-- [💡 Key Features](#-key-features)
-- [🧠 Tech Stack](#-tech-stack)
-- [📁 Project Structure](#-project-structure)
-- [⚙️ Local Setup & Installation](#-local-setup--installation)
-- [📊 Usage](#-usage)
-- [🛠 Architecture & Design](#-architecture--design)
-- [📈 Roadmap](#-roadmap)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
+- [🍔 Flavour Fleet — Premium Food Delivery Platform](#-flavour-fleet--premium-food-delivery-platform)
+  - [📌 Table of Contents](#-table-of-contents)
+  - [🚀 About the Project](#-about-the-project)
+  - [💡 Key Features](#-key-features)
+  - [🧠 Tech Stack](#-tech-stack)
+  - [📁 Project Structure](#-project-structure)
+  - [⚙️ Local Setup \& Installation](#️-local-setup--installation)
+    - [📥 Clone](#-clone)
+    - [🧰 Backend Setup](#-backend-setup)
+    - [🌐 Frontend](#-frontend)
+  - [📊 Usage](#-usage)
+  - [🛠 Architecture \& Design](#-architecture--design)
+  - [📸 Screenshots](#-screenshots)
+  - [📈 Roadmap](#-roadmap)
+  - [🤝 Contributing](#-contributing)
+  - [📄 License](#-license)
 
 ---
 
