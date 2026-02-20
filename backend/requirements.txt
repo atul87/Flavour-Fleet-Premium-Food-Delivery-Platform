@@ -2,3 +2,5 @@ flask
 flask-cors
 pymongo
 bcrypt
+resend
+python-dotenv

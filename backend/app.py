@@ -5,8 +5,17 @@
 import os
 import base64
 import secrets
+import threading
 from datetime import datetime, timedelta
 from functools import wraps
+
+# Email notifications
+from utils.email_service import send_email
+from utils.email_templates import (
+    order_confirmation_template,
+    order_delivered_template,
+    password_reset_template
+)
 
 from flask import Flask, request, jsonify, session, send_from_directory
 from flask_cors import CORS
@@ -287,10 +296,19 @@ def forgot_password():
         'created_at': datetime.utcnow().isoformat()
     })
 
-    # In production, send email. For demo, return the code directly.
+    # Send password reset email (non-blocking)
+    html = password_reset_template(
+        user_name=user.get('name', 'User'),
+        reset_code=reset_code
+    )
+    threading.Thread(
+        target=send_email,
+        args=(user['email'], 'Password Reset Code 🔐', html)
+    ).start()
+
     return jsonify({
         'success': True,
-        'message': 'Reset code generated! (In production, this would be emailed)',
+        'message': 'Reset code sent to your email!',
         'token': token,
         'code': reset_code  # Remove in production — only for demo
     })
@@ -575,6 +593,23 @@ def place_order():
     # Clear cart
     carts_col.update_one({'user_id': uid}, {'$set': {'items': []}})
 
+    # Send order confirmation email (non-blocking)
+    user = users_col.find_one({'_id': session.get('user_id')}) if session.get('user_id') else None
+    if not user:
+        from bson import ObjectId
+        user = users_col.find_one({'_id': ObjectId(uid)}) if ObjectId.is_valid(uid) else None
+    if user and user.get('email'):
+        html = order_confirmation_template(
+            user_name=user.get('name', 'Customer'),
+            order_id=order_id,
+            items_summary=order['items_summary'],
+            total=total
+        )
+        threading.Thread(
+            target=send_email,
+            args=(user['email'], 'Your Order is Confirmed 🍔', html)
+        ).start()
+
     # Return order (without _id for clean JSON)
     order.pop('_id', None)
 
@@ -723,6 +758,22 @@ def admin_update_order(order_id):
     result = orders_col.update_one({'order_id': order_id}, {'$set': {'status': new_status}})
     if result.matched_count == 0:
         return jsonify({'success': False, 'message': 'Order not found'}), 404
+
+    # Send delivery email when status is 'delivered'
+    if new_status == 'delivered':
+        order = orders_col.find_one({'order_id': order_id})
+        if order:
+            from bson import ObjectId
+            user = users_col.find_one({'_id': ObjectId(order['user_id'])}) if ObjectId.is_valid(order.get('user_id', '')) else None
+            if user and user.get('email'):
+                html = order_delivered_template(
+                    user_name=user.get('name', 'Customer'),
+                    order_id=order_id
+                )
+                threading.Thread(
+                    target=send_email,
+                    args=(user['email'], 'Order Delivered 🎉', html)
+                ).start()
 
     return jsonify({'success': True, 'message': f'Order status updated to {new_status}'})
 

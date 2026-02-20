@@ -105,6 +105,12 @@ button {
   font-family: var(--font-body)
 }
 
+button:active,
+.btn:active {
+  transform: scale(0.96) !important;
+  transition: transform 0.1s ease !important;
+}
+
 input,
 select,
 textarea {
@@ -2806,4 +2812,217 @@ h6 {
   .team-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ---------- MOBILE BOTTOM NAVIGATION ---------- */
+.bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid var(--glass-border);
+  box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.3);
+  padding: var(--space-xs) 0;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.bottom-nav .nav-items {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.bottom-nav .nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--space-xs) var(--space-sm);
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.65rem;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+  position: relative;
+  min-width: 52px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bottom-nav .nav-item .nav-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+  transition: transform var(--transition-fast);
+}
+
+.bottom-nav .nav-item.active {
+  color: var(--primary);
+}
+
+.bottom-nav .nav-item.active .nav-icon {
+  transform: scale(1.15);
+}
+
+.bottom-nav .nav-item .nav-badge {
+  position: absolute;
+  top: -2px;
+  right: 6px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 0.55rem;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 99px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+@media(max-width: 768px) {
+  .bottom-nav {
+    display: block;
+  }
+
+  body {
+    padding-bottom: 72px;
+  }
+}
+
+/* ---------- FREE DELIVERY PROGRESS BAR ---------- */
+.delivery-progress {
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.delivery-progress .progress-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delivery-progress .progress-text strong {
+  color: var(--secondary);
+}
+
+.delivery-progress .progress-text .free-label {
+  color: var(--secondary);
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.delivery-progress .progress-track {
+  height: 6px;
+  background: var(--border-color);
+  border-radius: 99px;
+  overflow: hidden;
+  position: relative;
+}
+
+.delivery-progress .progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 99px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.delivery-progress .progress-bar::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: -3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--secondary);
+  box-shadow: 0 0 8px rgba(46, 196, 182, 0.5);
+}
+
+.delivery-progress.complete .progress-bar {
+  background: var(--secondary);
+}
+
+.delivery-progress.complete .progress-text {
+  color: var(--secondary);
+  font-weight: 600;
+}
+
+/* ---------- URGENCY COUNTER ---------- */
+.urgency-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+  padding: var(--space-sm) var(--space-lg);
+  background: rgba(255, 107, 53, 0.1);
+  border: 1px solid rgba(255, 107, 53, 0.2);
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  color: var(--primary-light);
+  font-weight: 500;
+  animation: pulse-badge 3s infinite;
+}
+
+.urgency-counter .pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff6b35;
+  animation: dotPulse 1.5s infinite;
+}
+
+/* ---------- ENHANCED TRACKING ---------- */
+.tracking-step .step-description {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.tracking-step.active .step-dot {
+  box-shadow: 0 0 0 6px rgba(255, 107, 53, 0.2);
+  animation: dotPulse 2s infinite;
+}
+
+.countdown-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: rgba(46, 196, 182, 0.1);
+  border: 1px solid rgba(46, 196, 182, 0.2);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  margin-top: var(--space-md);
+  font-family: var(--font-heading);
+}
+
+.countdown-timer .timer-icon {
+  font-size: 1.2rem;
+}
+
+.countdown-timer .timer-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--secondary);
+  letter-spacing: 1px;
+}
+
+.countdown-timer .timer-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
 }

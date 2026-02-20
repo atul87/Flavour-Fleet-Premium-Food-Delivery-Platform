@@ -202,6 +202,24 @@ function hideLoader() {
     }
 }
 
+// ---------- Skeleton Loader Helper ----------
+function showSkeletons(container, count = 3) {
+    if (!container) return;
+    let html = '';
+    for (let i = 0; i < count; i++) {
+        html += `
+        <div class="skeleton-card">
+            <div class="skeleton-img"></div>
+            <div class="skeleton-body">
+                <div class="skeleton-line" style="width:80%"></div>
+                <div class="skeleton-line" style="width:60%"></div>
+                <div class="skeleton-line" style="width:40%"></div>
+            </div>
+        </div>`;
+    }
+    container.innerHTML = html;
+}
+
 // ---------- Sort Restaurants ----------
 function initSort() {
     const sortSelect = document.getElementById('sort-select');

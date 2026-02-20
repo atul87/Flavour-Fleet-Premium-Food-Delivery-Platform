@@ -28,6 +28,26 @@ const Cart = {
             this.updateCartBadge();
             window.dispatchEvent(new Event('cartUpdated'));
             showToast(result.message || `${item.name} added to cart!`, 'success');
+
+            // Cart badge pop animation
+            document.querySelectorAll('.cart-count').forEach(badge => {
+                badge.classList.remove('pop');
+                void badge.offsetWidth; // force reflow
+                badge.classList.add('pop');
+            });
+
+            // Add-to-cart button flash (find the button that triggered this)
+            const btns = document.querySelectorAll('.add-to-cart-btn');
+            btns.forEach(btn => {
+                if (btn.getAttribute('onclick')?.includes(item.id)) {
+                    btn.classList.add('added');
+                    btn.textContent = '✓';
+                    setTimeout(() => {
+                        btn.classList.remove('added');
+                        btn.textContent = '+';
+                    }, 800);
+                }
+            });
         } else {
             showToast(result.message || 'Failed to add item', 'error');
         }
@@ -122,6 +142,11 @@ async function renderCartPage() {
     const cartSummaryEl = document.getElementById('cart-summary-details');
     if (!cartItems) return;
 
+    // Show skeleton loading state
+    if (typeof showSkeletons === 'function') {
+        showSkeletons(cartItems, 2);
+    }
+
     // Fetch latest from server
     await Cart.syncFromServer();
     const cart = Cart.getCart();
@@ -186,9 +211,26 @@ function updateSummary(discount = 0) {
     const tax = Cart.getTax();
     const total = Cart.getTotal(discount);
 
+    // Free delivery progress bar
+    const freeThreshold = 30;
+    const remaining = Math.max(0, freeThreshold - subtotal);
+    const progress = Math.min(100, (subtotal / freeThreshold) * 100);
+    const isFree = subtotal >= freeThreshold;
+    const deliveryBarHTML = subtotal > 0 ? `
+    <div class="delivery-progress ${isFree ? 'complete' : ''}">
+      <div class="progress-text">
+        <span>${isFree ? '🎉 You unlocked <strong>FREE delivery!</strong>' : `Add <strong>$${remaining.toFixed(2)}</strong> more for free delivery`}</span>
+        ${!isFree ? '<span class="free-label">$' + freeThreshold + ' goal</span>' : ''}
+      </div>
+      <div class="progress-track">
+        <div class="progress-bar" style="width:${progress}%"></div>
+      </div>
+    </div>` : '';
+
     el.innerHTML = `
+    ${deliveryBarHTML}
     <div class="summary-row"><span>Subtotal</span><span>$${subtotal.toFixed(2)}</span></div>
-    <div class="summary-row"><span>Delivery Fee</span><span>${delivery === 0 ? 'FREE' : '$' + delivery.toFixed(2)}</span></div>
+    <div class="summary-row"><span>Delivery Fee</span><span>${delivery === 0 ? '<span style="color:var(--secondary);font-weight:600">FREE ✨</span>' : '$' + delivery.toFixed(2)}</span></div>
     <div class="summary-row"><span>Tax</span><span>$${tax.toFixed(2)}</span></div>
     ${discount > 0 ? `<div class="summary-row" style="color:var(--secondary)"><span>Discount</span><span>-$${discount.toFixed(2)}</span></div>` : ''}
     <div class="summary-row total"><span>Total</span><span>$${total.toFixed(2)}</span></div>

@@ -72,12 +72,16 @@
   <section class="hero">
     <div class="container">
       <div class="hero-content animate-on-scroll">
-        <h1>Delicious Food<br><span class="highlight">Delivered Fast</span> 🍔</h1>
-        <p>Order from 500+ restaurants near you. Fresh, hot, and at your doorstep in 30 minutes or less. Enjoy exclusive
-          deals every day!</p>
+        <h1>Craving Something<br><span class="highlight">Delicious?</span> 🔥</h1>
+        <p>Fresh food from 500+ restaurants, delivered to your doorstep in 30 minutes. Exclusive deals every day — your
+          next favourite meal is one tap away.</p>
         <div class="hero-actions">
           <a href="restaurants.html" class="btn btn-primary btn-lg">Order Now →</a>
           <a href="menu.html" class="btn btn-outline btn-lg">Explore Menu</a>
+        </div>
+        <div class="urgency-counter">
+          <span class="pulse-dot"></span>
+          <span>🔥 <strong id="live-orders">2,847</strong> orders in the last hour</span>
         </div>
         <div class="hero-stats">
           <div class="hero-stat">
@@ -913,6 +917,47 @@
       updateFabCount();
     };
   </script>
+
+  <!-- MOBILE BOTTOM NAV -->
+  <nav class="bottom-nav" id="bottom-nav">
+    <div class="nav-items">
+      <a href="index.html" class="nav-item active">
+        <span class="nav-icon">🏠</span>
+        <span>Home</span>
+      </a>
+      <a href="menu.html" class="nav-item">
+        <span class="nav-icon">🍽️</span>
+        <span>Menu</span>
+      </a>
+      <a href="cart.html" class="nav-item">
+        <span class="nav-icon">🛒</span>
+        <span>Cart</span>
+        <span class="nav-badge cart-count" id="bottom-cart-count" style="display:none">0</span>
+      </a>
+      <a href="tracking.html" class="nav-item">
+        <span class="nav-icon">📍</span>
+        <span>Orders</span>
+      </a>
+      <a href="profile.html" class="nav-item">
+        <span class="nav-icon">👤</span>
+        <span>Profile</span>
+      </a>
+    </div>
+  </nav>
+
+  <script>
+    // Live order counter animation
+    (function () {
+      const el = document.getElementById('live-orders');
+      if (!el) return;
+      let count = 2847;
+      setInterval(() => {
+        count += Math.floor(Math.random() * 5) + 1;
+        el.textContent = count.toLocaleString();
+      }, 3000);
+    })();
+  </script>
+
 </body>
 
 </html>
