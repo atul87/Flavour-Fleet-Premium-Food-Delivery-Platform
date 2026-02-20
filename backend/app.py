@@ -34,6 +34,7 @@ carts_col = db['carts']
 orders_col = db['orders']
 offers_col = db['offers']
 reset_tokens_col = db['password_reset_tokens']
+settings_col = db['settings']
 
 # Ensure indexes
 users_col.create_index('email', unique=True)
@@ -59,6 +60,18 @@ def login_required(f):
     def decorated(*args, **kwargs):
         if 'user_id' not in session:
             return jsonify({'success': False, 'message': 'Please login first'}), 401
+        return f(*args, **kwargs)
+    return decorated
+
+
+def admin_required(f):
+    """Decorator to require admin role."""
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if 'user_id' not in session:
+            return jsonify({'success': False, 'message': 'Please login first'}), 401
+        if session.get('user_role') != 'admin':
+            return jsonify({'success': False, 'message': 'Admin access required'}), 403
         return f(*args, **kwargs)
     return decorated
 
@@ -112,6 +125,7 @@ def register():
         'password_hash': password_hash,
         'phone': '',
         'address': '',
+        'role': 'user',
         'created_at': datetime.utcnow().isoformat(),
     }
     result = users_col.insert_one(user)
@@ -133,6 +147,7 @@ def register():
     session['user_id'] = user_id
     session['user_name'] = name
     session['user_email'] = email
+    session['user_role'] = 'user'
     session.pop('guest_id', None)
 
     return jsonify({
@@ -183,6 +198,7 @@ def login():
     session['user_id'] = user_id
     session['user_name'] = user['name']
     session['user_email'] = user['email']
+    session['user_role'] = user.get('role', 'user')
     session.pop('guest_id', None)
 
     return jsonify({
@@ -212,6 +228,7 @@ def get_profile():
             'phone': user.get('phone', ''),
             'address': user.get('address', ''),
             'avatar': user.get('avatar', ''),
+            'role': user.get('role', 'user'),
             'created_at': user.get('created_at', ''),
         }
     })
@@ -633,6 +650,410 @@ def validate_offer():
         'discount_amount': discount_amount,
         'label': offer.get('title', '')
     })
+
+
+# ════════════════════════════════════════════════════
+#  ADMIN APIs
+# ════════════════════════════════════════════════════
+
+# ─── Admin: Stats ────────────────────────────────────
+@app.route('/api/admin/stats', methods=['GET'])
+@admin_required
+def admin_stats():
+    total_orders = orders_col.count_documents({})
+    total_users = users_col.count_documents({})
+    total_menu = menu_col.count_documents({})
+    total_restaurants = restaurants_col.count_documents({})
+
+    # Revenue
+    pipeline = [{'$group': {'_id': None, 'total': {'$sum': '$total'}}}]
+    rev_result = list(orders_col.aggregate(pipeline))
+    total_revenue = round(rev_result[0]['total'], 2) if rev_result else 0
+
+    # Recent orders
+    recent_orders = list(orders_col.find().sort('created_at', -1).limit(5))
+    for o in recent_orders:
+        o['_id'] = str(o['_id'])
+
+    return jsonify({
+        'success': True,
+        'stats': {
+            'total_orders': total_orders,
+            'total_revenue': total_revenue,
+            'total_users': total_users,
+            'total_menu_items': total_menu,
+            'total_restaurants': total_restaurants,
+        },
+        'recent_orders': recent_orders
+    })
+
+
+# ─── Admin: Orders ───────────────────────────────────
+@app.route('/api/admin/orders', methods=['GET'])
+@admin_required
+def admin_get_orders():
+    status_filter = request.args.get('status')
+    search = request.args.get('search', '')
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 20))
+
+    query = {}
+    if status_filter and status_filter != 'all':
+        query['status'] = status_filter
+    if search:
+        query['order_id'] = {'$regex': search, '$options': 'i'}
+
+    total = orders_col.count_documents(query)
+    orders = list(orders_col.find(query).sort('created_at', -1).skip((page - 1) * per_page).limit(per_page))
+    for o in orders:
+        o['_id'] = str(o['_id'])
+
+    return jsonify({'success': True, 'orders': orders, 'total': total, 'page': page, 'per_page': per_page})
+
+
+@app.route('/api/admin/orders/<order_id>', methods=['PUT'])
+@admin_required
+def admin_update_order(order_id):
+    data = request.get_json()
+    new_status = data.get('status')
+    allowed = ['placed', 'preparing', 'out_for_delivery', 'delivered', 'cancelled']
+    if new_status not in allowed:
+        return jsonify({'success': False, 'message': 'Invalid status'}), 400
+
+    result = orders_col.update_one({'order_id': order_id}, {'$set': {'status': new_status}})
+    if result.matched_count == 0:
+        return jsonify({'success': False, 'message': 'Order not found'}), 404
+
+    return jsonify({'success': True, 'message': f'Order status updated to {new_status}'})
+
+
+# ─── Admin: Menu ─────────────────────────────────────
+@app.route('/api/admin/menu', methods=['GET'])
+@admin_required
+def admin_get_menu():
+    items = list(menu_col.find())
+    for item in items:
+        item['_id'] = str(item['_id'])
+    return jsonify({'success': True, 'items': items, 'count': len(items)})
+
+
+@app.route('/api/admin/menu', methods=['POST'])
+@admin_required
+def admin_add_menu_item():
+    data = request.get_json()
+    required = ['name', 'price', 'category']
+    for field in required:
+        if not data.get(field):
+            return jsonify({'success': False, 'message': f'{field} is required'}), 400
+
+    item = {
+        'item_id': 'item_' + secrets.token_hex(4),
+        'name': data['name'],
+        'price': float(data['price']),
+        'category': data['category'],
+        'description': data.get('description', ''),
+        'image': data.get('image', 'assets/images/default.png'),
+        'restaurant': data.get('restaurant', ''),
+        'rating': float(data.get('rating', 4.5)),
+        'badge': data.get('badge', ''),
+        'active': data.get('active', True),
+        'created_at': datetime.utcnow().isoformat(),
+    }
+    result = menu_col.insert_one(item)
+    item['_id'] = str(result.inserted_id)
+    return jsonify({'success': True, 'message': 'Menu item added', 'item': item}), 201
+
+
+@app.route('/api/admin/menu/<item_id>', methods=['PUT'])
+@admin_required
+def admin_update_menu_item(item_id):
+    from bson import ObjectId
+    data = request.get_json()
+    allowed = ['name', 'price', 'category', 'description', 'image', 'restaurant', 'rating', 'badge', 'active']
+    update_data = {k: v for k, v in data.items() if k in allowed}
+    if 'price' in update_data:
+        update_data['price'] = float(update_data['price'])
+    if 'rating' in update_data:
+        update_data['rating'] = float(update_data['rating'])
+
+    try:
+        result = menu_col.update_one({'_id': ObjectId(item_id)}, {'$set': update_data})
+    except Exception:
+        result = menu_col.update_one({'item_id': item_id}, {'$set': update_data})
+
+    if result.matched_count == 0:
+        return jsonify({'success': False, 'message': 'Item not found'}), 404
+    return jsonify({'success': True, 'message': 'Menu item updated'})
+
+
+@app.route('/api/admin/menu/<item_id>', methods=['DELETE'])
+@admin_required
+def admin_delete_menu_item(item_id):
+    from bson import ObjectId
+    try:
+        result = menu_col.delete_one({'_id': ObjectId(item_id)})
+    except Exception:
+        result = menu_col.delete_one({'item_id': item_id})
+    if result.deleted_count == 0:
+        return jsonify({'success': False, 'message': 'Item not found'}), 404
+    return jsonify({'success': True, 'message': 'Menu item deleted'})
+
+
+# ─── Admin: Restaurants ──────────────────────────────
+@app.route('/api/admin/restaurants', methods=['GET'])
+@admin_required
+def admin_get_restaurants():
+    restaurants = list(restaurants_col.find())
+    for r in restaurants:
+        r['_id'] = str(r['_id'])
+    return jsonify({'success': True, 'restaurants': restaurants, 'count': len(restaurants)})
+
+
+@app.route('/api/admin/restaurants', methods=['POST'])
+@admin_required
+def admin_add_restaurant():
+    data = request.get_json()
+    if not data.get('name'):
+        return jsonify({'success': False, 'message': 'Name is required'}), 400
+
+    restaurant = {
+        'name': data['name'],
+        'category': data.get('category', ''),
+        'description': data.get('description', ''),
+        'rating': float(data.get('rating', 4.5)),
+        'delivery_time': data.get('delivery_time', '30-40'),
+        'price_range': data.get('price_range', '$$'),
+        'image': data.get('image', 'assets/images/default.png'),
+        'address': data.get('address', ''),
+        'active': data.get('active', True),
+        'created_at': datetime.utcnow().isoformat(),
+    }
+    result = restaurants_col.insert_one(restaurant)
+    restaurant['_id'] = str(result.inserted_id)
+    return jsonify({'success': True, 'message': 'Restaurant added', 'restaurant': restaurant}), 201
+
+
+@app.route('/api/admin/restaurants/<restaurant_id>', methods=['PUT'])
+@admin_required
+def admin_update_restaurant(restaurant_id):
+    from bson import ObjectId
+    data = request.get_json()
+    allowed = ['name', 'category', 'description', 'rating', 'delivery_time', 'price_range', 'image', 'address', 'active']
+    update_data = {k: v for k, v in data.items() if k in allowed}
+    if 'rating' in update_data:
+        update_data['rating'] = float(update_data['rating'])
+
+    try:
+        result = restaurants_col.update_one({'_id': ObjectId(restaurant_id)}, {'$set': update_data})
+    except Exception:
+        result = restaurants_col.update_one({'name': restaurant_id}, {'$set': update_data})
+
+    if result.matched_count == 0:
+        return jsonify({'success': False, 'message': 'Restaurant not found'}), 404
+    return jsonify({'success': True, 'message': 'Restaurant updated'})
+
+
+@app.route('/api/admin/restaurants/<restaurant_id>', methods=['DELETE'])
+@admin_required
+def admin_delete_restaurant(restaurant_id):
+    from bson import ObjectId
+    try:
+        result = restaurants_col.delete_one({'_id': ObjectId(restaurant_id)})
+    except Exception:
+        result = restaurants_col.delete_one({'name': restaurant_id})
+    if result.deleted_count == 0:
+        return jsonify({'success': False, 'message': 'Restaurant not found'}), 404
+    return jsonify({'success': True, 'message': 'Restaurant deleted'})
+
+
+# ─── Admin: Offers ───────────────────────────────────
+@app.route('/api/admin/offers', methods=['GET'])
+@admin_required
+def admin_get_offers():
+    offers = list(offers_col.find())
+    for o in offers:
+        o['_id'] = str(o['_id'])
+    return jsonify({'success': True, 'offers': offers, 'count': len(offers)})
+
+
+@app.route('/api/admin/offers', methods=['POST'])
+@admin_required
+def admin_add_offer():
+    data = request.get_json()
+    if not data.get('code') or not data.get('title'):
+        return jsonify({'success': False, 'message': 'Code and title are required'}), 400
+
+    # Check for duplicate code
+    if offers_col.find_one({'code': data['code'].upper()}):
+        return jsonify({'success': False, 'message': 'Promo code already exists'}), 409
+
+    offer = {
+        'code': data['code'].upper(),
+        'title': data['title'],
+        'description': data.get('description', ''),
+        'discount_type': data.get('discount_type', 'percent'),
+        'discount_value': float(data.get('discount_value', 0)),
+        'icon': data.get('icon', '🎟'),
+        'color': data.get('color', 'orange'),
+        'valid_till': data.get('valid_till', 'No expiry'),
+        'tag': data.get('tag', ''),
+        'min_order': float(data.get('min_order', 0)),
+        'active': data.get('active', True),
+        'created_at': datetime.utcnow().isoformat(),
+    }
+    result = offers_col.insert_one(offer)
+    offer['_id'] = str(result.inserted_id)
+    return jsonify({'success': True, 'message': 'Offer created', 'offer': offer}), 201
+
+
+@app.route('/api/admin/offers/<offer_id>', methods=['PUT'])
+@admin_required
+def admin_update_offer(offer_id):
+    from bson import ObjectId
+    data = request.get_json()
+    allowed = ['title', 'description', 'discount_type', 'discount_value', 'icon', 'color', 'valid_till', 'tag', 'min_order', 'active']
+    update_data = {k: v for k, v in data.items() if k in allowed}
+    if 'discount_value' in update_data:
+        update_data['discount_value'] = float(update_data['discount_value'])
+
+    try:
+        result = offers_col.update_one({'_id': ObjectId(offer_id)}, {'$set': update_data})
+    except Exception:
+        result = offers_col.update_one({'code': offer_id}, {'$set': update_data})
+
+    if result.matched_count == 0:
+        return jsonify({'success': False, 'message': 'Offer not found'}), 404
+    return jsonify({'success': True, 'message': 'Offer updated'})
+
+
+@app.route('/api/admin/offers/<offer_id>', methods=['DELETE'])
+@admin_required
+def admin_delete_offer(offer_id):
+    from bson import ObjectId
+    try:
+        result = offers_col.delete_one({'_id': ObjectId(offer_id)})
+    except Exception:
+        result = offers_col.delete_one({'code': offer_id})
+    if result.deleted_count == 0:
+        return jsonify({'success': False, 'message': 'Offer not found'}), 404
+    return jsonify({'success': True, 'message': 'Offer deleted'})
+
+
+# ─── Admin: Users ────────────────────────────────────
+@app.route('/api/admin/users', methods=['GET'])
+@admin_required
+def admin_get_users():
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 20))
+    search = request.args.get('search', '')
+
+    query = {}
+    if search:
+        query['$or'] = [
+            {'name': {'$regex': search, '$options': 'i'}},
+            {'email': {'$regex': search, '$options': 'i'}}
+        ]
+
+    total = users_col.count_documents(query)
+    users = list(users_col.find(query, {'password_hash': 0}).sort('created_at', -1).skip((page - 1) * per_page).limit(per_page))
+
+    # Get order counts per user
+    for u in users:
+        uid = str(u['_id'])
+        u['_id'] = uid
+        u['order_count'] = orders_col.count_documents({'user_id': uid})
+
+    return jsonify({'success': True, 'users': users, 'total': total, 'page': page})
+
+
+@app.route('/api/admin/users/<user_id>/role', methods=['PUT'])
+@admin_required
+def admin_update_user_role(user_id):
+    from bson import ObjectId
+    data = request.get_json()
+    new_role = data.get('role')
+    if new_role not in ['user', 'admin']:
+        return jsonify({'success': False, 'message': 'Invalid role'}), 400
+
+    result = users_col.update_one({'_id': ObjectId(user_id)}, {'$set': {'role': new_role}})
+    if result.matched_count == 0:
+        return jsonify({'success': False, 'message': 'User not found'}), 404
+    return jsonify({'success': True, 'message': f'User role updated to {new_role}'})
+
+
+# ─── Admin: Analytics ───────────────────────────────
+@app.route('/api/admin/analytics', methods=['GET'])
+@admin_required
+def admin_analytics():
+    from datetime import timezone
+    # Last 14 days daily revenue and orders
+    days = 14
+    daily_data = []
+
+    for i in range(days - 1, -1, -1):
+        day_start = (datetime.utcnow() - timedelta(days=i)).replace(hour=0, minute=0, second=0, microsecond=0)
+        day_end = day_start + timedelta(days=1)
+
+        day_orders = list(orders_col.find({
+            'created_at': {'$gte': day_start.isoformat(), '$lt': day_end.isoformat()}
+        }))
+
+        daily_data.append({
+            'date': day_start.strftime('%b %d'),
+            'orders': len(day_orders),
+            'revenue': round(sum(o.get('total', 0) for o in day_orders), 2)
+        })
+
+    # Orders by status
+    status_pipeline = [{'$group': {'_id': '$status', 'count': {'$sum': 1}}}]
+    status_data = {doc['_id']: doc['count'] for doc in orders_col.aggregate(status_pipeline)}
+
+    # Top menu items (by cart orders, simplified)
+    top_pipeline = [
+        {'$unwind': '$items'},
+        {'$group': {'_id': '$items.name', 'count': {'$sum': '$items.quantity'}}},
+        {'$sort': {'count': -1}},
+        {'$limit': 5}
+    ]
+    top_items = [{'name': doc['_id'], 'count': doc['count']} for doc in orders_col.aggregate(top_pipeline)]
+
+    return jsonify({
+        'success': True,
+        'daily_data': daily_data,
+        'status_breakdown': status_data,
+        'top_items': top_items
+    })
+
+
+# ─── Admin: Settings ────────────────────────────────
+settings_col = db['settings']
+
+@app.route('/api/admin/settings', methods=['GET'])
+@admin_required
+def admin_get_settings():
+    settings = settings_col.find_one({'key': 'platform'})
+    if settings:
+        settings['_id'] = str(settings['_id'])
+    else:
+        settings = {
+            'platform_name': 'Flavour Fleet',
+            'delivery_fee': 4.99,
+            'free_delivery_threshold': 30,
+            'tax_percent': 8,
+            'contact_email': 'support@flavourfleet.com',
+        }
+    return jsonify({'success': True, 'settings': settings})
+
+
+@app.route('/api/admin/settings', methods=['PUT'])
+@admin_required
+def admin_update_settings():
+    data = request.get_json()
+    allowed = ['platform_name', 'delivery_fee', 'free_delivery_threshold', 'tax_percent', 'contact_email']
+    update_data = {k: v for k, v in data.items() if k in allowed}
+
+    settings_col.update_one({'key': 'platform'}, {'$set': {**update_data, 'key': 'platform'}}, upsert=True)
+    return jsonify({'success': True, 'message': 'Settings saved'})
 
 
 # ════════════════════════════════════════════════════

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — Flavour Fleet</title>
+  <link rel="stylesheet" href="css/admin.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="admin-layout">
+
+  <!-- ═══════════════════════════════
+       SIDEBAR
+  ════════════════════════════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🔥</div>
+      <div>
+        <div class="logo-text">Flavour Fleet</div>
+        <div class="logo-sub">Admin Panel</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Overview</div>
+      <button class="nav-item" data-section="dashboard">
+        <span class="nav-icon">🏠</span> Dashboard
+      </button>
+
+      <div class="nav-section-title">Management</div>
+      <button class="nav-item" data-section="orders">
+        <span class="nav-icon">📦</span> Orders
+      </button>
+      <button class="nav-item" data-section="menu">
+        <span class="nav-icon">🍔</span> Menu Items
+      </button>
+      <button class="nav-item" data-section="restaurants">
+        <span class="nav-icon">🏪</span> Restaurants
+      </button>
+      <button class="nav-item" data-section="offers">
+        <span class="nav-icon">🎟</span> Offers
+      </button>
+      <button class="nav-item" data-section="users">
+        <span class="nav-icon">👥</span> Users
+      </button>
+
+      <div class="nav-section-title">Insights</div>
+      <button class="nav-item" data-section="analytics">
+        <span class="nav-icon">📊</span> Analytics
+      </button>
+
+      <div class="nav-section-title">System</div>
+      <button class="nav-item" data-section="settings">
+        <span class="nav-icon">⚙</span> Settings
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="admin-info" id="logout-btn" title="Logout">
+        <div class="admin-avatar-sm" id="admin-avatar-letter">A</div>
+        <div class="admin-info-text">
+          <div class="admin-name" id="admin-name">Admin</div>
+          <div class="admin-role">🔑 Administrator</div>
+        </div>
+        <span style="color:#6b7280;font-size:12px">↩</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════
+       MAIN CONTENT
+  ════════════════════════════════ -->
+  <div class="main-content">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <button class="topbar-hamburger" id="hamburger-btn">☰</button>
+      <div class="topbar-title" id="topbar-title">🏠 Dashboard</div>
+      <div class="topbar-search">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="topbar-search" placeholder="Search..." />
+      </div>
+      <div class="topbar-actions">
+        <div class="topbar-btn" title="View site" onclick="window.open('/', '_blank')">🌐</div>
+        <div class="topbar-avatar" id="topbar-avatar" title="Admin">
+          <span id="topbar-avatar-letter">A</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ─── Page Content ─────────── -->
+    <div class="page-content">
+
+      <!-- ═══════════════════════════
+           DASHBOARD SECTION
+      ════════════════════════════ -->
+      <section id="section-dashboard" class="section">
+        <div class="page-header">
+          <div>
+            <h2>Dashboard</h2>
+            <p>Welcome back! Here's your business overview.</p>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card orange">
+            <div class="stat-icon">📦</div>
+            <div class="stat-value" id="stat-orders">—</div>
+            <div class="stat-label">Total Orders</div>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-icon">💰</div>
+            <div class="stat-value" id="stat-revenue">—</div>
+            <div class="stat-label">Total Revenue</div>
+          </div>
+          <div class="stat-card blue">
+            <div class="stat-icon">👥</div>
+            <div class="stat-value" id="stat-users">—</div>
+            <div class="stat-label">Total Users</div>
+          </div>
+          <div class="stat-card purple">
+            <div class="stat-icon">🍔</div>
+            <div class="stat-value" id="stat-menu">—</div>
+            <div class="stat-label">Menu Items</div>
+          </div>
+          <div class="stat-card teal">
+            <div class="stat-icon">🏪</div>
+            <div class="stat-value" id="stat-restaurants">—</div>
+            <div class="stat-label">Restaurants</div>
+          </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts-grid">
+          <div class="chart-card">
+            <h3>Revenue Trend</h3>
+            <div class="chart-sub">Daily revenue for the last 14 days</div>
+            <div style="height:220px;position:relative">
+              <canvas id="revenue-chart"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h3>Order Status</h3>
+            <div class="chart-sub">Orders breakdown by status</div>
+            <div style="height:220px;position:relative">
+              <canvas id="status-chart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="table-card">
+          <div class="table-header">
+            <h3>Recent Orders</h3>
+            <button class="btn btn-secondary btn-sm" onclick="showSection('orders')">View All →</button>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Order ID</th><th>Customer</th><th>Amount</th><th>Status</th><th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="recent-orders-body">
+                <tr><td colspan="5" style="text-align:center;padding:24px"><span class="spinner"></span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════
+           ORDERS SECTION
+      ════════════════════════════ -->
+      <section id="section-orders" class="section">
+        <div class="page-header">
+          <div>
+            <h2>Orders Management</h2>
+            <p id="orders-count">Loading orders...</p>
+          </div>
+          <div class="filters-row">
+            <select class="filter-select" id="order-status-filter">
+              <option value="all">All Status</option>
+              <option value="placed">Placed</option>
+              <option value="preparing">Preparing</option>
+              <option value="out_for_delivery">Out for Delivery</option>
+              <option value="delivered">Delivered</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            <button class="btn btn-secondary btn-sm" id="export-orders-btn">📥 Export CSV</button>
+          </div>
+        </div>
+        <div class="table-card">
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Order ID</th><th>Customer</th><th>Items</th><th>Amount</th>
+                  <th>Payment</th><th>Status</th><th>Date</th><th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="orders-body"></tbody>
+            </table>
+          </div>
+          <div class="table-footer">
+            <span id="orders-count-footer"></span>
+            <div class="pagination" id="orders-pagination"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════
+           MENU SECTION
+      ════════════════════════════ -->
+      <section id="section-menu" class="section">
+        <div class="page-header">
+          <div>
+            <h2>Menu Management</h2>
+            <p id="menu-count">Loading...</p>
+          </div>
+          <div class="filters-row">
+            <select class="filter-select" id="menu-category-filter">
+              <option value="all">All Categories</option>
+              <option value="pizza">Pizza</option>
+              <option value="burger">Burger</option>
+              <option value="sushi">Sushi</option>
+              <option value="indian">Indian</option>
+              <option value="mexican">Mexican</option>
+              <option value="pasta">Pasta</option>
+              <option value="salad">Salad</option>
+              <option value="chinese">Chinese</option>
+              <option value="dessert">Dessert</option>
+            </select>
+            <button class="btn btn-primary" onclick="openAddMenuItem()">+ Add Item</button>
+          </div>
+        </div>
+        <div class="table-card">
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Item</th><th>Category</th><th>Price</th><th>Rating</th><th>Badge</th><th>Status</th><th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="menu-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════
+           RESTAURANTS SECTION
+      ════════════════════════════ -->
+      <section id="section-restaurants" class="section">
+        <div class="page-header">
+          <div>
+            <h2>Restaurants</h2>
+            <p id="restaurants-count">Loading...</p>
+          </div>
+          <button class="btn btn-primary" onclick="openAddRestaurant()">+ Add Restaurant</button>
+        </div>
+        <div class="table-card">
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Restaurant</th><th>Cuisine</th><th>Rating</th><th>Delivery</th><th>Price Range</th><th>Status</th><th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="restaurants-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════
+           OFFERS SECTION
+      ════════════════════════════ -->
+      <section id="section-offers" class="section">
+        <div class="page-header">
+          <div>
+            <h2>Promo Offers</h2>
+            <p id="offers-count">Loading...</p>
+          </div>
+          <button class="btn btn-primary" onclick="openAddOffer()">+ Add Promo</button>
+        </div>
+        <div class="table-card">
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Code / Title</th><th>Discount</th><th>Type</th><th>Min Order</th><th>Valid Till</th><th>Status</th><th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="offers-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════
+           USERS SECTION
+      ════════════════════════════ -->
+      <section id="section-users" class="section">
+        <div class="page-header">
+          <div>
+            <h2>Users</h2>
+            <p id="users-count">Loading...</p>
+          </div>
+        </div>
+        <div class="table-card">
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>User</th><th>Phone</th><th>Orders</th><th>Joined</th><th>Role</th>
+                </tr>
+              </thead>
+              <tbody id="users-body"></tbody>
+            </table>
+          </div>
+          <div class="table-footer">
+            <span></span>
+            <div class="pagination" id="users-pagination"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════
+           ANALYTICS SECTION
+      ════════════════════════════ -->
+      <section id="section-analytics" class="section">
+        <div class="page-header">
+          <div>
+            <h2>Analytics</h2>
+            <p>Performance insights for the last 14 days</p>
+          </div>
+        </div>
+        <div class="analytics-grid">
+          <div class="chart-card">
+            <h3>Daily Revenue</h3>
+            <div class="chart-sub">Revenue earned per day (last 14 days)</div>
+            <div style="height:240px;position:relative">
+              <canvas id="analytics-revenue-chart"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h3>Orders per Day</h3>
+            <div class="chart-sub">Number of orders placed each day</div>
+            <div style="height:240px;position:relative">
+              <canvas id="analytics-orders-chart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h3>🏆 Top Ordered Items</h3>
+          <div class="chart-sub">Most popular items based on order quantity</div>
+          <div id="top-items-list" class="top-items-list" style="margin-top:16px;max-width:500px">
+            <p style="color:var(--text-muted);font-size:13px;text-align:center;padding:24px">Loading...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════
+           SETTINGS SECTION
+      ════════════════════════════ -->
+      <section id="section-settings" class="section">
+        <div class="page-header">
+          <div>
+            <h2>Platform Settings</h2>
+            <p>Configure platform-wide settings</p>
+          </div>
+        </div>
+        <div class="table-card" style="padding:28px;max-width:580px">
+          <div class="form-group">
+            <label class="form-label">Platform Name</label>
+            <input type="text" id="settings-platform-name" class="form-control" placeholder="Flavour Fleet" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Delivery Fee ($)</label>
+              <input type="number" id="settings-delivery-fee" class="form-control" step="0.01" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Free Delivery Above ($)</label>
+              <input type="number" id="settings-free-threshold" class="form-control" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Tax (%)</label>
+              <input type="number" id="settings-tax" class="form-control" step="0.1" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Contact Email</label>
+              <input type="email" id="settings-email" class="form-control" />
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="saveSettings()">💾 Save Settings</button>
+        </div>
+      </section>
+
+    </div><!-- /page-content -->
+  </div><!-- /main-content -->
+</div><!-- /admin-layout -->
+
+<!-- ══════════════════════════════════════════
+     MODALS
+════════════════════════════════════════════ -->
+
+<!-- Order View Modal -->
+<div class="modal-overlay" id="view-order-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>📦 Order Details</h3>
+      <button class="modal-close" onclick="closeModal('view-order-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="view-order-content"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('view-order-modal')">Close</button>
+      <button class="btn btn-primary" id="view-order-save-btn">Update Status</button>
+    </div>
+  </div>
+</div>
+
+<!-- Menu Item Modal -->
+<div class="modal-overlay" id="menu-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="menu-modal-title">Add Menu Item</h3>
+      <button class="modal-close" onclick="closeModal('menu-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="menu-form" onsubmit="return false">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Item Name *</label>
+            <input type="text" id="menu-item-name" class="form-control" placeholder="e.g. Margherita Pizza" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Price ($) *</label>
+            <input type="number" id="menu-item-price" class="form-control" step="0.01" placeholder="13.99" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Category *</label>
+            <select id="menu-item-category" class="form-control" required>
+              <option value="">Select...</option>
+              <option value="pizza">Pizza</option>
+              <option value="burger">Burger</option>
+              <option value="sushi">Sushi</option>
+              <option value="indian">Indian</option>
+              <option value="mexican">Mexican</option>
+              <option value="pasta">Pasta</option>
+              <option value="salad">Salad</option>
+              <option value="chinese">Chinese</option>
+              <option value="dessert">Dessert</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Restaurant</label>
+            <input type="text" id="menu-item-restaurant" class="form-control" placeholder="Pizza Paradise" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <input type="text" id="menu-item-description" class="form-control" placeholder="Short description..." />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Badge</label>
+            <input type="text" id="menu-item-badge" class="form-control" placeholder="Bestseller, New..." />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Rating</label>
+            <input type="number" id="menu-item-rating" class="form-control" step="0.1" min="1" max="5" value="4.5" />
+          </div>
+        </div>
+        <div class="toggle-group">
+          <label class="toggle-switch">
+            <input type="checkbox" id="menu-active-toggle" checked />
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="toggle-label">Active (visible to customers)</span>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('menu-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveMenuItem()">Save Item</button>
+    </div>
+  </div>
+</div>
+
+<!-- Restaurant Modal -->
+<div class="modal-overlay" id="restaurant-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="restaurant-modal-title">Add Restaurant</h3>
+      <button class="modal-close" onclick="closeModal('restaurant-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="restaurant-form" onsubmit="return false">
+        <div class="form-group">
+          <label class="form-label">Restaurant Name *</label>
+          <input type="text" id="restaurant-name" class="form-control" placeholder="Pizza Paradise" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Cuisine</label>
+            <input type="text" id="restaurant-category" class="form-control" placeholder="pizza, indian, sushi..." />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Rating</label>
+            <input type="number" id="restaurant-rating" class="form-control" step="0.1" min="1" max="5" value="4.5" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Delivery Time (e.g. 25-35)</label>
+            <input type="text" id="restaurant-delivery-time" class="form-control" placeholder="25-35" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Price Range</label>
+            <select id="restaurant-price-range" class="form-control">
+              <option value="$">$ Budget</option>
+              <option value="$$" selected>$$ Moderate</option>
+              <option value="$$$">$$$ Premium</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Address</label>
+          <input type="text" id="restaurant-address" class="form-control" placeholder="123 Main St..." />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <input type="text" id="restaurant-description" class="form-control" placeholder="Short description..." />
+        </div>
+        <div class="toggle-group">
+          <label class="toggle-switch">
+            <input type="checkbox" id="restaurant-active-toggle" checked />
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="toggle-label">Active (visible to customers)</span>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('restaurant-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveRestaurant()">Save Restaurant</button>
+    </div>
+  </div>
+</div>
+
+<!-- Offer Modal -->
+<div class="modal-overlay" id="offer-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="offer-modal-title">Add Promo Code</h3>
+      <button class="modal-close" onclick="closeModal('offer-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="offer-form" onsubmit="return false">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Promo Code *</label>
+            <input type="text" id="offer-code" id="offer-code-field" class="form-control" placeholder="WELCOME40" style="text-transform:uppercase" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Title *</label>
+            <input type="text" id="offer-title" class="form-control" placeholder="First Order Special" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Discount Type</label>
+            <select id="offer-discount-type" class="form-control">
+              <option value="percent">Percent Off (%)</option>
+              <option value="flat">Flat Amount ($)</option>
+              <option value="delivery">Free Delivery</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Discount Value</label>
+            <input type="number" id="offer-discount-value" class="form-control" step="0.01" placeholder="40" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Min Order ($)</label>
+            <input type="number" id="offer-min-order" class="form-control" step="0.01" value="0" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Valid Till</label>
+            <input type="text" id="offer-valid-till" class="form-control" placeholder="Mar 31 / No expiry" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Icon (emoji)</label>
+            <input type="text" id="offer-icon" class="form-control" placeholder="🎟" maxlength="4" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <input type="text" id="offer-description" class="form-control" placeholder="Short description of the offer..." />
+        </div>
+        <div class="toggle-group">
+          <label class="toggle-switch">
+            <input type="checkbox" id="offer-active-toggle" checked />
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="toggle-label">Active</span>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('offer-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveOffer()">Save Offer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="confirm-modal">
+  <div class="confirm-dialog">
+    <div class="confirm-icon">⚠️</div>
+    <h3 id="confirm-title">Are you sure?</h3>
+    <p id="confirm-message">This action cannot be undone.</p>
+    <div class="confirm-actions">
+      <button class="btn btn-secondary" onclick="closeModal('confirm-modal')">Cancel</button>
+      <button class="btn btn-danger" id="confirm-yes-btn">Yes, Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toast-container"></div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>

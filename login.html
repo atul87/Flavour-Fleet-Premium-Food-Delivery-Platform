@@ -72,6 +72,19 @@
 
                 <div class="auth-divider">or continue with email</div>
 
+                <!-- Role Selector -->
+                <div id="role-selector"
+                    style="display:flex;gap:0;border-radius:12px;overflow:hidden;border:2px solid var(--primary);margin-bottom:var(--space-lg)">
+                    <button type="button" id="role-user-btn" onclick="selectRole('user')"
+                        style="flex:1;padding:10px 16px;border:none;cursor:pointer;font-weight:600;font-size:0.9rem;transition:all 0.3s;background:var(--primary);color:#fff">
+                        👤 Login as User
+                    </button>
+                    <button type="button" id="role-admin-btn" onclick="selectRole('admin')"
+                        style="flex:1;padding:10px 16px;border:none;cursor:pointer;font-weight:600;font-size:0.9rem;transition:all 0.3s;background:transparent;color:var(--text-primary)">
+                        🔐 Login as Admin
+                    </button>
+                </div>
+
                 <form id="auth-form" onsubmit="handleAuth(event)">
                     <div class="form-group" id="name-group" style="display:none">
                         <label>Full Name</label>
@@ -178,8 +191,32 @@
     <script src="js/main.js"></script>
     <script>
         let mode = 'login';
+        let loginRole = 'user';
         let resetToken = '';
         let resetCode = '';
+
+        function selectRole(role) {
+            loginRole = role;
+            const userBtn = document.getElementById('role-user-btn');
+            const adminBtn = document.getElementById('role-admin-btn');
+            if (role === 'admin') {
+                adminBtn.style.background = 'var(--primary)';
+                adminBtn.style.color = '#fff';
+                userBtn.style.background = 'transparent';
+                userBtn.style.color = 'var(--text-primary)';
+                document.querySelector('#main-auth-card h2').textContent = 'Admin Login \uD83D\uDD10';
+                document.querySelector('#main-auth-card .auth-subtitle').textContent = 'Sign in to manage your restaurant';
+                document.getElementById('auth-submit').textContent = 'Sign In as Admin \u2192';
+            } else {
+                userBtn.style.background = 'var(--primary)';
+                userBtn.style.color = '#fff';
+                adminBtn.style.background = 'transparent';
+                adminBtn.style.color = 'var(--text-primary)';
+                document.querySelector('#main-auth-card h2').textContent = 'Welcome Back \uD83C\uDF55';
+                document.querySelector('#main-auth-card .auth-subtitle').textContent = 'Sign in to order your favorite food';
+                document.getElementById('auth-submit').textContent = 'Sign In \u2192';
+            }
+        }
 
         function switchTab(tab) {
             mode = tab;
@@ -192,6 +229,8 @@
             document.querySelector('#main-auth-card h2').textContent = tab === 'login' ? 'Welcome Back 🍕' : 'Join Flavour Fleet 🎉';
             document.querySelector('#main-auth-card .auth-subtitle').textContent = tab === 'login' ? 'Sign in to order your favorite food' : 'Create an account to get started';
             document.getElementById('password-strength').style.display = tab === 'signup' ? 'block' : 'none';
+            document.getElementById('role-selector').style.display = tab === 'login' ? 'flex' : 'none';
+            if (tab === 'login') { selectRole(loginRole); }
         }
 
         async function handleAuth(e) {
@@ -207,7 +246,31 @@
                 else { showToast(result.message, 'error'); }
             } else {
                 const result = await Auth.login(email, password);
-                if (result.success) { showToast('Welcome back! 🎉', 'success'); setTimeout(() => window.location.href = 'profile.html', 1500); }
+                if (result.success) {
+                    showToast('Welcome back! 🎉', 'success');
+                    setTimeout(async () => {
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const redirectAdmin = urlParams.get('redirect') === 'admin' || loginRole === 'admin';
+                        if (redirectAdmin) {
+                            // Verify user is actually an admin
+                            try {
+                                const p = await fetch('/api/auth/profile', { credentials: 'include' });
+                                const pd = await p.json();
+                                if (pd.success && pd.user && pd.user.role === 'admin') {
+                                    window.location.href = 'admin.html';
+                                    return;
+                                } else {
+                                    showToast('Access denied — this account is not an admin', 'error');
+                                    return;
+                                }
+                            } catch (e) {
+                                showToast('Could not verify role', 'error');
+                                return;
+                            }
+                        }
+                        window.location.href = 'profile.html';
+                    }, 1200);
+                }
                 else { showToast(result.message, 'error'); }
             }
         }
