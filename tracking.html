@@ -7,6 +7,8 @@
     <title>Track Order — Flavour Fleet</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
 <body>
@@ -110,12 +112,12 @@
                             ****4242</span></div>
                 </div>
 
-                <!-- Map Placeholder -->
-                <div
-                    style="margin-top:var(--space-xl);border-radius:var(--radius-lg);overflow:hidden;height:200px;background:var(--bg-tertiary);display:flex;align-items:center;justify-content:center;border:1px solid var(--border-color)">
-                    <div style="text-align:center;color:var(--text-muted)">
-                        <span style="font-size:3rem;display:block;margin-bottom:var(--space-sm)">🗺️</span>
-                        <p>Live map tracking coming soon</p>
+                <!-- Live Map -->
+                <div class="map-wrapper">
+                    <div id="map"></div>
+                    <div class="map-overlay">
+                        <span class="map-overlay-dot"></span>
+                        <span class="map-overlay-text">Live tracking active</span>
                     </div>
                 </div>
             </div>
@@ -215,6 +217,84 @@
                 if (step <= 5) setTimeout(simulateProgress, 4000);
             }
             simulateProgress();
+
+            // ===== LEAFLET MAP =====
+            const restaurantLat = 19.0760, restaurantLng = 72.8777;
+            const deliveryLat = 19.0920, deliveryLng = 72.9050;
+
+            // Pick tile layer based on theme
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const tileUrl = isDark
+                ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+                : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+
+            const map = L.map('map', { zoomControl: false, attributionControl: false }).setView(
+                [(restaurantLat + deliveryLat) / 2, (restaurantLng + deliveryLng) / 2], 14
+            );
+            L.control.zoom({ position: 'topright' }).addTo(map);
+            L.tileLayer(tileUrl, { maxZoom: 19 }).addTo(map);
+
+            // Custom emoji markers
+            function emojiIcon(emoji, size = 32) {
+                return L.divIcon({
+                    html: `<span style="font-size:${size}px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4))">${emoji}</span>`,
+                    className: 'emoji-marker',
+                    iconSize: [size, size],
+                    iconAnchor: [size / 2, size / 2]
+                });
+            }
+
+            // Restaurant marker
+            L.marker([restaurantLat, restaurantLng], { icon: emojiIcon('🍔', 36) })
+                .addTo(map)
+                .bindPopup('<b>Pizza Paradise</b><br>Restaurant');
+
+            // Delivery marker (bouncing)
+            const deliveryMarker = L.marker([deliveryLat, deliveryLng], { icon: emojiIcon('🏠', 36) })
+                .addTo(map)
+                .bindPopup('<b>Your Address</b><br>Delivery location');
+
+            // ETA radius circle
+            const etaCircle = L.circle([deliveryLat, deliveryLng], {
+                radius: 600, color: '#ff6b35', fillColor: '#ff6b35',
+                fillOpacity: 0.08, weight: 2, dashArray: '8 6'
+            }).addTo(map);
+
+            // Route line (curved waypoints for realism)
+            const routePoints = [
+                [restaurantLat, restaurantLng],
+                [19.0785, 72.8850],
+                [19.0810, 72.8910],
+                [19.0850, 72.8950],
+                [19.0880, 72.8990],
+                [deliveryLat, deliveryLng]
+            ];
+            L.polyline(routePoints, {
+                color: '#ff6b35', weight: 4, opacity: 0.7,
+                dashArray: '12 8', lineCap: 'round'
+            }).addTo(map);
+
+            // Animated driver marker
+            const driverMarker = L.marker([restaurantLat, restaurantLng], {
+                icon: emojiIcon('🛵', 40), zIndexOffset: 1000
+            }).addTo(map).bindPopup('Your delivery driver');
+
+            // Animate driver along route
+            let routeIndex = 0;
+            function animateDriver() {
+                if (routeIndex >= routePoints.length) {
+                    driverMarker.setIcon(emojiIcon('✅', 40));
+                    driverMarker.setPopupContent('Delivered! 🎉').openPopup();
+                    etaCircle.setStyle({ color: '#2ec4b6', fillColor: '#2ec4b6', fillOpacity: 0.12 });
+                    return;
+                }
+                const [lat, lng] = routePoints[routeIndex];
+                driverMarker.setLatLng([lat, lng]);
+                routeIndex++;
+                setTimeout(animateDriver, 3500);
+            }
+            // Start driver after 2s
+            setTimeout(animateDriver, 2000);
         });
     </script>
 

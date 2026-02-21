@@ -3172,3 +3172,66 @@ h6 {
     justify-content: center;
   }
 }
+
+/* ========== LEAFLET MAP ========== */
+.map-wrapper {
+  position: relative;
+  margin-top: var(--space-xl);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+}
+
+#map {
+  height: 400px;
+  width: 100%;
+  background: var(--bg-tertiary);
+}
+
+/* Glass overlay badge */
+.map-overlay {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(30, 30, 40, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+[data-theme="light"] .map-overlay {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: var(--text-primary);
+}
+
+.map-overlay-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2ec4b6;
+  box-shadow: 0 0 6px rgba(46, 196, 182, 0.6);
+  animation: pillDotPulse 2s infinite ease-in-out;
+}
+
+/* Hide default Leaflet marker shadow and emoji marker background */
+.emoji-marker {
+  background: none !important;
+  border: none !important;
+}
+
+@media (max-width: 768px) {
+  #map {
+    height: 280px;
+  }
+}
