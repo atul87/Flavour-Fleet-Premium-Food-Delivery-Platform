@@ -243,6 +243,57 @@ function initSort() {
     });
 }
 
+// ---------- Floating Active Order Pill ----------
+function initOrderPill() {
+    // Don't show pill on the tracking page itself
+    if (window.location.pathname.includes('tracking')) return;
+
+    const statusConfig = {
+        'Placed': { text: 'Your order has been placed', dot: 'dot-blue', progress: 10 },
+        'Preparing': { text: 'Kitchen is preparing your meal', dot: 'dot-green', progress: 40 },
+        'Out for Delivery': { text: 'Driver is on the way 🚴', dot: 'dot-orange', progress: 75 },
+    };
+
+    // Create pill element
+    const pill = document.createElement('a');
+    pill.id = 'active-order-pill';
+    pill.href = 'tracking.html';
+    pill.className = 'pill-hidden';
+    pill.innerHTML = `
+        <span class="pill-status-dot"></span>
+        <span class="pill-text"></span>
+        <span class="pill-track-arrow">Track →</span>
+        <div class="pill-progress"><div class="pill-progress-fill" style="width:0%"></div></div>`;
+    document.body.appendChild(pill);
+
+    const dot = pill.querySelector('.pill-status-dot');
+    const text = pill.querySelector('.pill-text');
+    const progressFill = pill.querySelector('.pill-progress-fill');
+
+    function updatePill() {
+        const status = localStorage.getItem('flavourfleet_order_status');
+        const config = statusConfig[status];
+
+        if (!config) {
+            // No active order or Delivered/Cancelled — hide
+            pill.classList.add('pill-hidden');
+            return;
+        }
+
+        // Show pill with correct content
+        pill.classList.remove('pill-hidden');
+        text.textContent = config.text;
+        dot.className = 'pill-status-dot ' + config.dot;
+        progressFill.style.width = config.progress + '%';
+    }
+
+    // Initial check
+    updatePill();
+
+    // Poll localStorage every 3s for cross-tab/status sync
+    setInterval(updatePill, 3000);
+}
+
 // ---------- Initialize Everything ----------
 document.addEventListener('DOMContentLoaded', () => {
     hideLoader();
@@ -253,6 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSearch();
     initCategoryFilter();
     initSort();
+    initOrderPill();
     // Update cart badge
     if (typeof Cart !== 'undefined') Cart.updateCartBadge();
     if (typeof updateAuthUI !== 'undefined') updateAuthUI();
