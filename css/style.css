@@ -931,14 +931,84 @@ h6 {
   align-items: center;
   justify-content: center;
   color: var(--text-secondary);
-  transition: all var(--transition-normal)
+  font-size: 0.95rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
 }
 
 .footer-social a:hover {
   background: var(--primary);
   color: #fff;
-  border-color: var(--primary);
-  transform: translateY(-3px)
+  border-color: transparent;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.35);
+}
+
+/* Per-brand hover accents */
+.footer-social a[aria-label="Instagram"]:hover {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  border-color: transparent;
+}
+
+.footer-social a[aria-label="Facebook"]:hover {
+  background: #1877f2;
+  box-shadow: 0 6px 20px rgba(24, 119, 242, 0.35);
+  border-color: transparent;
+}
+
+.footer-social a[aria-label="X / Twitter"]:hover {
+  background: #000;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  border-color: transparent;
+}
+
+.footer-social a[aria-label="YouTube"]:hover {
+  background: #ff0000;
+  box-shadow: 0 6px 20px rgba(255, 0, 0, 0.3);
+  border-color: transparent;
+}
+
+.footer-social a[aria-label="LinkedIn"]:hover {
+  background: #0a66c2;
+  box-shadow: 0 6px 20px rgba(10, 102, 194, 0.35);
+  border-color: transparent;
+}
+
+/* Team card social links */
+.team-social {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: var(--space-sm);
+}
+
+.team-social a {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+}
+
+.team-social a[aria-label="Instagram"]:hover {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  color: #fff;
+  border-color: transparent;
+  transform: translateY(-2px);
+}
+
+.team-social a[aria-label="LinkedIn"]:hover {
+  background: #0a66c2;
+  color: #fff;
+  border-color: transparent;
+  transform: translateY(-2px);
 }
 
 .footer-column h4 {
