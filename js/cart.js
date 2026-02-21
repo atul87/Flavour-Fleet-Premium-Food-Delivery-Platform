@@ -2,6 +2,10 @@
 // FLAVOUR FLEET — Cart Module (API-powered)
 // ============================================
 
+// ── INR Currency Formatter (Indian numbering) ──
+const _inrFmt = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
+function formatINR(amount) { return _inrFmt.format(Math.round(amount)); }
+
 const Cart = {
     _items: [],   // local cache for synchronous access
 
@@ -98,15 +102,15 @@ const Cart = {
 
     getDeliveryFee() {
         const subtotal = this.getSubtotal();
-        return subtotal > 0 ? (subtotal > 30 ? 0 : 4.99) : 0;
+        return subtotal > 0 ? (subtotal > 499 ? 0 : 49) : 0;
     },
 
     getTax() {
-        return +(this.getSubtotal() * 0.08).toFixed(2);
+        return Math.round(this.getSubtotal() * 0.05);
     },
 
     getTotal(discount = 0) {
-        return +(this.getSubtotal() + this.getDeliveryFee() + this.getTax() - discount).toFixed(2);
+        return Math.round(this.getSubtotal() + this.getDeliveryFee() + this.getTax() - discount);
     },
 
     // ── Promo code validation ──
@@ -169,7 +173,7 @@ async function renderCartPage() {
       <div class="cart-item-info">
         <h4>${item.name}</h4>
         <p class="cart-item-desc">${item.restaurant || ''}</p>
-        <p class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</p>
+        <p class="cart-item-price">${formatINR(item.price * item.quantity)}</p>
         <div class="quantity-control">
           <button onclick="changeQty('${item.id}', -1)">−</button>
           <span>${item.quantity}</span>
@@ -212,15 +216,15 @@ function updateSummary(discount = 0) {
     const total = Cart.getTotal(discount);
 
     // Free delivery progress bar
-    const freeThreshold = 30;
+    const freeThreshold = 499;
     const remaining = Math.max(0, freeThreshold - subtotal);
     const progress = Math.min(100, (subtotal / freeThreshold) * 100);
     const isFree = subtotal >= freeThreshold;
     const deliveryBarHTML = subtotal > 0 ? `
     <div class="delivery-progress ${isFree ? 'complete' : ''}">
       <div class="progress-text">
-        <span>${isFree ? '🎉 You unlocked <strong>FREE delivery!</strong>' : `Add <strong>$${remaining.toFixed(2)}</strong> more for free delivery`}</span>
-        ${!isFree ? '<span class="free-label">$' + freeThreshold + ' goal</span>' : ''}
+        <span>${isFree ? '🎉 You unlocked <strong>FREE delivery!</strong>' : `Add <strong>${formatINR(remaining)}</strong> more for free delivery`}</span>
+        ${!isFree ? '<span class="free-label">' + formatINR(freeThreshold) + ' goal</span>' : ''}
       </div>
       <div class="progress-track">
         <div class="progress-bar" style="width:${progress}%"></div>
@@ -229,11 +233,11 @@ function updateSummary(discount = 0) {
 
     el.innerHTML = `
     ${deliveryBarHTML}
-    <div class="summary-row"><span>Subtotal</span><span>$${subtotal.toFixed(2)}</span></div>
-    <div class="summary-row"><span>Delivery Fee</span><span>${delivery === 0 ? '<span style="color:var(--secondary);font-weight:600">FREE ✨</span>' : '$' + delivery.toFixed(2)}</span></div>
-    <div class="summary-row"><span>Tax</span><span>$${tax.toFixed(2)}</span></div>
-    ${discount > 0 ? `<div class="summary-row" style="color:var(--secondary)"><span>Discount</span><span>-$${discount.toFixed(2)}</span></div>` : ''}
-    <div class="summary-row total"><span>Total</span><span>$${total.toFixed(2)}</span></div>
+    <div class="summary-row"><span>Subtotal</span><span>${formatINR(subtotal)}</span></div>
+    <div class="summary-row"><span>Delivery Fee</span><span>${delivery === 0 ? '<span style="color:var(--secondary);font-weight:600">FREE ✨</span>' : formatINR(delivery)}</span></div>
+    <div class="summary-row"><span>GST (5%)</span><span>${formatINR(tax)}</span></div>
+    ${discount > 0 ? `<div class="summary-row" style="color:var(--secondary)"><span>Discount</span><span>-${formatINR(discount)}</span></div>` : ''}
+    <div class="summary-row total"><span>Total</span><span>${formatINR(total)}</span></div>
   `;
 }
 

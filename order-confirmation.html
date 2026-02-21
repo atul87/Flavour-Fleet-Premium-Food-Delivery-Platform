@@ -1,296 +1,889 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
+
+
 <html lang="en" data-theme="dark">
 
+
+
+
+
 <head>
+
+
     <meta charset="UTF-8">
+
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
     <title>Order Confirmed — Flavour Fleet</title>
+
+
     <link rel="stylesheet" href="css/style.css">
+
+
     <link rel="stylesheet" href="css/animations.css">
+
+
     <style>
+
+
         .confirm-page {
+
+
             min-height: 80vh;
+
+
             display: flex;
+
+
             align-items: center;
+
+
             justify-content: center;
+
+
             padding: var(--space-2xl) var(--space-md);
+
+
         }
+
+
+
+
 
         .confirm-card {
+
+
             background: var(--glass-bg);
+
+
             backdrop-filter: var(--glass-blur);
+
+
             border: 1px solid var(--glass-border);
+
+
             border-radius: var(--radius-xl);
+
+
             padding: var(--space-3xl) var(--space-2xl);
+
+
             max-width: 600px;
+
+
             width: 100%;
+
+
             text-align: center;
+
+
             box-shadow: var(--shadow-xl);
+
+
         }
+
+
+
+
 
         .confirm-icon {
+
+
             font-size: 4rem;
+
+
             margin-bottom: var(--space-lg);
+
+
             animation: bounceIn 0.6s ease;
+
+
         }
+
+
+
+
 
         .confirm-card h1 {
+
+
             margin-bottom: var(--space-sm);
+
+
             font-size: 1.8rem;
+
+
         }
+
+
+
+
 
         .confirm-card .subtitle {
+
+
             color: var(--text-secondary);
+
+
             margin-bottom: var(--space-xl);
+
+
         }
+
+
+
+
 
         .order-details {
+
+
             background: var(--bg-tertiary);
+
+
             border-radius: var(--radius-lg);
+
+
             padding: var(--space-lg);
+
+
             margin: var(--space-xl) 0;
+
+
             text-align: left;
+
+
         }
+
+
+
+
 
         .order-details .detail-row {
+
+
             display: flex;
+
+
             justify-content: space-between;
+
+
             padding: var(--space-sm) 0;
+
+
             border-bottom: 1px solid var(--border-color);
+
+
             font-size: 0.9rem;
+
+
         }
+
+
+
+
 
         .order-details .detail-row:last-child {
+
+
             border-bottom: none;
+
+
         }
+
+
+
+
 
         .detail-label {
+
+
             color: var(--text-muted);
+
+
         }
+
+
+
+
 
         .detail-value {
+
+
             font-weight: 600;
+
+
         }
+
+
+
+
 
         .order-items {
+
+
             margin: var(--space-lg) 0;
+
+
             text-align: left;
+
+
         }
+
+
+
+
 
         .order-items h3 {
+
+
             font-size: 1rem;
+
+
             margin-bottom: var(--space-sm);
+
+
         }
+
+
+
+
 
         .order-item-row {
+
+
             display: flex;
+
+
             justify-content: space-between;
+
+
             padding: var(--space-xs) 0;
+
+
             font-size: 0.85rem;
+
+
             color: var(--text-secondary);
+
+
         }
+
+
+
+
 
         .confirm-actions {
+
+
             display: flex;
+
+
             gap: var(--space-md);
+
+
             justify-content: center;
+
+
             margin-top: var(--space-xl);
+
+
             flex-wrap: wrap;
+
+
         }
+
+
+
+
 
         .confirm-actions .btn {
+
+
             min-width: 160px;
+
+
         }
+
+
+
+
 
         .estimate-badge {
+
+
             display: inline-flex;
+
+
             align-items: center;
+
+
             gap: 6px;
+
+
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+
+
             color: white;
+
+
             padding: 8px 20px;
+
+
             border-radius: var(--radius-full);
+
+
             font-weight: 600;
+
+
             font-size: 0.9rem;
+
+
             margin-top: var(--space-md);
+
+
         }
+
+
+
+
 
         @keyframes bounceIn {
+
+
             0% {
+
+
                 transform: scale(0);
+
+
                 opacity: 0;
+
+
             }
+
+
+
+
 
             50% {
+
+
                 transform: scale(1.2);
+
+
             }
 
+
+
+
+
             100% {
+
+
                 transform: scale(1);
+
+
                 opacity: 1;
+
+
             }
+
+
         }
+
+
     </style>
+
+
 </head>
+
+
+
+
 
 <body>
 
+
+
+
+
     <nav class="navbar" id="navbar">
+
+
         <div class="container">
-            <a href="index.html" class="nav-logo"><span class="logo-icon">🔥</span><span>Flavour Fleet</span></a>
+
+
+            <a href="index.html" class="nav-logo"><i class="fas fa-fire logo-icon"></i><span>Flavour Fleet</span></a>
+
+
             <div class="nav-links" id="nav-links">
+
+
                 <a href="restaurants.html">Restaurants</a>
+
+
                 <a href="menu.html">Menu</a>
+
+
                 <a href="offers.html" class="offers-link">Offers <span class="offers-badge">NEW</span></a>
+
+
                 <a href="tracking.html">Track</a>
+
+
             </div>
+
+
             <div class="nav-actions">
+
+
                 <button class="icon-btn theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+
+
                     <svg viewBox="0 0 24 24">
+
+
                         <circle cx="12" cy="12" r="5" />
+
+
                         <line x1="12" y1="1" x2="12" y2="3" />
+
+
                         <line x1="12" y1="21" x2="12" y2="23" />
+
+
                         <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+
+
                         <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+
+
                         <line x1="1" y1="12" x2="3" y2="12" />
+
+
                         <line x1="21" y1="12" x2="23" y2="12" />
+
+
                         <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+
+
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+
+
                     </svg>
+
+
                 </button>
+
+
                 <a href="cart.html" class="icon-btn nav-cart" aria-label="Cart">
+
+
                     <svg viewBox="0 0 24 24">
+
+
                         <circle cx="9" cy="21" r="1" />
+
+
                         <circle cx="20" cy="21" r="1" />
+
+
                         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+
+
                     </svg>
+
+
                     <span class="cart-count" id="cart-count">0</span>
+
+
                 </a>
+
+
                 <div class="profile-dropdown-wrapper" id="profile-dropdown-wrapper">
+
+
                     <button class="icon-btn nav-profile" aria-label="Profile">
+
+
                         <svg viewBox="0 0 24 24">
+
+
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+
+
                             <circle cx="12" cy="7" r="4" />
+
+
                         </svg>
+
+
                     </button>
+
+
                     <div class="profile-dropdown" id="profile-dropdown">
+
+
                         <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+
+
                         <a href="tracking.html"><i class="fas fa-box"></i> My Orders</a>
+
+
                         <a href="help.html"><i class="fas fa-cog"></i> Settings</a>
+
+
                         <div class="dropdown-divider"></div>
+
+
                         <a href="login.html" class="dropdown-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+
+
                     </div>
+
+
                 </div>
+
+
                 <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+
+
             </div>
+
+
         </div>
+
+
     </nav>
 
+
+
+
+
     <div class="confirm-page">
+
+
         <div class="confirm-card animate-on-scroll">
-            <div class="confirm-icon">✅</div>
+
+
+            <div class="confirm-icon"><i class="fas fa-check-circle"></i></div>
+
+
             <h1>Order Placed Successfully!</h1>
+
+
             <p class="subtitle">Your food is being prepared with love</p>
-            <div class="estimate-badge">🕐 Estimated Delivery: 25-35 min</div>
+
+
+            <div class="estimate-badge">• Estimated Delivery: 25-35 min</div>
+
+
+
+
 
             <div class="order-details">
+
+
                 <div class="detail-row">
+
+
                     <span class="detail-label">Order ID</span>
+
+
                     <span class="detail-value" id="conf-order-id">#—</span>
+
+
                 </div>
+
+
                 <div class="detail-row">
+
+
                     <span class="detail-label">Payment</span>
+
+
                     <span class="detail-value" id="conf-payment">Credit Card</span>
+
+
                 </div>
+
+
                 <div class="detail-row">
+
+
                     <span class="detail-label">Delivery To</span>
+
+
                     <span class="detail-value" id="conf-address">—</span>
+
+
                 </div>
+
+
             </div>
+
+
+
+
 
             <div class="order-items">
-                <h3>🛒 Items Ordered</h3>
+
+
+                <h3><i class="fas fa-shopping-cart"></i> Items Ordered</h3>
+
+
                 <div id="conf-items"></div>
+
+
             </div>
+
+
+
+
 
             <div class="order-details" style="margin-top:0">
+
+
                 <div class="detail-row">
+
+
                     <span class="detail-label">Subtotal</span>
-                    <span class="detail-value" id="conf-subtotal">$0.00</span>
+
+
+                    <span class="detail-value" id="conf-subtotal">₹0</span>
+
+
                 </div>
+
+
                 <div class="detail-row">
+
+
                     <span class="detail-label">Delivery Fee</span>
-                    <span class="detail-value" id="conf-delivery">$4.99</span>
+
+
+                    <span class="detail-value" id="conf-delivery">?49</span>
+
+
                 </div>
+
+
                 <div class="detail-row">
-                    <span class="detail-label">Tax</span>
-                    <span class="detail-value" id="conf-tax">$0.00</span>
+
+
+                    <span class="detail-label">GST (5%)</span>
+
+
+                    <span class="detail-value" id="conf-tax">₹0</span>
+
+
                 </div>
+
+
                 <div class="detail-row">
+
+
                     <span class="detail-label" style="font-weight:700;color:var(--text-primary)">Total</span>
-                    <span class="detail-value" id="conf-total"
-                        style="color:var(--primary);font-size:1.1rem">$0.00</span>
+
+
+                    <span class="detail-value" id="conf-total" style="color:var(--primary);font-size:1.1rem">₹0</span>
+
+
                 </div>
+
+
             </div>
+
+
+
+
 
             <div class="confirm-actions">
-                <a href="tracking.html" class="btn btn-primary btn-lg">📍 Track Order</a>
-                <a href="menu.html" class="btn btn-outline btn-lg">🍔 Order More</a>
+
+
+                <a href="tracking.html" class="btn btn-primary btn-lg"><i class="fas fa-truck" style="margin-right:8px"></i> Track Order</a>
+
+
+                <a href="menu.html" class="btn btn-outline btn-lg"><i class="fas fa-utensils" style="margin-right:8px"></i> Order More</a>
+
+
             </div>
+
+
         </div>
+
+
     </div>
+
+
+
+
 
     <footer class="footer">
+
+
         <div class="container">
+
+
             <div class="footer-bottom">
+
+
                 <p>© 2026 Flavour Fleet. All rights reserved.</p>
+
+
             </div>
+
+
         </div>
+
+
     </footer>
+
+
     <div class="toast-container" id="toast-container"></div>
+
+
     <div class="page-loader" id="page-loader">
+
+
         <div class="loader-spinner"></div>
+
+
         <p>Loading confirmation...</p>
+
+
     </div>
 
+
+
+
+
     <script src="js/api.js"></script>
+
+
     <script src="js/cart.js"></script>
+
+
     <script src="js/auth.js"></script>
+
+
     <script src="js/main.js"></script>
+
+
     <script>
+
+
         document.addEventListener('DOMContentLoaded', () => {
+
+
             const orderData = JSON.parse(localStorage.getItem('flavourfleet_current_order') || 'null');
+
+
             if (!orderData) {
+
+
                 document.querySelector('.confirm-card h1').textContent = 'No Recent Order';
+
+
                 document.querySelector('.confirm-card .subtitle').textContent = 'Place an order to see your confirmation here';
-                document.querySelector('.confirm-icon').textContent = '🛒';
+
+
+                document.querySelector('.confirm-icon').textContent = '<i class="fas fa-shopping-cart"></i>';
+
+
                 document.querySelector('.estimate-badge').style.display = 'none';
+
+
                 return;
+
+
             }
 
+
+
+
+
             // Populate order details
+
+
             document.getElementById('conf-order-id').textContent = '#' + (orderData.order_id || orderData._id || '—');
-            document.getElementById('conf-payment').textContent = orderData.payment_method || 'Credit Card';
+
+
+            document.getElementById('conf-payment').textContent = orderData.payment_method || 'UPI';
+
+
             document.getElementById('conf-address').textContent = [orderData.address, orderData.city, orderData.zip].filter(Boolean).join(', ') || '—';
 
+
+
+
+
             // Items
+
+
             const items = orderData.items || [];
+
+
             document.getElementById('conf-items').innerHTML = items.map(i =>
-                `<div class="order-item-row"><span>${i.name} × ${i.quantity}</span><span>$${(i.price * i.quantity).toFixed(2)}</span></div>`
+
+
+                `<div class="order-item-row"><span>${i.name} × ${i.quantity}</span><span>₹${Math.round(i.price * i.quantity)}</span></div>`
+
+
             ).join('') || '<p style="color:var(--text-muted);font-size:0.85rem">Item details not available</p>';
 
+
+
+
+
             // Totals
+
+
             const subtotal = items.reduce((s, i) => s + (i.price * i.quantity), 0);
-            const deliveryFee = 4.99;
-            const tax = subtotal * 0.08;
+
+
+            const deliveryFee = subtotal > 499 ? 0 : 49;
+
+
+            const tax = subtotal * 0.05;
+
+
             const total = orderData.total || (subtotal + deliveryFee + tax);
 
-            document.getElementById('conf-subtotal').textContent = '$' + subtotal.toFixed(2);
-            document.getElementById('conf-delivery').textContent = '$' + deliveryFee.toFixed(2);
-            document.getElementById('conf-tax').textContent = '$' + tax.toFixed(2);
-            document.getElementById('conf-total').textContent = '$' + total.toFixed(2);
+
+
+
+
+            const formatINR = (amt) => '₹' + Math.round(amt);
+
+
+
+
+
+            document.getElementById('conf-subtotal').textContent = formatINR(subtotal);
+
+
+            document.getElementById('conf-delivery').textContent = deliveryFee === 0 ? 'FREE' : formatINR(deliveryFee);
+
+
+            document.getElementById('conf-tax').textContent = formatINR(tax);
+
+
+            document.getElementById('conf-total').textContent = formatINR(total);
+
+
         });
+
+
     </script>
+
+
 </body>
+
+
+
+
 
 </html>

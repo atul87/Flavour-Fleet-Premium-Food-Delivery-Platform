@@ -1,239 +1,725 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
+
+
 <html lang="en" data-theme="dark">
 
+
+
+
+
 <head>
+
+
     <meta charset="UTF-8">
+
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
     <title>My Profile — Flavour Fleet</title>
+
+
     <link rel="stylesheet" href="css/style.css">
+
+
     <link rel="stylesheet" href="css/animations.css">
+
+
 </head>
+
+
+
+
 
 <body>
 
+
+
+
+
     <nav class="navbar" id="navbar">
+
+
         <div class="container">
-            <a href="index.html" class="nav-logo"><span class="logo-icon">🔥</span><span>Flavour Fleet</span></a>
+
+
+            <a href="index.html" class="nav-logo"><i class="fas fa-fire logo-icon"></i><span>Flavour Fleet</span></a>
+
+
             <div class="nav-links" id="nav-links">
+
+
                 <a href="restaurants.html">Restaurants</a>
+
+
                 <a href="menu.html">Menu</a>
+
+
                 <a href="offers.html" class="offers-link">Offers <span class="offers-badge">NEW</span></a>
+
+
                 <a href="tracking.html">Track</a>
+
+
             </div>
+
+
             <div class="nav-actions">
+
+
                 <button class="icon-btn theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+
+
                     <svg viewBox="0 0 24 24">
+
+
                         <circle cx="12" cy="12" r="5" />
+
+
                         <line x1="12" y1="1" x2="12" y2="3" />
+
+
                         <line x1="12" y1="21" x2="12" y2="23" />
+
+
                         <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+
+
                         <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+
+
                         <line x1="1" y1="12" x2="3" y2="12" />
+
+
                         <line x1="21" y1="12" x2="23" y2="12" />
+
+
                         <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+
+
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+
+
                     </svg>
+
+
                 </button>
+
+
                 <a href="cart.html" class="icon-btn nav-cart" aria-label="Cart">
+
+
                     <svg viewBox="0 0 24 24">
+
+
                         <circle cx="9" cy="21" r="1" />
+
+
                         <circle cx="20" cy="21" r="1" />
+
+
                         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+
+
                     </svg>
+
+
                     <span class="cart-count" id="cart-count">0</span>
+
+
                 </a>
+
+
                 <a href="profile.html" class="icon-btn nav-profile active" aria-label="Profile">
+
+
                     <svg viewBox="0 0 24 24">
+
+
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+
+
                         <circle cx="12" cy="7" r="4" />
+
+
                     </svg>
+
+
                 </a>
+
+
                 <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+
+
             </div>
+
+
         </div>
+
+
     </nav>
 
+
+
+
+
     <section class="page-header">
+
+
         <div class="container">
-            <h1>👤 My Profile</h1>
+
+
+            <h1>‘¤ My Profile</h1>
+
+
             <p>Manage your account and orders</p>
+
+
         </div>
+
+
     </section>
+
+
+
+
 
     <section class="section">
+
+
         <div class="container">
+
+
             <div class="profile-layout">
+
+
                 <div class="profile-sidebar animate-on-scroll">
+
+
                     <div class="profile-avatar" id="profile-avatar"
+
+
                         onclick="document.getElementById('avatar-input').click()"
+
+
                         style="cursor:pointer;position:relative;overflow:hidden" title="Click to change avatar">
-                        👤
+
+
+                        ‘¤
+
+
                         <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:#fff;font-size:0.65rem;text-align:center;padding:2px 0;opacity:0;transition:opacity 0.2s"
-                            class="avatar-overlay">📷 Change</div>
+
+
+                            class="avatar-overlay">“ Change</div>
+
+
                     </div>
+
+
                     <input type="file" id="avatar-input" accept="image/*" style="display:none">
+
+
                     <h3 id="profile-name">Guest User</h3>
+
+
                     <p class="profile-email" id="profile-email">Please login to view profile</p>
+
+
                     <nav class="profile-menu">
-                        <a href="#" class="active">📦 My Orders</a>
-                        <a href="#">⚙️ Settings</a>
-                        <a href="#">📍 Addresses</a>
-                        <a href="login.html" id="auth-link">🔑 Login / Sign Up</a>
+
+
+                        <a href="#" class="active">“¦ My Orders</a>
+
+
+                        <a href="#">âš™ï Settings</a>
+
+
+                        <a href="#">“ Addresses</a>
+
+
+                        <a href="login.html" id="auth-link">”‘ Login / Sign Up</a>
+
+
                     </nav>
+
+
                 </div>
+
+
+
+
 
                 <div class="animate-on-scroll">
+
+
                     <div class="glass-card" style="padding:var(--space-xl)">
-                        <h3 style="margin-bottom:var(--space-lg)">📦 Order History</h3>
+
+
+                        <h3 style="margin-bottom:var(--space-lg)">“¦ Order History</h3>
+
+
                         <div style="overflow-x:auto">
+
+
                             <table class="order-table">
+
+
                                 <thead>
+
+
                                     <tr>
+
+
                                         <th>Order ID</th>
+
+
                                         <th>Date</th>
+
+
                                         <th>Items</th>
+
+
                                         <th>Total</th>
+
+
                                         <th>Status</th>
+
+
                                         <th>Action</th>
+
+
                                     </tr>
+
+
                                 </thead>
+
+
                                 <tbody id="orders-body"></tbody>
+
+
                             </table>
+
+
                         </div>
+
+
                     </div>
+
+
                 </div>
+
+
             </div>
+
+
         </div>
+
+
     </section>
 
+
+
+
+
     <footer class="footer">
+
+
         <div class="container">
+
+
             <div class="footer-bottom">
-                <p>© 2026 Flavour Fleet. All rights reserved.</p>
+
+
+                <p>Â© 2026 Flavour Fleet. All rights reserved.</p>
+
+
             </div>
+
+
         </div>
+
+
     </footer>
+
+
     <div class="toast-container" id="toast-container"></div>
+
+
     <div class="page-loader" id="page-loader">
+
+
         <div class="loader-spinner"></div>
+
+
         <p>Loading profile...</p>
+
+
     </div>
 
-    <script src="js/api.js"></script>
-    <script src="js/cart.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/main.js"></script>
+
+
+
+
+    <script src="js/api.js">function formatINR(amount) { return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount); }
+
+</script>
+
+
+    <script src="js/cart.js">function formatINR(amount) { return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount); }
+
+</script>
+
+
+    <script src="js/auth.js">function formatINR(amount) { return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount); }
+
+</script>
+
+
+    <script src="js/main.js">function formatINR(amount) { return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount); }
+
+</script>
+
+
     <style>
+
+
         .profile-avatar:hover .avatar-overlay {
+
+
             opacity: 1 !important;
+
+
         }
+
+
+
+
 
         .profile-avatar img {
+
+
             width: 100%;
+
+
             height: 100%;
+
+
             object-fit: cover;
+
+
             border-radius: 50%;
+
+
         }
+
+
     </style>
+
+
     <script>
+
+
         function renderOrders(orders) {
+
+
             const tbody = document.getElementById('orders-body');
+
+
             if (!orders.length) {
+
+
                 tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:var(--space-2xl);color:var(--text-muted)">No orders yet. <a href="menu.html" style="color:var(--primary)">Start ordering!</a></td></tr>';
+
+
                 return;
+
+
             }
+
+
             tbody.innerHTML = orders.map(o => {
+
+
                 const statusClass = o.status === 'delivered' ? 'delivered' : o.status === 'preparing' ? 'preparing' : o.status === 'cancelled' ? 'cancelled' : 'on-way';
+
+
                 const displayId = o.order_id || o.id;
+
+
                 const displayItems = o.items_summary || (Array.isArray(o.items) ? o.items.map(i => i.name).join(', ') : o.items);
+
+
                 const displayDate = o.created_at ? new Date(o.created_at).toLocaleDateString() : o.date;
+
+
                 return `<tr>
+
+
           <td style="color:var(--primary);font-weight:600">${displayId}</td>
+
+
           <td>${displayDate}</td>
+
+
           <td>${displayItems}</td>
-          <td style="font-weight:600">$${o.total ? o.total.toFixed(2) : '0.00'}</td>
+
+
+          <td style="font-weight:600">${formatINR(o.total || 0)}</td>
+
+
           <td><span class="status-badge ${statusClass}">${o.status}</span></td>
+
+
           <td><a href="tracking.html" class="btn btn-sm btn-outline">Track</a></td>
+
+
         </tr>`;
+
+
             }).join('');
+
+
         }
+
+
+
+
 
         document.addEventListener('DOMContentLoaded', async () => {
+
+
             const result = await API.get('/auth/profile');
+
+
             if (result.success && result.logged_in) {
+
+
                 const user = result.user;
+
+
                 document.getElementById('profile-name').textContent = user.name;
+
+
                 document.getElementById('profile-email').textContent = user.email;
 
+
+
+
+
                 // Set avatar
+
+
                 const avatarEl = document.getElementById('profile-avatar');
+
+
                 if (user.avatar) {
-                    avatarEl.innerHTML = `<img loading="lazy" src="${user.avatar}" alt="Avatar"><div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:#fff;font-size:0.65rem;text-align:center;padding:2px 0;opacity:0;transition:opacity 0.2s" class="avatar-overlay">📷 Change</div>`;
+
+
+                    avatarEl.innerHTML = `<img loading="lazy" src="${user.avatar}" alt="Avatar"><div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:#fff;font-size:0.65rem;text-align:center;padding:2px 0;opacity:0;transition:opacity 0.2s" class="avatar-overlay">“ Change</div>`;
+
+
                 } else {
-                    avatarEl.innerHTML = user.name.charAt(0).toUpperCase() + '<div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:#fff;font-size:0.65rem;text-align:center;padding:2px 0;opacity:0;transition:opacity 0.2s" class="avatar-overlay">📷 Change</div>';
+
+
+                    avatarEl.innerHTML = user.name.charAt(0).toUpperCase() + '<div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:#fff;font-size:0.65rem;text-align:center;padding:2px 0;opacity:0;transition:opacity 0.2s" class="avatar-overlay">“ Change</div>';
+
+
                 }
 
-                document.getElementById('auth-link').textContent = '🚪 Logout';
+
+
+
+
+                document.getElementById('auth-link').textContent = 'šª Logout';
+
+
                 document.getElementById('auth-link').href = '#';
+
+
                 document.getElementById('auth-link').onclick = async () => {
+
+
                     await API.post('/auth/logout');
+
+
                     showToast('Logged out successfully', 'info');
+
+
                     setTimeout(() => { window.location.href = 'login.html'; }, 500);
+
+
                 };
 
+
+
+
+
                 // Fetch orders from API
+
+
                 const ordersResult = await API.get('/orders');
+
+
                 renderOrders(ordersResult.success ? ordersResult.orders : []);
+
+
             } else {
+
+
                 // Not logged in — redirect to login page
+
+
                 showToast('Please log in to view your profile', 'info');
+
+
                 setTimeout(() => { window.location.href = 'login.html'; }, 800);
+
+
                 return;
+
+
             }
+
+
         });
+
+
+
+
 
         // Avatar upload handler
+
+
         document.getElementById('avatar-input').addEventListener('change', async (e) => {
+
+
             const file = e.target.files[0];
+
+
             if (!file) return;
 
+
+
+
+
             // Validate file type (Fix 5)
+
+
             const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+
+
             if (!allowedTypes.includes(file.type)) {
+
+
                 showToast('Only JPG, PNG, or WebP images are allowed', 'error');
+
+
                 e.target.value = '';
+
+
                 return;
+
+
             }
+
+
+
+
 
             // Validate file size (max 2MB)
+
+
             if (file.size > 2 * 1024 * 1024) {
+
+
                 showToast('Image must be under 2MB (yours is ' + (file.size / 1024 / 1024).toFixed(1) + 'MB)', 'error');
+
+
                 e.target.value = '';
+
+
                 return;
+
+
             }
 
+
+
+
+
             // Show loading state
+
+
             showToast('Uploading avatar...', 'info');
 
+
+
+
+
             // Read as base64
+
+
             const reader = new FileReader();
+
+
             reader.onload = async (event) => {
+
+
                 const base64Data = event.target.result;
+
+
                 const result = await API.post('/auth/avatar', { image: base64Data });
+
+
                 if (result.success) {
-                    showToast('Avatar updated! 📸', 'success');
+
+
+                    showToast('Avatar updated! “', 'success');
+
+
                     const avatarEl = document.getElementById('profile-avatar');
-                    avatarEl.innerHTML = `<img loading="lazy" src="${result.avatar_url}?t=${Date.now()}" alt="Avatar"><div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:#fff;font-size:0.65rem;text-align:center;padding:2px 0;opacity:0;transition:opacity 0.2s" class="avatar-overlay">📷 Change</div>`;
+
+
+                    avatarEl.innerHTML = `<img loading="lazy" src="${result.avatar_url}?t=${Date.now()}" alt="Avatar"><div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:#fff;font-size:0.65rem;text-align:center;padding:2px 0;opacity:0;transition:opacity 0.2s" class="avatar-overlay">“ Change</div>`;
+
+
                 } else {
+
+
                     showToast(result.message || 'Upload failed', 'error');
+
+
                 }
+
+
             };
+
+
             reader.onerror = () => {
+
+
                 showToast('Failed to read image file', 'error');
+
+
             };
+
+
             reader.readAsDataURL(file);
+
+
         });
-    </script>
+
+
+    function formatINR(amount) { return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount); }
+
+</script>
+
+
 </body>
+
+
+
+
 
 </html>

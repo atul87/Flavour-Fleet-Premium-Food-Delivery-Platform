@@ -3,6 +3,8 @@
 // ============================================
 
 const API = '';
+const _admInrFmt = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
+function formatINR(a) { return _admInrFmt.format(Math.round(a)); }
 
 // ── State ──────────────────────────────────
 let state = {
@@ -119,7 +121,7 @@ async function loadDashboard() {
         if (!data.success) return;
         const s = data.stats;
         setText('stat-orders', s.total_orders.toLocaleString());
-        setText('stat-revenue', '$' + s.total_revenue.toFixed(2));
+        setText('stat-revenue', formatINR(s.total_revenue));
         setText('stat-users', s.total_users.toLocaleString());
         setText('stat-menu', s.total_menu_items.toLocaleString());
         setText('stat-restaurants', s.total_restaurants.toLocaleString());
@@ -137,7 +139,7 @@ function renderRecentOrders(orders) {
     <tr>
       <td><strong>${o.order_id}</strong></td>
       <td>${o.name || 'Guest'}</td>
-      <td>$${(o.total || 0).toFixed(2)}</td>
+      <td>${formatINR(o.total || 0)}</td>
       <td>${statusBadge(o.status)}</td>
       <td>${formatDate(o.created_at)}</td>
     </tr>
@@ -162,7 +164,7 @@ function renderRevenueChart(daily) {
         data: {
             labels: daily.map(d => d.date),
             datasets: [{
-                label: 'Revenue ($)',
+                label: 'Revenue (₹)',
                 data: daily.map(d => d.revenue),
                 borderColor: '#ff6b35',
                 backgroundColor: 'rgba(255,107,53,.08)',
@@ -176,7 +178,7 @@ function renderRevenueChart(daily) {
             plugins: { legend: { display: false } },
             scales: {
                 x: { grid: { display: false }, ticks: { font: { size: 11 } } },
-                y: { grid: { color: '#f3f4f6' }, ticks: { font: { size: 11 }, callback: v => '$' + v } }
+                y: { grid: { color: '#f3f4f6' }, ticks: { font: { size: 11 }, callback: v => '₹' + v } }
             }
         }
     });
@@ -223,7 +225,7 @@ async function loadOrders(page = 1, status = 'all', search = '') {
         <td><strong>${o.order_id}</strong></td>
         <td>${o.name || 'Guest'}</td>
         <td>${(o.items || []).length} items</td>
-        <td><strong>$${(o.total || 0).toFixed(2)}</strong></td>
+        <td><strong>${formatINR(o.total || 0)}</strong></td>
         <td>${o.payment_method || 'Card'}</td>
         <td>
           <select class="status-select ${o.status}" onchange="updateOrderStatus('${o.order_id}', this)">
@@ -267,13 +269,13 @@ function viewOrder(order) {
     </div>
     <h4 style="font-size:13px;font-weight:700;margin-bottom:8px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.3px;">Items</h4>
     <div class="order-items-list">
-      ${items.map(it => `<div class="order-item-row"><span class="order-item-name">${it.name}</span><span class="order-item-qty">×${it.quantity}</span><span>$${(it.price * it.quantity).toFixed(2)}</span></div>`).join('')}
+      ${items.map(it => `<div class="order-item-row"><span class="order-item-name">${it.name}</span><span class="order-item-qty">×${it.quantity}</span><span>${formatINR(it.price * it.quantity)}</span></div>`).join('')}
     </div>
-    <div class="order-price-row"><span>Subtotal</span><span>$${(order.subtotal || 0).toFixed(2)}</span></div>
-    <div class="order-price-row"><span>Delivery</span><span>$${(order.delivery_fee || 0).toFixed(2)}</span></div>
-    <div class="order-price-row"><span>Tax</span><span>$${(order.tax || 0).toFixed(2)}</span></div>
-    ${order.discount ? `<div class="order-price-row"><span>Discount</span><span style="color:var(--success)">-$${(order.discount || 0).toFixed(2)}</span></div>` : ''}
-    <div class="order-price-row total"><span>Total</span><span>$${(order.total || 0).toFixed(2)}</span></div>
+    <div class="order-price-row"><span>Subtotal</span><span>${formatINR(order.subtotal || 0)}</span></div>
+    <div class="order-price-row"><span>Delivery</span><span>${formatINR(order.delivery_fee || 0)}</span></div>
+    <div class="order-price-row"><span>GST</span><span>${formatINR(order.tax || 0)}</span></div>
+    ${order.discount ? `<div class="order-price-row"><span>Discount</span><span style="color:var(--success)">-${formatINR(order.discount || 0)}</span></div>` : ''}
+    <div class="order-price-row total"><span>Total</span><span>${formatINR(order.total || 0)}</span></div>
     <div style="margin-top:14px">
       <label class="form-label">Update Status</label>
       <select class="form-control" id="view-order-status-select">
@@ -356,7 +358,7 @@ function renderMenuTable(items) {
         <div><div class="item-name">${it.name}</div><div class="item-sub">${it.restaurant || '—'}</div></div>
       </div></td>
       <td><span class="badge badge-gray">${it.category}</span></td>
-      <td><strong>$${(it.price || 0).toFixed(2)}</strong></td>
+      <td><strong>${formatINR(it.price || 0)}</strong></td>
       <td>⭐ ${it.rating || '—'}</td>
       <td>${it.badge ? `<span class="badge badge-orange">${it.badge}</span>` : '—'}</td>
       <td>${it.active !== false ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-gray">Inactive</span>'}</td>
@@ -480,7 +482,7 @@ function editRestaurant(r) {
     document.getElementById('restaurant-description').value = r.description || '';
     document.getElementById('restaurant-rating').value = r.rating || 4.5;
     document.getElementById('restaurant-delivery-time').value = r.delivery_time || '';
-    document.getElementById('restaurant-price-range').value = r.price_range || '$$';
+    document.getElementById('restaurant-price-range').value = r.price_range || '₹₹';
     document.getElementById('restaurant-address').value = r.address || '';
     document.getElementById('restaurant-active-toggle').checked = r.active !== false;
     openModal('restaurant-modal');
@@ -540,9 +542,9 @@ function renderOffersTable(items) {
         <div class="offer-icon ${o.color || 'orange'}">${o.icon || '🎟'}</div>
         <div><div class="item-name">${o.code}</div><div class="item-sub">${o.title}</div></div>
       </div></td>
-      <td>${o.discount_type === 'percent' ? o.discount_value + '%' : o.discount_type === 'flat' ? '$' + o.discount_value : 'Free Delivery'}</td>
+      <td>${o.discount_type === 'percent' ? o.discount_value + '%' : o.discount_type === 'flat' ? formatINR(o.discount_value) : 'Free Delivery'}</td>
       <td>${o.discount_type || 'percent'}</td>
-      <td>$${o.min_order || 0}</td>
+      <td>${formatINR(o.min_order || 0)}</td>
       <td>${o.valid_till || '—'}</td>
       <td>${o.active !== false ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-gray">Inactive</span>'}</td>
       <td>
@@ -669,7 +671,7 @@ async function loadAnalytics() {
                 data: {
                     labels: data.daily_data.map(d => d.date),
                     datasets: [{
-                        label: 'Revenue ($)',
+                        label: 'Revenue (₹)',
                         data: data.daily_data.map(d => d.revenue),
                         backgroundColor: 'rgba(255,107,53,.7)',
                         borderRadius: 6, borderSkipped: false,
@@ -678,7 +680,7 @@ async function loadAnalytics() {
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
-                    scales: { x: { grid: { display: false } }, y: { ticks: { callback: v => '$' + v } } }
+                    scales: { x: { grid: { display: false } }, y: { ticks: { callback: v => '₹' + v } } }
                 }
             });
         }
