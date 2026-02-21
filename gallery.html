@@ -446,13 +446,10 @@
                 <span>Flavour Fleet</span>
             </a>
             <div class="nav-links" id="nav-links">
-                <a href="index.html">Home</a>
                 <a href="restaurants.html">Restaurants</a>
                 <a href="menu.html">Menu</a>
-                <a href="gallery.html" class="active">Gallery</a>
                 <a href="offers.html" class="offers-link">Offers <span class="offers-badge">NEW</span></a>
-                <a href="tracking.html">Track Order</a>
-                <a href="help.html">Help</a>
+                <a href="tracking.html">Track</a>
             </div>
             <div class="nav-actions">
                 <div class="nav-search">
@@ -480,12 +477,21 @@
                     </svg>
                     <span class="cart-count" id="cart-count">0</span>
                 </a>
-                <a href="profile.html" class="icon-btn nav-profile" aria-label="Profile">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                        <circle cx="12" cy="7" r="4" />
-                    </svg>
-                </a>
+                <div class="profile-dropdown-wrapper" id="profile-dropdown-wrapper">
+                    <button class="icon-btn nav-profile" aria-label="Profile">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                    </button>
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+                        <a href="tracking.html"><i class="fas fa-box"></i> My Orders</a>
+                        <a href="help.html"><i class="fas fa-cog"></i> Settings</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="login.html" class="dropdown-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
                 <button class="hamburger" id="hamburger" aria-label="Menu">
                     <span></span><span></span><span></span>
                 </button>
@@ -721,7 +727,7 @@
                         <li><a href="restaurants.html">Restaurants</a></li>
                         <li><a href="menu.html">Menu</a></li>
                         <li><a href="gallery.html">Gallery</a></li>
-                        <li><a href="tracking.html">Track Order</a></li>
+                        <li><a href="tracking.html">Track</a></li>
                         <li><a href="help.html">Help & Support</a></li>
                     </ul>
                 </div>

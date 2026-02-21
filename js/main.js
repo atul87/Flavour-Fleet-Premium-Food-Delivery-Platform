@@ -42,10 +42,44 @@ function initNavbar() {
             hamburger.classList.toggle('active');
             navLinks.classList.toggle('active');
         });
+        // Close mobile nav on link click
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
         document.addEventListener('click', (e) => {
             if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
                 hamburger.classList.remove('active');
                 navLinks.classList.remove('active');
+            }
+        });
+    }
+    // Auto-detect active page
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.classList.remove('active');
+        const href = link.getAttribute('href');
+        if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+            link.classList.add('active');
+        }
+    });
+    // Profile dropdown toggle
+    const profileWrapper = document.getElementById('profile-dropdown-wrapper');
+    const profileDropdown = document.getElementById('profile-dropdown');
+    if (profileWrapper && profileDropdown) {
+        const profileBtn = profileWrapper.querySelector('.nav-profile');
+        if (profileBtn) {
+            profileBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                profileDropdown.classList.toggle('show');
+            });
+        }
+        document.addEventListener('click', (e) => {
+            if (!profileWrapper.contains(e.target)) {
+                profileDropdown.classList.remove('show');
             }
         });
     }
