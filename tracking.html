@@ -268,7 +268,7 @@
                     <div class="tracking-step completed" id="step-1">
 
 
-                        <div class="step-dot">“‹</div>
+                        <div class="step-dot"><i class="fas fa-receipt"></i></div>
 
 
                         <span class="step-label">Order Placed</span>
@@ -283,7 +283,7 @@
                     <div class="tracking-step" id="step-2">
 
 
-                        <div class="step-dot">‘¨â€</div>
+                        <div class="step-dot"><i class="fas fa-fire"></i>â€</div>
 
 
                         <span class="step-label">Preparing</span>
@@ -298,7 +298,7 @@
                     <div class="tracking-step" id="step-3">
 
 
-                        <div class="step-dot">š—</div>
+                        <div class="step-dot"><i class="fas fa-motorcycle"></i></div>
 
 
                         <span class="step-label">Out for Delivery</span>
@@ -409,7 +409,7 @@
             <div class="footer-bottom">
 
 
-                <p>Â© 2026 Flavour Fleet. All rights reserved.</p>
+                <p>© 2026 Flavour Fleet. All rights reserved.</p>
 
 
             </div>
@@ -580,19 +580,24 @@
             let step = 1;
 
 
-            const etas = ['25 min ', '18 min ‘¨â€', '8 min š—', 'Delivered! ¥'];
+            const etas = ['25 min ', '18 min <i class="fas fa-fire"></i>â€', '8 min <i class="fas fa-motorcycle"></i>', 'Delivered! ¥'];
 
 
             const statusNames = ['Placed', 'Preparing', 'Out for Delivery', 'Delivered'];
 
-
-
-
+            const backendStatus = order.status || 'preparing';
+            let targetStep = 1;
+            if (backendStatus === 'pending') targetStep = 1;
+            if (backendStatus === 'preparing') targetStep = 2;
+            if (backendStatus === 'on-way') targetStep = 3;
+            if (backendStatus === 'delivered') targetStep = 4;
+            if (backendStatus === 'cancelled') {
+                targetStep = 1;
+                document.getElementById('eta').innerHTML = 'Estimated delivery: <strong>Cancelled</strong>';
+            }
 
             function simulateProgress() {
-
-
-                if (step > 4) return;
+                if (step > targetStep || step > 4) return;
 
 
 
@@ -668,9 +673,7 @@
 
 
                 step++;
-
-
-                if (step <= 5) setTimeout(simulateProgress, 4000);
+                if (step <= targetStep) setTimeout(simulateProgress, 1000);
 
 
             }
@@ -985,7 +988,7 @@
             <a href="profile.html" class="nav-item">
 
 
-                <span class="nav-icon">‘¤</span>
+                <span class="nav-icon"><i class="fas fa-receipt"></i></span>
 
 
                 <span>Profile</span>

@@ -10,7 +10,7 @@ function showToast(message, type = 'info') {
         container.className = 'toast-container';
         document.body.appendChild(container);
     }
-    const icons = { success: '✅', error: '❌', info: '🔔' };
+    const icons = { success: '<i class="fas fa-check-circle" style="color:#10b981; margin-right:8px;"></i>', error: '<i class="fas fa-times-circle" style="color:#ef4444; margin-right:8px;"></i>', info: '<i class="fas fa-info-circle" style="color:#3b82f6; margin-right:8px;"></i>' };
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
     toast.innerHTML = `
@@ -105,7 +105,7 @@ function initTheme() {
 
 function updateThemeIcon(theme) {
     const toggle = document.querySelector('.theme-toggle');
-    if (toggle) toggle.innerHTML = theme === 'dark' ? '☀️' : '🌙';
+    if (toggle) toggle.innerHTML = theme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
 }
 
 // ---------- Scroll Animations (Intersection Observer) ----------
@@ -285,7 +285,7 @@ function initOrderPill() {
     const statusConfig = {
         'Placed': { text: 'Your order has been placed', dot: 'dot-blue', progress: 10 },
         'Preparing': { text: 'Kitchen is preparing your meal', dot: 'dot-green', progress: 40 },
-        'Out for Delivery': { text: 'Driver is on the way 🚴', dot: 'dot-orange', progress: 75 },
+        'Out for Delivery': { text: 'Driver is on the way <i class="fas fa-motorcycle" style="margin-left:4px"></i>', dot: 'dot-orange', progress: 75 },
     };
 
     // Create pill element
@@ -316,7 +316,7 @@ function initOrderPill() {
 
         // Show pill with correct content
         pill.classList.remove('pill-hidden');
-        text.textContent = config.text;
+        text.innerHTML = config.text;
         dot.className = 'pill-status-dot ' + config.dot;
         progressFill.style.width = config.progress + '%';
     }

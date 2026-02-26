@@ -96,15 +96,16 @@
                 <form id="auth-form" onsubmit="handleAuth(event)">
                     <div class="form-group" id="name-group" style="display:none">
                         <label>Full Name</label>
-                        <input type="text" id="auth-name" placeholder="Your full name">
+                        <input type="text" id="auth-name" placeholder="Your full name" autocomplete="name">
                     </div>
                     <div class="form-group">
                         <label>Email Address</label>
-                        <input type="email" id="auth-email" placeholder="you@example.com">
+                        <input type="email" id="auth-email" placeholder="you@example.com" autocomplete="username">
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="password" id="auth-password" placeholder="••••••••">
+                        <input type="password" id="auth-password" placeholder="••••••••"
+                            autocomplete="current-password">
                         <div id="password-strength" style="display:none;margin-top:6px">
                             <div style="display:flex;gap:4px;margin-bottom:4px">
                                 <div class="str-seg" id="str-1"
@@ -148,7 +149,7 @@
                 <div id="reset-step-1">
                     <div class="form-group">
                         <label>Email Address</label>
-                        <input type="email" id="reset-email" placeholder="you@example.com">
+                        <input type="email" id="reset-email" placeholder="you@example.com" autocomplete="email">
                     </div>
                     <button class="btn btn-primary btn-lg" style="width:100%" onclick="requestReset()">Send Reset Code
                         →</button>
@@ -167,211 +168,215 @@
 
                 <!-- Step 3: New Password -->
                 <div id="reset-step-3" style="display:none">
-                    <div class="form-group">
-                        <label>New Password</label>
-                        <input type="password" id="reset-new-password" placeholder="Min 6 characters">
-                    </div>
-                    <div class="form-group">
-                        <label>Confirm New Password</label>
-                        <input type="password" id="reset-confirm-password" placeholder="Confirm password">
-                    </div>
-                    <button class="btn btn-primary btn-lg" style="width:100%" onclick="resetPassword()">Reset Password
-                        →</button>
-                </div>
+                    <form onsubmit="event.preventDefault(); resetPassword();">
+                        <div class="form-group">
+                            <label>New Password</label>
+                            <input type="password" id="reset-new-password" placeholder="Min 6 characters"
+                                autocomplete="new-password">
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm New Password</label>
+                            <input type="password" id="reset-confirm-password" placeholder="Confirm password"
+                                autocomplete="new-password">
+                        </div>
+                        <button class="btn btn-primary btn-lg" style="width:100%" type="submit">Reset Password
+                            →</button>
+                    </form>
 
-                <div style="margin-top:var(--space-lg);text-align:center">
-                    <a href="#" onclick="hideResetModal(event)" style="color:var(--primary);font-size:0.9rem">← Back to
-                        Login</a>
+                    <div style="margin-top:var(--space-lg);text-align:center">
+                        <a href="#" onclick="hideResetModal(event)" style="color:var(--primary);font-size:0.9rem">← Back
+                            to
+                            Login</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="toast-container" id="toast-container"></div>
-    <div class="page-loader" id="page-loader">
-        <div class="loader-spinner"></div>
-        <p>Loading...</p>
-    </div>
+        <div class="toast-container" id="toast-container"></div>
+        <div class="page-loader" id="page-loader">
+            <div class="loader-spinner"></div>
+            <p>Loading...</p>
+        </div>
 
-    <script src="js/api.js"></script>
-    <script src="js/cart.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/main.js"></script>
-    <script>
-        let mode = 'login';
-        let loginRole = 'user';
-        let resetToken = '';
-        let resetCode = '';
+        <script src="js/api.js"></script>
+        <script src="js/cart.js"></script>
+        <script src="js/auth.js"></script>
+        <script src="js/main.js"></script>
+        <script>
+            let mode = 'login';
+            let loginRole = 'user';
+            let resetToken = '';
+            let resetCode = '';
 
-        function selectRole(role) {
-            loginRole = role;
-            const userBtn = document.getElementById('role-user-btn');
-            const adminBtn = document.getElementById('role-admin-btn');
-            if (role === 'admin') {
-                adminBtn.style.background = 'var(--primary)';
-                adminBtn.style.color = '#fff';
-                userBtn.style.background = 'transparent';
-                userBtn.style.color = 'var(--text-primary)';
-                document.querySelector('#main-auth-card h2').textContent = 'Admin Login \uD83D\uDD10';
-                document.querySelector('#main-auth-card .auth-subtitle').textContent = 'Sign in to manage your restaurant';
-                document.getElementById('auth-submit').textContent = 'Sign In as Admin \u2192';
-            } else {
-                userBtn.style.background = 'var(--primary)';
-                userBtn.style.color = '#fff';
-                adminBtn.style.background = 'transparent';
-                adminBtn.style.color = 'var(--text-primary)';
-                document.querySelector('#main-auth-card h2').textContent = 'Welcome Back \uD83C\uDF55';
-                document.querySelector('#main-auth-card .auth-subtitle').textContent = 'Sign in to order your favorite food';
-                document.getElementById('auth-submit').textContent = 'Sign In \u2192';
+            function selectRole(role) {
+                loginRole = role;
+                const userBtn = document.getElementById('role-user-btn');
+                const adminBtn = document.getElementById('role-admin-btn');
+                if (role === 'admin') {
+                    adminBtn.style.background = 'var(--primary)';
+                    adminBtn.style.color = '#fff';
+                    userBtn.style.background = 'transparent';
+                    userBtn.style.color = 'var(--text-primary)';
+                    document.querySelector('#main-auth-card h2').textContent = 'Admin Login \uD83D\uDD10';
+                    document.querySelector('#main-auth-card .auth-subtitle').textContent = 'Sign in to manage your restaurant';
+                    document.getElementById('auth-submit').textContent = 'Sign In as Admin \u2192';
+                } else {
+                    userBtn.style.background = 'var(--primary)';
+                    userBtn.style.color = '#fff';
+                    adminBtn.style.background = 'transparent';
+                    adminBtn.style.color = 'var(--text-primary)';
+                    document.querySelector('#main-auth-card h2').textContent = 'Welcome Back \uD83C\uDF55';
+                    document.querySelector('#main-auth-card .auth-subtitle').textContent = 'Sign in to order your favorite food';
+                    document.getElementById('auth-submit').textContent = 'Sign In \u2192';
+                }
             }
-        }
 
-        function switchTab(tab) {
-            mode = tab;
-            document.getElementById('login-tab').classList.toggle('active', tab === 'login');
-            document.getElementById('signup-tab').classList.toggle('active', tab === 'signup');
-            document.getElementById('name-group').style.display = tab === 'signup' ? 'block' : 'none';
-            document.getElementById('terms-check').style.display = tab === 'signup' ? 'flex' : 'none';
-            document.getElementById('login-extras').style.display = tab === 'login' ? 'flex' : 'none';
-            document.getElementById('auth-submit').textContent = tab === 'login' ? 'Sign In →' : 'Create Account →';
-            document.querySelector('#main-auth-card h2').textContent = tab === 'login' ? 'Welcome Back 🍕' : 'Join Flavour Fleet 🎉';
-            document.querySelector('#main-auth-card .auth-subtitle').textContent = tab === 'login' ? 'Sign in to order your favorite food' : 'Create an account to get started';
-            document.getElementById('password-strength').style.display = tab === 'signup' ? 'block' : 'none';
-            document.getElementById('role-selector').style.display = tab === 'login' ? 'flex' : 'none';
-            if (tab === 'login') { selectRole(loginRole); }
-        }
+            function switchTab(tab) {
+                mode = tab;
+                document.getElementById('login-tab').classList.toggle('active', tab === 'login');
+                document.getElementById('signup-tab').classList.toggle('active', tab === 'signup');
+                document.getElementById('name-group').style.display = tab === 'signup' ? 'block' : 'none';
+                document.getElementById('terms-check').style.display = tab === 'signup' ? 'flex' : 'none';
+                document.getElementById('login-extras').style.display = tab === 'login' ? 'flex' : 'none';
+                document.getElementById('auth-submit').textContent = tab === 'login' ? 'Sign In →' : 'Create Account →';
+                document.querySelector('#main-auth-card h2').textContent = tab === 'login' ? 'Welcome Back 🍕' : 'Join Flavour Fleet 🎉';
+                document.querySelector('#main-auth-card .auth-subtitle').textContent = tab === 'login' ? 'Sign in to order your favorite food' : 'Create an account to get started';
+                document.getElementById('password-strength').style.display = tab === 'signup' ? 'block' : 'none';
+                document.getElementById('role-selector').style.display = tab === 'login' ? 'flex' : 'none';
+                if (tab === 'login') { selectRole(loginRole); }
+            }
 
-        async function handleAuth(e) {
-            e.preventDefault();
-            const email = document.getElementById('auth-email').value;
-            const password = document.getElementById('auth-password').value;
-            if (!email || !password) { showToast('Please fill in all fields', 'error'); return; }
-            if (mode === 'signup') {
-                const name = document.getElementById('auth-name').value;
-                if (!name) { showToast('Please enter your name', 'error'); return; }
-                const result = await Auth.signup(name, email, password);
-                if (result.success) { showToast('Account created! 🎉', 'success'); setTimeout(() => window.location.href = 'profile.html', 1500); }
-                else { showToast(result.message, 'error'); }
-            } else {
-                const result = await Auth.login(email, password);
-                if (result.success) {
-                    showToast('Welcome back! 🎉', 'success');
-                    setTimeout(async () => {
-                        const urlParams = new URLSearchParams(window.location.search);
-                        const redirectAdmin = urlParams.get('redirect') === 'admin' || loginRole === 'admin';
-                        if (redirectAdmin) {
-                            // Verify user is actually an admin
-                            try {
-                                const p = await fetch('/api/auth/profile', { credentials: 'include' });
-                                const pd = await p.json();
-                                if (pd.success && pd.user && pd.user.role === 'admin') {
-                                    window.location.href = 'admin.html';
-                                    return;
-                                } else {
-                                    showToast('Access denied — this account is not an admin', 'error');
+            async function handleAuth(e) {
+                e.preventDefault();
+                const email = document.getElementById('auth-email').value;
+                const password = document.getElementById('auth-password').value;
+                if (!email || !password) { showToast('Please fill in all fields', 'error'); return; }
+                if (mode === 'signup') {
+                    const name = document.getElementById('auth-name').value;
+                    if (!name) { showToast('Please enter your name', 'error'); return; }
+                    const result = await Auth.signup(name, email, password);
+                    if (result.success) { showToast('Account created! 🎉', 'success'); setTimeout(() => window.location.href = 'profile.html', 1500); }
+                    else { showToast(result.message, 'error'); }
+                } else {
+                    const result = await Auth.login(email, password);
+                    if (result.success) {
+                        showToast('Welcome back! 🎉', 'success');
+                        setTimeout(async () => {
+                            const urlParams = new URLSearchParams(window.location.search);
+                            const redirectAdmin = urlParams.get('redirect') === 'admin' || loginRole === 'admin';
+                            if (redirectAdmin) {
+                                // Verify user is actually an admin
+                                try {
+                                    const p = await fetch('/api/auth/profile', { credentials: 'include' });
+                                    const pd = await p.json();
+                                    if (pd.success && pd.user && pd.user.role === 'admin') {
+                                        window.location.href = 'admin.html';
+                                        return;
+                                    } else {
+                                        showToast('Access denied — this account is not an admin', 'error');
+                                        return;
+                                    }
+                                } catch (e) {
+                                    showToast('Could not verify role', 'error');
                                     return;
                                 }
-                            } catch (e) {
-                                showToast('Could not verify role', 'error');
-                                return;
                             }
-                        }
-                        window.location.href = 'profile.html';
-                    }, 1200);
+                            window.location.href = 'profile.html';
+                        }, 1200);
+                    }
+                    else { showToast(result.message, 'error'); }
                 }
-                else { showToast(result.message, 'error'); }
             }
-        }
 
-        // ── Password Reset Flow ──
-        function showResetModal(e) {
-            e.preventDefault();
-            document.getElementById('main-auth-card').style.display = 'none';
-            document.getElementById('reset-card').style.display = 'block';
-            document.getElementById('reset-step-1').style.display = 'block';
-            document.getElementById('reset-step-2').style.display = 'none';
-            document.getElementById('reset-step-3').style.display = 'none';
-            document.getElementById('reset-subtitle').textContent = 'Enter your email to receive a reset code';
-        }
+            // ── Password Reset Flow ──
+            function showResetModal(e) {
+                e.preventDefault();
+                document.getElementById('main-auth-card').style.display = 'none';
+                document.getElementById('reset-card').style.display = 'block';
+                document.getElementById('reset-step-1').style.display = 'block';
+                document.getElementById('reset-step-2').style.display = 'none';
+                document.getElementById('reset-step-3').style.display = 'none';
+                document.getElementById('reset-subtitle').textContent = 'Enter your email to receive a reset code';
+            }
 
-        function hideResetModal(e) {
-            e.preventDefault();
-            document.getElementById('main-auth-card').style.display = 'block';
-            document.getElementById('reset-card').style.display = 'none';
-        }
+            function hideResetModal(e) {
+                e.preventDefault();
+                document.getElementById('main-auth-card').style.display = 'block';
+                document.getElementById('reset-card').style.display = 'none';
+            }
 
-        async function requestReset() {
-            const email = document.getElementById('reset-email').value;
-            if (!email) { showToast('Please enter your email', 'error'); return; }
+            async function requestReset() {
+                const email = document.getElementById('reset-email').value;
+                if (!email) { showToast('Please enter your email', 'error'); return; }
 
-            const result = await API.post('/auth/forgot-password', { email });
-            if (result.success) {
-                if (result.token) {
-                    resetToken = result.token;
-                    // In demo mode, show the code via toast
-                    showToast(`Demo mode — Your reset code is: ${result.code}`, 'success');
+                const result = await API.post('/auth/forgot-password', { email });
+                if (result.success) {
+                    if (result.token) {
+                        resetToken = result.token;
+                        // In demo mode, show the code via toast
+                        showToast(`Demo mode — Your reset code is: ${result.code}`, 'success');
+                    }
+                    document.getElementById('reset-step-1').style.display = 'none';
+                    document.getElementById('reset-step-2').style.display = 'block';
+                    document.getElementById('reset-subtitle').textContent = 'Enter the 6-digit code sent to your email';
+                } else {
+                    showToast(result.message || 'Something went wrong', 'error');
                 }
-                document.getElementById('reset-step-1').style.display = 'none';
-                document.getElementById('reset-step-2').style.display = 'block';
-                document.getElementById('reset-subtitle').textContent = 'Enter the 6-digit code sent to your email';
-            } else {
-                showToast(result.message || 'Something went wrong', 'error');
             }
-        }
 
-        function verifyCode() {
-            resetCode = document.getElementById('reset-code').value;
-            if (!resetCode || resetCode.length !== 6) {
-                showToast('Please enter the 6-digit code', 'error'); return;
+            function verifyCode() {
+                resetCode = document.getElementById('reset-code').value;
+                if (!resetCode || resetCode.length !== 6) {
+                    showToast('Please enter the 6-digit code', 'error'); return;
+                }
+                document.getElementById('reset-step-2').style.display = 'none';
+                document.getElementById('reset-step-3').style.display = 'block';
+                document.getElementById('reset-subtitle').textContent = 'Choose a strong new password';
             }
-            document.getElementById('reset-step-2').style.display = 'none';
-            document.getElementById('reset-step-3').style.display = 'block';
-            document.getElementById('reset-subtitle').textContent = 'Choose a strong new password';
-        }
 
-        async function resetPassword() {
-            const newPass = document.getElementById('reset-new-password').value;
-            const confirmPass = document.getElementById('reset-confirm-password').value;
+            async function resetPassword() {
+                const newPass = document.getElementById('reset-new-password').value;
+                const confirmPass = document.getElementById('reset-confirm-password').value;
 
-            if (!newPass || !confirmPass) { showToast('Please fill in both fields', 'error'); return; }
-            if (newPass.length < 6) { showToast('Password must be at least 6 characters', 'error'); return; }
-            if (newPass !== confirmPass) { showToast('Passwords do not match', 'error'); return; }
+                if (!newPass || !confirmPass) { showToast('Please fill in both fields', 'error'); return; }
+                if (newPass.length < 6) { showToast('Password must be at least 6 characters', 'error'); return; }
+                if (newPass !== confirmPass) { showToast('Passwords do not match', 'error'); return; }
 
-            const result = await API.post('/auth/reset-password', {
-                token: resetToken,
-                code: resetCode,
-                new_password: newPass
+                const result = await API.post('/auth/reset-password', {
+                    token: resetToken,
+                    code: resetCode,
+                    new_password: newPass
+                });
+
+                if (result.success) {
+                    showToast('Password reset! 🎉 Please login.', 'success');
+                    setTimeout(() => hideResetModal(new Event('click')), 1500);
+                } else {
+                    showToast(result.message || 'Reset failed', 'error');
+                }
+            }
+
+            // Password Strength Indicator
+            document.getElementById('auth-password').addEventListener('input', function () {
+                if (mode !== 'signup') return;
+                const val = this.value;
+                let score = 0;
+                if (val.length >= 6) score++;
+                if (val.length >= 10) score++;
+                if (/[A-Z]/.test(val) && /[a-z]/.test(val)) score++;
+                if (/[0-9]/.test(val)) score++;
+                if (/[^A-Za-z0-9]/.test(val)) score++;
+                score = Math.min(score, 4);
+
+                const colors = ['#ef4444', '#f59e0b', '#eab308', '#22c55e'];
+                const labels = ['Weak', 'Fair', 'Good', 'Strong'];
+                for (let i = 1; i <= 4; i++) {
+                    document.getElementById('str-' + i).style.background = i <= score ? colors[score - 1] : 'var(--bg-tertiary)';
+                }
+                document.getElementById('str-label').textContent = val.length > 0 ? labels[score - 1] || '' : '';
+                document.getElementById('str-label').style.color = val.length > 0 ? colors[score - 1] || 'var(--text-muted)' : 'var(--text-muted)';
             });
-
-            if (result.success) {
-                showToast('Password reset! 🎉 Please login.', 'success');
-                setTimeout(() => hideResetModal(new Event('click')), 1500);
-            } else {
-                showToast(result.message || 'Reset failed', 'error');
-            }
-        }
-
-        // Password Strength Indicator
-        document.getElementById('auth-password').addEventListener('input', function () {
-            if (mode !== 'signup') return;
-            const val = this.value;
-            let score = 0;
-            if (val.length >= 6) score++;
-            if (val.length >= 10) score++;
-            if (/[A-Z]/.test(val) && /[a-z]/.test(val)) score++;
-            if (/[0-9]/.test(val)) score++;
-            if (/[^A-Za-z0-9]/.test(val)) score++;
-            score = Math.min(score, 4);
-
-            const colors = ['#ef4444', '#f59e0b', '#eab308', '#22c55e'];
-            const labels = ['Weak', 'Fair', 'Good', 'Strong'];
-            for (let i = 1; i <= 4; i++) {
-                document.getElementById('str-' + i).style.background = i <= score ? colors[score - 1] : 'var(--bg-tertiary)';
-            }
-            document.getElementById('str-label').textContent = val.length > 0 ? labels[score - 1] || '' : '';
-            document.getElementById('str-label').style.color = val.length > 0 ? colors[score - 1] || 'var(--text-muted)' : 'var(--text-muted)';
-        });
-    </script>
+        </script>
 </body>
 
 </html>
