@@ -270,4 +270,8 @@ Follow code style guidelines and include tests for any new features.
 
 ## 📄 License
 
-MIT License © 2026 Atul
+This project is **100% Free and Open Source**.
+
+Anyone and everyone is completely free to download, use, modify, publish, and perform any operation on this project. Feel free to use it however you want, for personal, educational, or commercial purposes. No strings attached!
+
+*(Licensed under the MIT License - see the [LICENSE](LICENSE) file for exact legal details, but essentially: do whatever you want).*
