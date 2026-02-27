@@ -17,9 +17,11 @@
 
 
     <meta name="description"
-
-
         content="Explore our full menu — 100+ dishes across 10+ cuisines. Pizza, sushi, burgers, Indian, Mexican and more!">
+    <meta property="og:title" content="Menu — Flavour Fleet">
+    <meta property="og:description" content="Explore our full menu — 100+ dishes across 10+ cuisines.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Flavour Fleet">
 
 
     <title>Menu — Flavour Fleet</title>
@@ -49,7 +51,7 @@
     <!-- NAVBAR -->
 
 
-    <nav class="navbar" id="navbar">
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
 
 
         <div class="container">
@@ -80,8 +82,6 @@
 
 
                 <div class="nav-search"><i class="fas fa-search search-icon"></i><input type="text"
-
-
                         placeholder="Search dishes..." id="search-input"></div>
 
 
@@ -248,8 +248,6 @@
 
 
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--space-md);margin-bottom:var(--space-xl)"
-
-
                 class="animate-on-scroll">
 
 
@@ -299,8 +297,6 @@
 
 
                         <label class="toggle-switch"><input type="checkbox" id="veg-toggle"><span
-
-
                                 class="slider"></span></label>
 
 
@@ -308,8 +304,6 @@
 
 
                     <select id="sort-select"
-
-
                         style="padding:0.5rem 1rem;border-radius:var(--radius-md);background:var(--glass-bg);border:1px solid var(--glass-border);color:var(--text-primary);font-size:0.9rem">
 
 
@@ -353,1656 +347,219 @@
 
 
                     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:var(--space-lg)"
+                        id="food-grid" aria-live="polite">
+                        <!-- Dynamically populated from /api/menu -->
+
+                    </div>
+
+                </div>
 
 
-                        id="food-grid">
 
 
 
 
-
-                        <!-- PIZZA (5) -->
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="pizza" data-veg="no">
+                <!-- PIZZA (5) -->
 
 
-                            <div class="food-image"><img loading="lazy" src="assets/images/pizza.png"
+                <div class="food-card tilt-card animate-on-scroll" data-category="pizza" data-veg="no">
 
 
-                                    alt="Margherita Pizza"><span class="food-badge">Bestseller</span></div>
+                    <div class="food-image"><img loading="lazy" src="assets/images/pizza.png"
+                            alt="Margherita Pizza"><span class="food-badge">Bestseller</span></div>
 
 
-                            <div class="food-body">
+                    <div class="food-body">
 
 
-                                <h4>Margherita Pizza <span class="veg-indicator veg"> Veg</span></h4>
+                        <h4>Margherita Pizza <span class="veg-indicator veg"> Veg</span></h4>
 
 
-                                <p class="food-desc">Fresh mozzarella, basil, tomato sauce on hand-tossed dough</p>
+                        <p class="food-desc">Fresh mozzarella, basil, tomato sauce on hand-tossed dough</p>
 
 
-                            </div>
+                    </div>
 
 
-                            <div class="food-footer"><span class="food-price">₹299</span><span class="food-rating">â­
+                    <div class="food-footer"><span class="food-price">₹299</span><span class="food-rating">â­
 
 
-                                    4.9</span>
+                            4.9</span>
 
 
-                                <div class="cart-actions" data-id="p1" data-name="Margherita Pizza" data-price="299"
+                        <div class="cart-actions" data-id="p1" data-name="Margherita Pizza" data-price="299"
+                            data-image="assets/images/pizza.png" data-restaurant="Pizza Paradise">
 
 
-                                    data-image="assets/images/pizza.png" data-restaurant="Pizza Paradise">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
 
 
                         </div>
 
 
-                        <div class="food-card tilt-card animate-on-scroll" data-category="pizza" data-veg="no">
+                    </div>
 
 
-                            <div class="food-image"><img loading="lazy" src="assets/images/pizza.png"
+                </div>
 
 
-                                    alt="Pepperoni Pizza"><span class="food-badge">Popular</span></div>
+                <div class="food-card tilt-card animate-on-scroll" data-category="pizza" data-veg="no">
 
 
-                            <div class="food-body">
+                    <div class="food-image"><img loading="lazy" src="assets/images/pizza.png"
+                            alt="Pepperoni Pizza"><span class="food-badge">Popular</span></div>
 
 
-                                <h4>Pepperoni Pizza <span class="veg-indicator non-veg"> Non-Veg</span></h4>
+                    <div class="food-body">
 
 
-                                <p class="food-desc">Loaded with spicy pepperoni slices and extra mozzarella</p>
+                        <h4>Pepperoni Pizza <span class="veg-indicator non-veg"> Non-Veg</span></h4>
 
 
-                            </div>
+                        <p class="food-desc">Loaded with spicy pepperoni slices and extra mozzarella</p>
 
 
-                            <div class="food-footer"><span class="food-price">₹349</span><span class="food-rating">â­
+                    </div>
 
 
-                                    4.8</span>
+                    <div class="food-footer"><span class="food-price">₹349</span><span class="food-rating">â­
 
 
-                                <div class="cart-actions" data-id="p2" data-name="Pepperoni Pizza" data-price="349"
+                            4.8</span>
 
 
-                                    data-image="assets/images/pizza.png" data-restaurant="Pizza Paradise">
+                        <div class="cart-actions" data-id="p2" data-name="Pepperoni Pizza" data-price="349"
+                            data-image="assets/images/pizza.png" data-restaurant="Pizza Paradise">
 
 
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
 
 
                         </div>
 
 
-                        <div class="food-card tilt-card animate-on-scroll" data-category="pizza" data-veg="no">
+                    </div>
 
 
-                            <div class="food-image"><img loading="lazy" src="assets/images/pizza.png"
+                </div>
 
 
-                                    alt="BBQ Chicken Pizza"></div>
+                <div class="food-card tilt-card animate-on-scroll" data-category="pizza" data-veg="no">
 
 
-                            <div class="food-body">
+                    <div class="food-image"><img loading="lazy" src="assets/images/pizza.png" alt="BBQ Chicken Pizza">
+                    </div>
 
 
-                                <h4>BBQ Chicken Pizza <span class="veg-indicator non-veg"> Non-Veg</span></h4>
+                    <div class="food-body">
 
 
-                                <p class="food-desc">Smoky BBQ sauce, grilled chicken, red onion, cilantro</p>
+                        <h4>BBQ Chicken Pizza <span class="veg-indicator non-veg"> Non-Veg</span></h4>
 
 
-                            </div>
+                        <p class="food-desc">Smoky BBQ sauce, grilled chicken, red onion, cilantro</p>
 
 
-                            <div class="food-footer"><span class="food-price">₹399</span><span class="food-rating">â­
+                    </div>
 
 
-                                    4.7</span>
+                    <div class="food-footer"><span class="food-price">₹399</span><span class="food-rating">â­
 
 
-                                <div class="cart-actions" data-id="p3" data-name="BBQ Chicken Pizza" data-price="399"
+                            4.7</span>
 
 
-                                    data-image="assets/images/pizza.png" data-restaurant="Pizza Paradise">
+                        <div class="cart-actions" data-id="p3" data-name="BBQ Chicken Pizza" data-price="399"
+                            data-image="assets/images/pizza.png" data-restaurant="Pizza Paradise">
 
 
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
 
 
                         </div>
 
 
-                        <div class="food-card tilt-card animate-on-scroll" data-category="pizza" data-veg="yes">
+                    </div>
 
 
-                            <div class="food-image"><img loading="lazy" src="assets/images/pizza.png"
+                </div>
 
 
-                                    alt="Four Cheese Pizza"><span class="food-badge">New</span></div>
+                <div class="food-card tilt-card animate-on-scroll" data-category="pizza" data-veg="yes">
 
 
-                            <div class="food-body">
+                    <div class="food-image"><img loading="lazy" src="assets/images/pizza.png"
+                            alt="Four Cheese Pizza"><span class="food-badge">New</span></div>
 
 
-                                <h4>Four Cheese Pizza <span class="veg-indicator veg"> Veg</span></h4>
+                    <div class="food-body">
 
 
-                                <p class="food-desc">Mozzarella, parmesan, gorgonzola, ricotta blend</p>
+                        <h4>Four Cheese Pizza <span class="veg-indicator veg"> Veg</span></h4>
 
 
-                            </div>
+                        <p class="food-desc">Mozzarella, parmesan, gorgonzola, ricotta blend</p>
 
 
-                            <div class="food-footer"><span class="food-price">₹399</span><span class="food-rating">â­
+                    </div>
 
 
-                                    4.8</span>
+                    <div class="food-footer"><span class="food-price">₹399</span><span class="food-rating">â­
 
 
-                                <div class="cart-actions" data-id="p4" data-name="Four Cheese Pizza" data-price="399"
+                            4.8</span>
 
 
-                                    data-image="assets/images/pizza.png" data-restaurant="Pizza Paradise">
+                        <div class="cart-actions" data-id="p4" data-name="Four Cheese Pizza" data-price="399"
+                            data-image="assets/images/pizza.png" data-restaurant="Pizza Paradise">
 
 
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
 
 
                         </div>
 
 
-                        <div class="food-card tilt-card animate-on-scroll" data-category="pizza" data-veg="no">
+                    </div>
 
 
-                            <div class="food-image"><img loading="lazy" src="assets/images/pizza.png"
+                </div>
 
 
-                                    alt="Hawaiian Pizza"><span class="food-badge">Tropical</span></div>
+                <div class="food-card tilt-card animate-on-scroll" data-category="pizza" data-veg="no">
 
 
-                            <div class="food-body">
+                    <div class="food-image"><img loading="lazy" src="assets/images/pizza.png" alt="Hawaiian Pizza"><span
+                            class="food-badge">Tropical</span></div>
 
 
-                                <h4>Hawaiian Pizza <span class="veg-indicator non-veg"><i class="fas fa-circle" style="color:#ef4444;font-size:0.6rem;margin-right:6px"></i> Non-Veg</span></h4>
+                    <div class="food-body">
 
 
-                                <p class="food-desc">Ham, pineapple, mozzarella — the classic sweet-savory combo</p>
+                        <h4>Hawaiian Pizza <span class="veg-indicator non-veg"><i class="fas fa-circle"
+                                    style="color:#ef4444;font-size:0.6rem;margin-right:6px"></i> Non-Veg</span></h4>
 
 
-                            </div>
+                        <p class="food-desc">Ham, pineapple, mozzarella — the classic sweet-savory combo</p>
 
 
-                            <div class="food-footer"><span class="food-price">₹349</span><span class="food-rating">â­
+                    </div>
 
 
-                                    4.5</span>
+                    <div class="food-footer"><span class="food-price">₹349</span><span class="food-rating">â­
 
 
-                                <div class="cart-actions" data-id="p5" data-name="Hawaiian Pizza" data-price="349"
+                            4.5</span>
 
 
-                                    data-image="assets/images/pizza.png" data-restaurant="Naples Fire Pizza">
+                        <div class="cart-actions" data-id="p5" data-name="Hawaiian Pizza" data-price="349"
+                            data-image="assets/images/pizza.png" data-restaurant="Naples Fire Pizza">
 
 
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
 
 
                         </div>
-
-
-
-
-
-                        <!-- BURGERS (4) -->
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="burger" data-veg="no">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/burger.png"
-
-
-                                    alt="Classic Cheeseburger"><span class="food-badge">Bestseller</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Classic Cheeseburger <span class="veg-indicator non-veg"> Non-Veg</span></h4>
-
-
-                                <p class="food-desc">Angus beef, cheddar, lettuce, tomato, special sauce</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹199</span><span class="food-rating">â­
-
-
-                                    4.8</span>
-
-
-                                <div class="cart-actions" data-id="b1" data-name="Classic Cheeseburger" data-price="199"
-
-
-                                    data-image="assets/images/burger.png" data-restaurant="Burger Palace">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="burger" data-veg="no">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/burger.png"
-
-
-                                    alt="BBQ Bacon Burger"><span class="food-badge">Popular</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>BBQ Bacon Burger <span class="veg-indicator non-veg"> Non-Veg</span></h4>
-
-
-                                <p class="food-desc">Double patty, crispy bacon, onion rings, smoky BBQ</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹349</span><span class="food-rating">â­
-
-
-                                    4.9</span>
-
-
-                                <div class="cart-actions" data-id="b2" data-name="BBQ Bacon Burger" data-price="349"
-
-
-                                    data-image="assets/images/burger.png" data-restaurant="Burger Palace">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="burger" data-veg="no">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/burger.png"
-
-
-                                    alt="Mushroom Swiss Burger"><span class="food-badge">Chef Pick</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Mushroom Swiss Burger <span class="veg-indicator non-veg"> Non-Veg</span></h4>
-
-
-                                <p class="food-desc">Sautéed mushrooms, Swiss cheese, garlic aioli</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹269</span><span class="food-rating">â­
-
-
-                                    4.7</span>
-
-
-                                <div class="cart-actions" data-id="b3" data-name="Mushroom Swiss Burger"
-
-
-                                    data-price="269" data-image="assets/images/burger.png"
-
-
-                                    data-restaurant="Burger Palace">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="burger" data-veg="no">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/burger.png"
-
-
-                                    alt="Spicy Jalapeño Burger"><span class="food-badge">Œ¶ï Hot</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Spicy Jalapeño Burger <span class="veg-indicator non-veg"> Non-Veg</span></h4>
-
-
-                                <p class="food-desc">Pepper jack, jalapeños, chipotle mayo, crispy onions</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹299</span><span class="food-rating">â­
-
-
-                                    4.6</span>
-
-
-                                <div class="cart-actions" data-id="b4" data-name="Spicy Jalapeño Burger"
-
-
-                                    data-price="299" data-image="assets/images/burger.png"
-
-
-                                    data-restaurant="Smash Burger Co.">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-
-
-
-                        <!-- SUSHI (3) -->
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="sushi" data-veg="no">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/sushi.png"
-
-
-                                    alt="Dragon Roll"><span class="food-badge">Chef Special</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Dragon Roll <span class="veg-indicator non-veg"> Non-Veg</span></h4>
-
-
-                                <p class="food-desc">Shrimp tempura, avocado, eel sauce, tobiko on top</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹449</span><span class="food-rating">â­
-
-
-                                    4.9</span>
-
-
-                                <div class="cart-actions" data-id="s1" data-name="Dragon Roll" data-price="449"
-
-
-                                    data-image="assets/images/sushi.png" data-restaurant="Tokyo Bites">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="sushi" data-veg="no">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/sushi.png"
-
-
-                                    alt="Salmon Nigiri"><span class="food-badge">Popular</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Salmon Nigiri (6pc) <span class="veg-indicator non-veg"> Non-Veg</span></h4>
-
-
-                                <p class="food-desc">Fresh Atlantic salmon over seasoned sushi rice</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹349</span><span class="food-rating">â­
-
-
-                                    4.8</span>
-
-
-                                <div class="cart-actions" data-id="s2" data-name="Salmon Nigiri" data-price="349"
-
-
-                                    data-image="assets/images/sushi.png" data-restaurant="Tokyo Bites">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="sushi" data-veg="no">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/sushi.png"
-
-
-                                    alt="Rainbow Roll"></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Rainbow Roll <span class="veg-indicator non-veg"> Non-Veg</span></h4>
-
-
-                                <p class="food-desc">California roll topped with assorted sashimi & avocado</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹499</span><span class="food-rating">â­
-
-
-                                    4.9</span>
-
-
-                                <div class="cart-actions" data-id="s3" data-name="Rainbow Roll" data-price="499"
-
-
-                                    data-image="assets/images/sushi.png" data-restaurant="Tokyo Bites">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-
-
-
-                        <!-- INDIAN (5) -->
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="indian" data-veg="no">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/curry.png"
-
-
-                                    alt="Butter Chicken"><span class="food-badge">Bestseller</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Butter Chicken <span class="veg-indicator non-veg"> Non-Veg</span></h4>
-
-
-                                <p class="food-desc">Creamy tomato curry with tender tikka chicken, served with naan</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹349</span><span class="food-rating">â­
-
-
-                                    4.9</span>
-
-
-                                <div class="cart-actions" data-id="i1" data-name="Butter Chicken" data-price="349"
-
-
-                                    data-image="assets/images/curry.png" data-restaurant="Spice Garden">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="indian" data-veg="no">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/curry.png"
-
-
-                                    alt="Lamb Biryani"><span class="food-badge">Popular</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Lamb Biryani <span class="veg-indicator non-veg"> Non-Veg</span></h4>
-
-
-                                <p class="food-desc">Fragrant basmati rice layered with spiced lamb and saffron</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹449</span><span class="food-rating">â­
-
-
-                                    4.8</span>
-
-
-                                <div class="cart-actions" data-id="i2" data-name="Lamb Biryani" data-price="449"
-
-
-                                    data-image="assets/images/curry.png" data-restaurant="Spice Garden">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="indian" data-veg="yes">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/curry.png"
-
-
-                                    alt="Paneer Tikka Masala"><span class="food-badge">Veg</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Paneer Tikka Masala <span class="veg-indicator veg"> Veg</span></h4>
-
-
-                                <p class="food-desc">Grilled paneer cubes in rich masala gravy with bell peppers</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹299</span><span class="food-rating">â­
-
-
-                                    4.7</span>
-
-
-                                <div class="cart-actions" data-id="i3" data-name="Paneer Tikka Masala" data-price="299"
-
-
-                                    data-image="assets/images/curry.png" data-restaurant="Spice Garden">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="indian" data-veg="no">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/curry.png"
-
-
-                                    alt="Chicken Tandoori"></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Chicken Tandoori <span class="veg-indicator non-veg"> Non-Veg</span></h4>
-
-
-                                <p class="food-desc">Clay-oven roasted whole chicken legs with mint chutney</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹399</span><span class="food-rating">â­
-
-
-                                    4.8</span>
-
-
-                                <div class="cart-actions" data-id="i4" data-name="Chicken Tandoori" data-price="399"
-
-
-                                    data-image="assets/images/curry.png" data-restaurant="Tandoori Nights">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="indian" data-veg="yes">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/curry.png"
-
-
-                                    alt="Dal Makhani"><span class="food-badge">Veg</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Dal Makhani <span class="veg-indicator veg"> Veg</span></h4>
-
-
-                                <p class="food-desc">Slow-cooked black lentils in butter, cream, and spices</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹249</span><span class="food-rating">â­
-
-
-                                    4.6</span>
-
-
-                                <div class="cart-actions" data-id="i5" data-name="Dal Makhani" data-price="249"
-
-
-                                    data-image="assets/images/curry.png" data-restaurant="Spice Garden">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-
-
-
-                        <!-- MEXICAN (4) -->
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="mexican" data-veg="no">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/tacos.png"
-
-
-                                    alt="Street Tacos"><span class="food-badge">Bestseller</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Street Tacos (3pc) <span class="veg-indicator non-veg"> Non-Veg</span></h4>
-
-
-                                <p class="food-desc">Carne asada, onion, cilantro, lime on corn tortillas</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹199</span><span class="food-rating">â­
-
-
-                                    4.8</span>
-
-
-                                <div class="cart-actions" data-id="m1" data-name="Street Tacos" data-price="199"
-
-
-                                    data-image="assets/images/tacos.png" data-restaurant="El Fuego Cantina">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="mexican" data-veg="no">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/tacos.png"
-
-
-                                    alt="Loaded Burrito"><span class="food-badge">Popular</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Loaded Burrito <span class="veg-indicator non-veg"> Non-Veg</span></h4>
-
-
-                                <p class="food-desc">Chicken, rice, beans, cheese, sour cream, guacamole</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹249</span><span class="food-rating">â­
-
-
-                                    4.7</span>
-
-
-                                <div class="cart-actions" data-id="m2" data-name="Loaded Burrito" data-price="249"
-
-
-                                    data-image="assets/images/tacos.png" data-restaurant="El Fuego Cantina">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="mexican" data-veg="yes">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/tacos.png"
-
-
-                                    alt="Nachos Supreme"></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Nachos Supreme <span class="veg-indicator veg"> Veg</span></h4>
-
-
-                                <p class="food-desc">Tortilla chips, jalapeños, cheese, salsa, and guacamole</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹199</span><span class="food-rating">â­
-
-
-                                    4.6</span>
-
-
-                                <div class="cart-actions" data-id="m3" data-name="Nachos Supreme" data-price="199"
-
-
-                                    data-image="assets/images/tacos.png" data-restaurant="El Fuego Cantina">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="mexican" data-veg="no">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/tacos.png"
-
-
-                                    alt="Chicken Quesadilla"><span class="food-badge">Cheesy</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Chicken Quesadilla <span class="veg-indicator non-veg"> Non-Veg</span></h4>
-
-
-                                <p class="food-desc">Grilled flour tortilla stuffed with chicken, cheese, peppers</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹199</span><span class="food-rating">â­
-
-
-                                    4.7</span>
-
-
-                                <div class="cart-actions" data-id="m4" data-name="Chicken Quesadilla" data-price="199"
-
-
-                                    data-image="assets/images/tacos.png" data-restaurant="Guac & Roll">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-
-
-
-                        <!-- PASTA (4) -->
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="pasta" data-veg="no">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/pasta.png"
-
-
-                                    alt="Classic Carbonara"><span class="food-badge">Chef Pick</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Classic Carbonara <span class="veg-indicator non-veg"> Non-Veg</span></h4>
-
-
-                                <p class="food-desc">Spaghetti, pancetta, egg, parmesan — creamy Roman style</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹349</span><span class="food-rating">â­
-
-
-                                    4.9</span>
-
-
-                                <div class="cart-actions" data-id="pa1" data-name="Classic Carbonara" data-price="349"
-
-
-                                    data-image="assets/images/pasta.png" data-restaurant="Bella Cucina">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="pasta" data-veg="yes">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/pasta.png"
-
-
-                                    alt="Penne Arrabbiata"><span class="food-badge">Œ¶ï Spicy</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Penne Arrabbiata <span class="veg-indicator veg"> Veg</span></h4>
-
-
-                                <p class="food-desc">Penne in fiery tomato sauce with garlic and chili flakes</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹249</span><span class="food-rating">â­
-
-
-                                    4.6</span>
-
-
-                                <div class="cart-actions" data-id="pa2" data-name="Penne Arrabbiata" data-price="249"
-
-
-                                    data-image="assets/images/pasta.png" data-restaurant="Bella Cucina">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="pasta" data-veg="yes">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/pasta.png"
-
-
-                                    alt="Truffle Mushroom Pasta"><span class="food-badge">Premium</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Truffle Mushroom Pasta <span class="veg-indicator veg"> Veg</span></h4>
-
-
-                                <p class="food-desc">Tagliatelle with wild mushrooms, truffle oil, parmesan shavings</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹499</span><span class="food-rating">â­
-
-
-                                    4.9</span>
-
-
-                                <div class="cart-actions" data-id="pa3" data-name="Truffle Mushroom Pasta"
-
-
-                                    data-price="499" data-image="assets/images/pasta.png"
-
-
-                                    data-restaurant="Bella Cucina">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="pasta" data-veg="no">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/pasta.png"
-
-
-                                    alt="Lasagna Bolognese"><span class="food-badge">Hearty</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Lasagna Bolognese <span class="veg-indicator non-veg"> Non-Veg</span></h4>
-
-
-                                <p class="food-desc">Layered pasta, rich meat sauce, béchamel, melted mozzarella</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹349</span><span class="food-rating">â­
-
-
-                                    4.8</span>
-
-
-                                <div class="cart-actions" data-id="pa4" data-name="Lasagna Bolognese" data-price="349"
-
-
-                                    data-image="assets/images/pasta.png" data-restaurant="Trattoria Nonna">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-
-
-
-                        <!-- CHINESE (3) -->
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="chinese" data-veg="no">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/chinese.png"
-
-
-                                    alt="Kung Pao Chicken"><span class="food-badge">Popular</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Kung Pao Chicken <span class="veg-indicator non-veg"> Non-Veg</span></h4>
-
-
-                                <p class="food-desc">Spicy stir-fried chicken, peanuts, vegetables, chili peppers</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹299</span><span class="food-rating">â­
-
-
-                                    4.7</span>
-
-
-                                <div class="cart-actions" data-id="c1" data-name="Kung Pao Chicken" data-price="299"
-
-
-                                    data-image="assets/images/chinese.png" data-restaurant="Golden Dragon">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="chinese" data-veg="no">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/chinese.png"
-
-
-                                    alt="Dim Sum Platter"><span class="food-badge">Sharing</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Dim Sum Platter (12pc) <span class="veg-indicator non-veg"> Non-Veg</span></h4>
-
-
-                                <p class="food-desc">Assorted dumplings: shrimp, pork, vegetable with dipping sauces</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹399</span><span class="food-rating">â­
-
-
-                                    4.8</span>
-
-
-                                <div class="cart-actions" data-id="c2" data-name="Dim Sum Platter" data-price="399"
-
-
-                                    data-image="assets/images/chinese.png" data-restaurant="Golden Dragon">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="chinese" data-veg="yes">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/chinese.png" alt="Chow Mein">
-
-
-                            </div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Vegetable Chow Mein <span class="veg-indicator veg"> Veg</span></h4>
-
-
-                                <p class="food-desc">Stir-fried noodles with mixed vegetables in soy ginger sauce</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹199</span><span class="food-rating">â­
-
-
-                                    4.5</span>
-
-
-                                <div class="cart-actions" data-id="c3" data-name="Vegetable Chow Mein" data-price="199"
-
-
-                                    data-image="assets/images/chinese.png" data-restaurant="Wok This Way">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-
-
-
-                        <!-- HEALTHY (3) -->
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="salad" data-veg="yes">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/salad.png"
-
-
-                                    alt="Caesar Salad"><span class="food-badge">Healthy</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Caesar Salad <span class="veg-indicator veg"> Veg</span></h4>
-
-
-                                <p class="food-desc">Romaine, parmesan, croutons, grilled chicken, classic dressing</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹199</span><span class="food-rating">â­
-
-
-                                    4.7</span>
-
-
-                                <div class="cart-actions" data-id="sa1" data-name="Caesar Salad" data-price="199"
-
-
-                                    data-image="assets/images/salad.png" data-restaurant="Green Bowl Co.">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="salad" data-veg="yes">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/salad.png"
-
-
-                                    alt="Quinoa Power Bowl"><span class="food-badge">Vegan</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Quinoa Power Bowl <span class="veg-indicator veg"> Veg</span></h4>
-
-
-                                <p class="food-desc">Quinoa, roasted veggies, avocado, tahini lemon dressing</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹249</span><span class="food-rating">â­
-
-
-                                    4.8</span>
-
-
-                                <div class="cart-actions" data-id="sa2" data-name="Quinoa Power Bowl" data-price="249"
-
-
-                                    data-image="assets/images/salad.png" data-restaurant="Green Bowl Co.">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="salad" data-veg="yes">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/salad.png"
-
-
-                                    alt="AÃ§aÃ­ Bowl"><span class="food-badge">Superfood</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>AÃ§aÃ­ Smoothie Bowl <span class="veg-indicator veg"> Veg</span></h4>
-
-
-                                <p class="food-desc">Blended aÃ§aÃ­, banana, granola, fresh berries, honey drizzle</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹199</span><span class="food-rating">â­
-
-
-                                    4.7</span>
-
-
-                                <div class="cart-actions" data-id="sa3" data-name="AÃ§aÃ­ Smoothie Bowl"
-
-
-                                    data-price="199" data-image="assets/images/salad.png"
-
-
-                                    data-restaurant="Green Bowl Co.">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-
-
-
-                        <!-- DESSERTS (4) -->
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="dessert" data-veg="yes">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/dessert.png"
-
-
-                                    alt="Chocolate Lava Cake"><span class="food-badge">Must Try</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Chocolate Lava Cake <span class="veg-indicator veg"> Veg</span></h4>
-
-
-                                <p class="food-desc">Warm, gooey chocolate center with vanilla ice cream</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹149</span><span class="food-rating">â­
-
-
-                                    4.9</span>
-
-
-                                <div class="cart-actions" data-id="d1" data-name="Chocolate Lava Cake" data-price="149"
-
-
-                                    data-image="assets/images/dessert.png" data-restaurant="Sweet Tooth Bakery">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="dessert" data-veg="yes">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/dessert.png"
-
-
-                                    alt="Tiramisu"><span class="food-badge">Classic</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Tiramisu <span class="veg-indicator veg"> Veg</span></h4>
-
-
-                                <p class="food-desc">Espresso-soaked ladyfingers, mascarpone, cocoa dusting</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹169</span><span class="food-rating">â­
-
-
-                                    4.8</span>
-
-
-                                <div class="cart-actions" data-id="d2" data-name="Tiramisu" data-price="169"
-
-
-                                    data-image="assets/images/dessert.png" data-restaurant="Sweet Tooth Bakery">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="dessert" data-veg="yes">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/dessert.png"
-
-
-                                    alt="Cheesecake"><span class="food-badge">Premium</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>New York Cheesecake <span class="veg-indicator veg"> Veg</span></h4>
-
-
-                                <p class="food-desc">Creamy baked cheesecake with graham cracker crust, berry compote
-
-
-                                </p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹179</span><span class="food-rating">â­
-
-
-                                    4.8</span>
-
-
-                                <div class="cart-actions" data-id="d3" data-name="New York Cheesecake" data-price="179"
-
-
-                                    data-image="assets/images/dessert.png" data-restaurant="Sweet Tooth Bakery">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="food-card tilt-card animate-on-scroll" data-category="dessert" data-veg="yes">
-
-
-                            <div class="food-image"><img loading="lazy" src="assets/images/dessert.png"
-
-
-                                    alt="Gulab Jamun"><span class="food-badge">Indian</span></div>
-
-
-                            <div class="food-body">
-
-
-                                <h4>Gulab Jamun (4pc) <span class="veg-indicator veg"> Veg</span></h4>
-
-
-                                <p class="food-desc">Deep-fried milk dumplings soaked in rose-cardamom sugar syrup</p>
-
-
-                            </div>
-
-
-                            <div class="food-footer"><span class="food-price">₹119</span><span class="food-rating">â­
-
-
-                                    4.7</span>
-
-
-                                <div class="cart-actions" data-id="d4" data-name="Gulab Jamun" data-price="119"
-
-
-                                    data-image="assets/images/dessert.png" data-restaurant="Spice Garden">
-
-
-                                    <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
-
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-
 
 
                     </div>
@@ -2014,22 +571,39 @@
 
 
 
-                <!-- STICKY CART SIDEBAR (Desktop) -->
+                <!-- BURGERS (4) -->
 
 
-                <div class="sticky-cart-sidebar" id="cart-sidebar">
+                <div class="food-card tilt-card animate-on-scroll" data-category="burger" data-veg="no">
 
 
-                    <h3><i class="fas fa-shopping-cart"></i> Your Order</h3>
+                    <div class="food-image"><img loading="lazy" src="assets/images/burger.png"
+                            alt="Classic Cheeseburger"><span class="food-badge">Bestseller</span></div>
 
 
-                    <div id="sidebar-items">
+                    <div class="food-body">
 
 
-                        <div class="cart-empty"><span>ï</span>
+                        <h4>Classic Cheeseburger <span class="veg-indicator non-veg"> Non-Veg</span></h4>
 
 
-                            <p>Your cart is empty.<br>Add items to get started!</p>
+                        <p class="food-desc">Angus beef, cheddar, lettuce, tomato, special sauce</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹199</span><span class="food-rating">â­
+
+
+                            4.8</span>
+
+
+                        <div class="cart-actions" data-id="b1" data-name="Classic Cheeseburger" data-price="199"
+                            data-image="assets/images/burger.png" data-restaurant="Burger Palace">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
 
 
                         </div>
@@ -2038,16 +612,1236 @@
                     </div>
 
 
-                    <div id="sidebar-total" style="display:none">
+                </div>
 
 
-                        <div class="cart-total-row"><span>Total</span><span id="sidebar-total-amount">₹0</span></div>
+                <div class="food-card tilt-card animate-on-scroll" data-category="burger" data-veg="no">
 
 
-                        <a href="cart.html" class="btn btn-primary"
+                    <div class="food-image"><img loading="lazy" src="assets/images/burger.png"
+                            alt="BBQ Bacon Burger"><span class="food-badge">Popular</span></div>
 
 
-                            style="width:100%;margin-top:var(--space-md);text-align:center">View Cart →</a>
+                    <div class="food-body">
+
+
+                        <h4>BBQ Bacon Burger <span class="veg-indicator non-veg"> Non-Veg</span></h4>
+
+
+                        <p class="food-desc">Double patty, crispy bacon, onion rings, smoky BBQ</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹349</span><span class="food-rating">â­
+
+
+                            4.9</span>
+
+
+                        <div class="cart-actions" data-id="b2" data-name="BBQ Bacon Burger" data-price="349"
+                            data-image="assets/images/burger.png" data-restaurant="Burger Palace">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="burger" data-veg="no">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/burger.png"
+                            alt="Mushroom Swiss Burger"><span class="food-badge">Chef Pick</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Mushroom Swiss Burger <span class="veg-indicator non-veg"> Non-Veg</span></h4>
+
+
+                        <p class="food-desc">Sautéed mushrooms, Swiss cheese, garlic aioli</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹269</span><span class="food-rating">â­
+
+
+                            4.7</span>
+
+
+                        <div class="cart-actions" data-id="b3" data-name="Mushroom Swiss Burger" data-price="269"
+                            data-image="assets/images/burger.png" data-restaurant="Burger Palace">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="burger" data-veg="no">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/burger.png"
+                            alt="Spicy Jalapeño Burger"><span class="food-badge">Œ¶ï Hot</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Spicy Jalapeño Burger <span class="veg-indicator non-veg"> Non-Veg</span></h4>
+
+
+                        <p class="food-desc">Pepper jack, jalapeños, chipotle mayo, crispy onions</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹299</span><span class="food-rating">â­
+
+
+                            4.6</span>
+
+
+                        <div class="cart-actions" data-id="b4" data-name="Spicy Jalapeño Burger" data-price="299"
+                            data-image="assets/images/burger.png" data-restaurant="Smash Burger Co.">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <!-- SUSHI (3) -->
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="sushi" data-veg="no">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/sushi.png" alt="Dragon Roll"><span
+                            class="food-badge">Chef Special</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Dragon Roll <span class="veg-indicator non-veg"> Non-Veg</span></h4>
+
+
+                        <p class="food-desc">Shrimp tempura, avocado, eel sauce, tobiko on top</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹449</span><span class="food-rating">â­
+
+
+                            4.9</span>
+
+
+                        <div class="cart-actions" data-id="s1" data-name="Dragon Roll" data-price="449"
+                            data-image="assets/images/sushi.png" data-restaurant="Tokyo Bites">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="sushi" data-veg="no">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/sushi.png" alt="Salmon Nigiri"><span
+                            class="food-badge">Popular</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Salmon Nigiri (6pc) <span class="veg-indicator non-veg"> Non-Veg</span></h4>
+
+
+                        <p class="food-desc">Fresh Atlantic salmon over seasoned sushi rice</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹349</span><span class="food-rating">â­
+
+
+                            4.8</span>
+
+
+                        <div class="cart-actions" data-id="s2" data-name="Salmon Nigiri" data-price="349"
+                            data-image="assets/images/sushi.png" data-restaurant="Tokyo Bites">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="sushi" data-veg="no">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/sushi.png" alt="Rainbow Roll"></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Rainbow Roll <span class="veg-indicator non-veg"> Non-Veg</span></h4>
+
+
+                        <p class="food-desc">California roll topped with assorted sashimi & avocado</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹499</span><span class="food-rating">â­
+
+
+                            4.9</span>
+
+
+                        <div class="cart-actions" data-id="s3" data-name="Rainbow Roll" data-price="499"
+                            data-image="assets/images/sushi.png" data-restaurant="Tokyo Bites">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <!-- INDIAN (5) -->
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="indian" data-veg="no">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/curry.png" alt="Butter Chicken"><span
+                            class="food-badge">Bestseller</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Butter Chicken <span class="veg-indicator non-veg"> Non-Veg</span></h4>
+
+
+                        <p class="food-desc">Creamy tomato curry with tender tikka chicken, served with naan</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹349</span><span class="food-rating">â­
+
+
+                            4.9</span>
+
+
+                        <div class="cart-actions" data-id="i1" data-name="Butter Chicken" data-price="349"
+                            data-image="assets/images/curry.png" data-restaurant="Spice Garden">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="indian" data-veg="no">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/curry.png" alt="Lamb Biryani"><span
+                            class="food-badge">Popular</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Lamb Biryani <span class="veg-indicator non-veg"> Non-Veg</span></h4>
+
+
+                        <p class="food-desc">Fragrant basmati rice layered with spiced lamb and saffron</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹449</span><span class="food-rating">â­
+
+
+                            4.8</span>
+
+
+                        <div class="cart-actions" data-id="i2" data-name="Lamb Biryani" data-price="449"
+                            data-image="assets/images/curry.png" data-restaurant="Spice Garden">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="indian" data-veg="yes">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/curry.png"
+                            alt="Paneer Tikka Masala"><span class="food-badge">Veg</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Paneer Tikka Masala <span class="veg-indicator veg"> Veg</span></h4>
+
+
+                        <p class="food-desc">Grilled paneer cubes in rich masala gravy with bell peppers</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹299</span><span class="food-rating">â­
+
+
+                            4.7</span>
+
+
+                        <div class="cart-actions" data-id="i3" data-name="Paneer Tikka Masala" data-price="299"
+                            data-image="assets/images/curry.png" data-restaurant="Spice Garden">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="indian" data-veg="no">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/curry.png" alt="Chicken Tandoori">
+                    </div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Chicken Tandoori <span class="veg-indicator non-veg"> Non-Veg</span></h4>
+
+
+                        <p class="food-desc">Clay-oven roasted whole chicken legs with mint chutney</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹399</span><span class="food-rating">â­
+
+
+                            4.8</span>
+
+
+                        <div class="cart-actions" data-id="i4" data-name="Chicken Tandoori" data-price="399"
+                            data-image="assets/images/curry.png" data-restaurant="Tandoori Nights">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="indian" data-veg="yes">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/curry.png" alt="Dal Makhani"><span
+                            class="food-badge">Veg</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Dal Makhani <span class="veg-indicator veg"> Veg</span></h4>
+
+
+                        <p class="food-desc">Slow-cooked black lentils in butter, cream, and spices</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹249</span><span class="food-rating">â­
+
+
+                            4.6</span>
+
+
+                        <div class="cart-actions" data-id="i5" data-name="Dal Makhani" data-price="249"
+                            data-image="assets/images/curry.png" data-restaurant="Spice Garden">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <!-- MEXICAN (4) -->
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="mexican" data-veg="no">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/tacos.png" alt="Street Tacos"><span
+                            class="food-badge">Bestseller</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Street Tacos (3pc) <span class="veg-indicator non-veg"> Non-Veg</span></h4>
+
+
+                        <p class="food-desc">Carne asada, onion, cilantro, lime on corn tortillas</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹199</span><span class="food-rating">â­
+
+
+                            4.8</span>
+
+
+                        <div class="cart-actions" data-id="m1" data-name="Street Tacos" data-price="199"
+                            data-image="assets/images/tacos.png" data-restaurant="El Fuego Cantina">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="mexican" data-veg="no">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/tacos.png" alt="Loaded Burrito"><span
+                            class="food-badge">Popular</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Loaded Burrito <span class="veg-indicator non-veg"> Non-Veg</span></h4>
+
+
+                        <p class="food-desc">Chicken, rice, beans, cheese, sour cream, guacamole</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹249</span><span class="food-rating">â­
+
+
+                            4.7</span>
+
+
+                        <div class="cart-actions" data-id="m2" data-name="Loaded Burrito" data-price="249"
+                            data-image="assets/images/tacos.png" data-restaurant="El Fuego Cantina">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="mexican" data-veg="yes">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/tacos.png" alt="Nachos Supreme">
+                    </div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Nachos Supreme <span class="veg-indicator veg"> Veg</span></h4>
+
+
+                        <p class="food-desc">Tortilla chips, jalapeños, cheese, salsa, and guacamole</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹199</span><span class="food-rating">â­
+
+
+                            4.6</span>
+
+
+                        <div class="cart-actions" data-id="m3" data-name="Nachos Supreme" data-price="199"
+                            data-image="assets/images/tacos.png" data-restaurant="El Fuego Cantina">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="mexican" data-veg="no">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/tacos.png"
+                            alt="Chicken Quesadilla"><span class="food-badge">Cheesy</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Chicken Quesadilla <span class="veg-indicator non-veg"> Non-Veg</span></h4>
+
+
+                        <p class="food-desc">Grilled flour tortilla stuffed with chicken, cheese, peppers</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹199</span><span class="food-rating">â­
+
+
+                            4.7</span>
+
+
+                        <div class="cart-actions" data-id="m4" data-name="Chicken Quesadilla" data-price="199"
+                            data-image="assets/images/tacos.png" data-restaurant="Guac & Roll">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <!-- PASTA (4) -->
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="pasta" data-veg="no">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/pasta.png"
+                            alt="Classic Carbonara"><span class="food-badge">Chef Pick</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Classic Carbonara <span class="veg-indicator non-veg"> Non-Veg</span></h4>
+
+
+                        <p class="food-desc">Spaghetti, pancetta, egg, parmesan — creamy Roman style</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹349</span><span class="food-rating">â­
+
+
+                            4.9</span>
+
+
+                        <div class="cart-actions" data-id="pa1" data-name="Classic Carbonara" data-price="349"
+                            data-image="assets/images/pasta.png" data-restaurant="Bella Cucina">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="pasta" data-veg="yes">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/pasta.png"
+                            alt="Penne Arrabbiata"><span class="food-badge">Œ¶ï Spicy</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Penne Arrabbiata <span class="veg-indicator veg"> Veg</span></h4>
+
+
+                        <p class="food-desc">Penne in fiery tomato sauce with garlic and chili flakes</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹249</span><span class="food-rating">â­
+
+
+                            4.6</span>
+
+
+                        <div class="cart-actions" data-id="pa2" data-name="Penne Arrabbiata" data-price="249"
+                            data-image="assets/images/pasta.png" data-restaurant="Bella Cucina">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="pasta" data-veg="yes">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/pasta.png"
+                            alt="Truffle Mushroom Pasta"><span class="food-badge">Premium</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Truffle Mushroom Pasta <span class="veg-indicator veg"> Veg</span></h4>
+
+
+                        <p class="food-desc">Tagliatelle with wild mushrooms, truffle oil, parmesan shavings</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹499</span><span class="food-rating">â­
+
+
+                            4.9</span>
+
+
+                        <div class="cart-actions" data-id="pa3" data-name="Truffle Mushroom Pasta" data-price="499"
+                            data-image="assets/images/pasta.png" data-restaurant="Bella Cucina">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="pasta" data-veg="no">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/pasta.png"
+                            alt="Lasagna Bolognese"><span class="food-badge">Hearty</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Lasagna Bolognese <span class="veg-indicator non-veg"> Non-Veg</span></h4>
+
+
+                        <p class="food-desc">Layered pasta, rich meat sauce, béchamel, melted mozzarella</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹349</span><span class="food-rating">â­
+
+
+                            4.8</span>
+
+
+                        <div class="cart-actions" data-id="pa4" data-name="Lasagna Bolognese" data-price="349"
+                            data-image="assets/images/pasta.png" data-restaurant="Trattoria Nonna">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <!-- CHINESE (3) -->
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="chinese" data-veg="no">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/chinese.png"
+                            alt="Kung Pao Chicken"><span class="food-badge">Popular</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Kung Pao Chicken <span class="veg-indicator non-veg"> Non-Veg</span></h4>
+
+
+                        <p class="food-desc">Spicy stir-fried chicken, peanuts, vegetables, chili peppers</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹299</span><span class="food-rating">â­
+
+
+                            4.7</span>
+
+
+                        <div class="cart-actions" data-id="c1" data-name="Kung Pao Chicken" data-price="299"
+                            data-image="assets/images/chinese.png" data-restaurant="Golden Dragon">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="chinese" data-veg="no">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/chinese.png"
+                            alt="Dim Sum Platter"><span class="food-badge">Sharing</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Dim Sum Platter (12pc) <span class="veg-indicator non-veg"> Non-Veg</span></h4>
+
+
+                        <p class="food-desc">Assorted dumplings: shrimp, pork, vegetable with dipping sauces</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹399</span><span class="food-rating">â­
+
+
+                            4.8</span>
+
+
+                        <div class="cart-actions" data-id="c2" data-name="Dim Sum Platter" data-price="399"
+                            data-image="assets/images/chinese.png" data-restaurant="Golden Dragon">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="chinese" data-veg="yes">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/chinese.png" alt="Chow Mein">
+
+
+                    </div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Vegetable Chow Mein <span class="veg-indicator veg"> Veg</span></h4>
+
+
+                        <p class="food-desc">Stir-fried noodles with mixed vegetables in soy ginger sauce</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹199</span><span class="food-rating">â­
+
+
+                            4.5</span>
+
+
+                        <div class="cart-actions" data-id="c3" data-name="Vegetable Chow Mein" data-price="199"
+                            data-image="assets/images/chinese.png" data-restaurant="Wok This Way">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <!-- HEALTHY (3) -->
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="salad" data-veg="yes">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/salad.png" alt="Caesar Salad"><span
+                            class="food-badge">Healthy</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Caesar Salad <span class="veg-indicator veg"> Veg</span></h4>
+
+
+                        <p class="food-desc">Romaine, parmesan, croutons, grilled chicken, classic dressing</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹199</span><span class="food-rating">â­
+
+
+                            4.7</span>
+
+
+                        <div class="cart-actions" data-id="sa1" data-name="Caesar Salad" data-price="199"
+                            data-image="assets/images/salad.png" data-restaurant="Green Bowl Co.">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="salad" data-veg="yes">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/salad.png"
+                            alt="Quinoa Power Bowl"><span class="food-badge">Vegan</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Quinoa Power Bowl <span class="veg-indicator veg"> Veg</span></h4>
+
+
+                        <p class="food-desc">Quinoa, roasted veggies, avocado, tahini lemon dressing</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹249</span><span class="food-rating">â­
+
+
+                            4.8</span>
+
+
+                        <div class="cart-actions" data-id="sa2" data-name="Quinoa Power Bowl" data-price="249"
+                            data-image="assets/images/salad.png" data-restaurant="Green Bowl Co.">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="salad" data-veg="yes">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/salad.png" alt="AÃ§aÃ­ Bowl"><span
+                            class="food-badge">Superfood</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>AÃ§aÃ­ Smoothie Bowl <span class="veg-indicator veg"> Veg</span></h4>
+
+
+                        <p class="food-desc">Blended aÃ§aÃ­, banana, granola, fresh berries, honey drizzle</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹199</span><span class="food-rating">â­
+
+
+                            4.7</span>
+
+
+                        <div class="cart-actions" data-id="sa3" data-name="AÃ§aÃ­ Smoothie Bowl" data-price="199"
+                            data-image="assets/images/salad.png" data-restaurant="Green Bowl Co.">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <!-- DESSERTS (4) -->
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="dessert" data-veg="yes">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/dessert.png"
+                            alt="Chocolate Lava Cake"><span class="food-badge">Must Try</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Chocolate Lava Cake <span class="veg-indicator veg"> Veg</span></h4>
+
+
+                        <p class="food-desc">Warm, gooey chocolate center with vanilla ice cream</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹149</span><span class="food-rating">â­
+
+
+                            4.9</span>
+
+
+                        <div class="cart-actions" data-id="d1" data-name="Chocolate Lava Cake" data-price="149"
+                            data-image="assets/images/dessert.png" data-restaurant="Sweet Tooth Bakery">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="dessert" data-veg="yes">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/dessert.png" alt="Tiramisu"><span
+                            class="food-badge">Classic</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Tiramisu <span class="veg-indicator veg"> Veg</span></h4>
+
+
+                        <p class="food-desc">Espresso-soaked ladyfingers, mascarpone, cocoa dusting</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹169</span><span class="food-rating">â­
+
+
+                            4.8</span>
+
+
+                        <div class="cart-actions" data-id="d2" data-name="Tiramisu" data-price="169"
+                            data-image="assets/images/dessert.png" data-restaurant="Sweet Tooth Bakery">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="dessert" data-veg="yes">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/dessert.png" alt="Cheesecake"><span
+                            class="food-badge">Premium</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>New York Cheesecake <span class="veg-indicator veg"> Veg</span></h4>
+
+
+                        <p class="food-desc">Creamy baked cheesecake with graham cracker crust, berry compote
+
+
+                        </p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹179</span><span class="food-rating">â­
+
+
+                            4.8</span>
+
+
+                        <div class="cart-actions" data-id="d3" data-name="New York Cheesecake" data-price="179"
+                            data-image="assets/images/dessert.png" data-restaurant="Sweet Tooth Bakery">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="food-card tilt-card animate-on-scroll" data-category="dessert" data-veg="yes">
+
+
+                    <div class="food-image"><img loading="lazy" src="assets/images/dessert.png" alt="Gulab Jamun"><span
+                            class="food-badge">Indian</span></div>
+
+
+                    <div class="food-body">
+
+
+                        <h4>Gulab Jamun (4pc) <span class="veg-indicator veg"> Veg</span></h4>
+
+
+                        <p class="food-desc">Deep-fried milk dumplings soaked in rose-cardamom sugar syrup</p>
+
+
+                    </div>
+
+
+                    <div class="food-footer"><span class="food-price">₹119</span><span class="food-rating">â­
+
+
+                            4.7</span>
+
+
+                        <div class="cart-actions" data-id="d4" data-name="Gulab Jamun" data-price="119"
+                            data-image="assets/images/dessert.png" data-restaurant="Spice Garden">
+
+
+                            <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
+
+
+                        </div>
 
 
                     </div>
@@ -2060,6 +1854,58 @@
 
 
             </div>
+
+
+        </div>
+
+
+
+
+
+        <!-- STICKY CART SIDEBAR (Desktop) -->
+
+
+        <div class="sticky-cart-sidebar" id="cart-sidebar">
+
+
+            <h3><i class="fas fa-shopping-cart"></i> Your Order</h3>
+
+
+            <div id="sidebar-items">
+
+
+                <div class="cart-empty"><span>ï</span>
+
+
+                    <p>Your cart is empty.<br>Add items to get started!</p>
+
+
+                </div>
+
+
+            </div>
+
+
+            <div id="sidebar-total" style="display:none">
+
+
+                <div class="cart-total-row"><span>Total</span><span id="sidebar-total-amount">₹0</span></div>
+
+
+                <a href="cart.html" class="btn btn-primary"
+                    style="width:100%;margin-top:var(--space-md);text-align:center">View Cart →</a>
+
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+        </div>
 
 
         </div>
@@ -2093,23 +1939,11 @@
 
 
                     <div class="footer-social"><a href="https://instagram.com/flavourfleet" target="_blank"
-
-
                             aria-label="Instagram"><i class="fab fa-instagram"></i></a><a
-
-
                             href="https://facebook.com/flavourfleet" target="_blank" aria-label="Facebook"><i
-
-
                                 class="fab fa-facebook-f"></i></a><a href="https://x.com/flavourfleet" target="_blank"
-
-
                             aria-label="X / Twitter"><i class="fab fa-x-twitter"></i></a><a
-
-
                             href="https://youtube.com/@flavourfleet" target="_blank" aria-label="YouTube"><i
-
-
                                 class="fab fa-youtube"></i></a></div>
 
 
@@ -2245,10 +2079,8 @@
 
 
 
-    <a href="cart.html" class="fab-cart" id="fab-cart" title="View Cart" style="display:none"><i class="fas fa-shopping-cart"></i><span
-
-
-            class="fab-count" id="fab-count">0</span></a>
+    <a href="cart.html" class="fab-cart" id="fab-cart" title="View Cart" style="display:none"><i
+            class="fas fa-shopping-cart"></i><span class="fab-count" id="fab-count">0</span></a>
 
 
     <div class="toast-container" id="toast-container"></div>
@@ -2270,15 +2102,10 @@
 
 
     <script src="js/api.js"></script>
-
-
     <script src="js/cart.js"></script>
-
-
     <script src="js/auth.js"></script>
-
-
     <script src="js/main.js"></script>
+    <script src="js/dynamic-render.js"></script>
 
 
     <script>
@@ -2581,30 +2408,18 @@
         // Init: restore qty selectors for items already in cart
 
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Fetch and render menu items from API
+            await DynamicRender.renderMenu('food-grid');
 
-
+            // Restore qty selectors for items already in cart
             const items = Cart.getCart();
-
-
             items.forEach(item => {
-
-
                 const wrapper = document.querySelector(`.cart-actions[data-id="${item.id}"]`);
-
-
                 if (wrapper) updateQtyUI(wrapper, item.id);
-
-
             });
-
-
             updateSidebar();
-
-
             updateMobileBar();
-
-
         });
 
 

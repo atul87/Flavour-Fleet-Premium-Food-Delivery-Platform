@@ -4,3 +4,5 @@ pymongo
 bcrypt
 resend
 python-dotenv
+flask-limiter
+flask-socketio

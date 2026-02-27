@@ -678,7 +678,7 @@
                 payment_method: document.querySelector('.payment-method.active')?.textContent?.trim() || 'UPI',
 
 
-                discount: 0
+                promo_code: localStorage.getItem('flavourfleet_promo_code') || ''
 
 
             };
@@ -697,6 +697,9 @@
 
 
                 localStorage.setItem('flavourfleet_current_order', JSON.stringify(result.order));
+
+
+                localStorage.removeItem('flavourfleet_promo_code');
 
 
                 showToast(result.message || 'Order placed successfully! 🎉', 'success');

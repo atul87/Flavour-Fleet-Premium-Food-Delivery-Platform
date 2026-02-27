@@ -2,7 +2,7 @@
 
 ![Flavour Fleet Hero](./assets/screenshots/report_homepage.png)
 
-A full-stack, responsive food delivery web application with intuitive UI, secure authentication, cart management, order tracking, and a modern design system. Built to showcase professional frontend & backend architecture with production-grade features.
+A full-stack, production-grade food delivery web application featuring real-time order tracking, secure authentication, admin dashboard, smart catalogue, and a modern design system — built with Flask, MongoDB, and Socket.IO.
 
 **GitHub:** <https://github.com/atul87/Flavour-Fleet-Premium-Food-Delivery-Platform>
 
@@ -10,62 +10,70 @@ A full-stack, responsive food delivery web application with intuitive UI, secure
 
 ## 📌 Table of Contents
 
-- [🍔 Flavour Fleet — Premium Food Delivery Platform](#-flavour-fleet--premium-food-delivery-platform)
-  - [📌 Table of Contents](#-table-of-contents)
-  - [🚀 About the Project](#-about-the-project)
-  - [💡 Key Features](#-key-features)
-  - [🧠 Tech Stack](#-tech-stack)
-  - [📁 Project Structure](#-project-structure)
-  - [⚙️ Local Setup \& Installation](#️-local-setup--installation)
-    - [📥 Clone](#-clone)
-    - [🧰 Backend Setup](#-backend-setup)
-    - [🌐 Frontend](#-frontend)
-  - [📊 Usage](#-usage)
-  - [🛠 Architecture \& Design](#-architecture--design)
-  - [📸 Screenshots](#-screenshots)
-  - [📈 Roadmap](#-roadmap)
-  - [🤝 Contributing](#-contributing)
-  - [📄 License](#-license)
+- [About the Project](#-about-the-project)
+- [Key Features](#-key-features)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
+- [Local Setup & Installation](#️-local-setup--installation)
+- [API Endpoints](#-api-endpoints)
+- [Usage](#-usage)
+- [Architecture & Design](#-architecture--design)
+- [Screenshots](#-screenshots)
+- [Roadmap](#-roadmap)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ---
 
 ## 🚀 About the Project
 
-Flavour Fleet is a premium-quality food delivery platform designed to simulate real-world applications with professional architecture and UX. It includes a REST API backend, client-side state management, authentication flows, responsive design, and performance optimizations.
-
-This project was built with the goal of demonstrating full-stack engineering skills and applying frontend + backend best practices.
+Flavour Fleet is a premium food delivery platform designed as a startup-ready application. It includes a REST API backend with Flask Blueprints, real-time WebSocket tracking via Socket.IO, dynamic frontend rendering, PWA support, admin dashboard, and comprehensive security measures. The architecture follows production best practices with API versioning, rate limiting, and materialized analytics.
 
 ---
 
 ## 💡 Key Features
 
-✔ **User Authentication**: Login, signup, password reset with strength indicator  
-✔ **Secure Backend**: Python Flask with session handling and bcrypt hashing  
-✔ **Smart Catalogue**: Browsing with composable filters (Veg/Non-Veg + Category + Search)  
-✔ **Real-time Cart**: Instant sync, local storage persistence, and promo code system  
-✔ **Checkout Flow**: Form validation, order summary, and success animation  
-✔ **Order Tracking**: Visual timeline for order status updates  
-✔ **Performance**: Lazy loading images, skeleton loaders, and optimized assets  
-✔ **Responsive Design**: Mobile-first approach supporting devices <375px to desktop  
+### 🔐 Security & Auth
+
+- Login, signup, password reset with strength indicator
+- Bcrypt password hashing + Flask session management
+- Rate limiting on sensitive endpoints (login, register, forgot-password)
+- Server-side promo code re-validation (never trusts client discount)
+
+### 🍕 Core Platform
+
+- **Smart Catalogue**: Composable filters (Veg/Non-Veg + Category + Search)
+- **Real-time Cart**: Instant sync, localStorage persistence, promo code system
+- **Checkout Flow**: Indian address validation, order summary, payment recording
+- **Dynamic Rendering**: Menu, restaurants, & offers loaded from API with skeleton loaders
+
+### 📡 Real-Time
+
+- **Socket.IO Live Tracking**: WebSocket-based order status pushed from admin → tracking page
+- **Admin Dashboard**: Full CRUD for menu, restaurants, offers, users, orders
+- **Analytics**: Materialized daily snapshots (revenue, top items, top restaurants)
+
+### 📱 Modern UX
+
+- **PWA**: Installable via `manifest.json` + service worker with offline caching
+- **Accessibility**: ARIA landmarks, skip-to-content, `aria-live` on dynamic regions
+- **SEO**: Open Graph tags, meta descriptions on all key pages
+- **Responsive Design**: Mobile-first, 375px to desktop
 
 ---
 
 ## 🧠 Tech Stack
 
-**Frontend:**  
-✔ HTML5, CSS3 (Custom Design System), Vanilla JavaScript  
-✔ Glassmorphism UI, CSS Animations, Responsive Layouts
-
-**Backend:**  
-✔ Python Flask REST API  
-✔ PyMongo for MongoDB interaction
-
-**Database:**  
-✔ MongoDB (Local/Atlas)
-
-**Dev Tools:**  
-✔ Git, VS Code  
-✔ Flask-CORS, Dotenv
+| Layer | Technologies |
+|-------|-------------|
+| **Frontend** | HTML5, CSS3 (Custom Design System), Vanilla JS, Font Awesome |
+| **Backend** | Python Flask, Flask Blueprints (9 modules), Flask-SocketIO |
+| **Database** | MongoDB with 17 compound indexes |
+| **Real-Time** | Socket.IO (WebSocket) |
+| **Email** | Resend API (order confirmation, password reset) |
+| **Security** | Bcrypt, Flask-Limiter, server-side validation |
+| **PWA** | manifest.json, Service Worker (cache-first/network-first) |
+| **Dev Tools** | Git, VS Code, Flask-CORS, python-dotenv |
 
 ---
 
@@ -74,21 +82,47 @@ This project was built with the goal of demonstrating full-stack engineering ski
 ```bash
 Website/
 ├── backend/
-│   ├── app.py              # Main Flask Application
-│   ├── seed_data.py        # Database Seeder
-│   └── requirements.txt    # Python Dependencies
+│   ├── app.py                     # Entry point (Flask + Socket.IO)
+│   ├── db.py                      # MongoDB connection + 17 indexes
+│   ├── helpers.py                 # Auth decorators, error handlers, logger
+│   ├── routes/
+│   │   ├── auth.py                # Login, register, profile, password reset
+│   │   ├── menu.py                # Menu items API
+│   │   ├── restaurants.py         # Restaurants API
+│   │   ├── cart.py                # Cart management
+│   │   ├── orders.py              # Order placement + payment recording
+│   │   ├── offers.py              # Promo codes & deals
+│   │   ├── admin.py               # Admin CRUD + analytics snapshots
+│   │   ├── addresses.py           # Delivery address management
+│   │   ├── payments.py            # Payment history
+│   │   └── realtime.py            # Socket.IO event handlers
+│   ├── utils/
+│   │   ├── email_service.py       # Resend email integration
+│   │   └── email_templates.py     # HTML email templates
+│   ├── seed_data.py               # Database seeder
+│   ├── requirements.txt           # Python dependencies
+│   └── .env                       # Environment variables
 ├── js/
-│   ├── api.js              # API Client Wrapper
-│   ├── auth.js             # Authentication Logic
-│   ├── cart.js             # Cart Management
-│   └── main.js             # Core UI Interactions
+│   ├── api.js                     # API client wrapper
+│   ├── auth.js                    # Authentication logic
+│   ├── cart.js                    # Cart state management
+│   ├── main.js                    # Core UI interactions
+│   └── dynamic-render.js          # Dynamic API → HTML renderer
 ├── css/
-│   ├── style.css           # Main Design System
-│   └── animations.css      # Keyframe Animations
-├── assets/
-│   ├── images/             # Food Assets
-│   └── screenshots/        # Project Screenshots
-└── index.html              # Entry Point
+│   ├── style.css                  # Main design system
+│   └── animations.css             # Keyframe animations
+├── assets/images/                 # Food & UI assets
+├── manifest.json                  # PWA manifest
+├── sw.js                          # Service worker
+├── index.html                     # Landing page
+├── menu.html                      # Dynamic menu (API-powered)
+├── restaurants.html               # Dynamic restaurants
+├── offers.html                    # Dynamic offers & deals
+├── login.html                     # Auth with inline validation
+├── cart.html                      # Shopping cart
+├── checkout.html                  # Checkout flow
+├── tracking.html                  # Real-time order tracking
+└── admin/                         # Admin dashboard
 ```
 
 ---
@@ -111,6 +145,14 @@ cd backend
 pip install -r requirements.txt
 ```
 
+1. **Configure Environment** — Create `backend/.env`:
+
+```env
+SECRET_KEY=your_secret_key_here
+RESEND_API_KEY=your_resend_api_key
+FROM_EMAIL=onboarding@resend.dev
+```
+
 1. **Seed the Database** (Populates menu, restaurants, offers)
 
 ```bash
@@ -123,31 +165,68 @@ python seed_data.py
 python app.py
 ```
 
-> The server will start at `http://localhost:5000`
+> The server starts at `http://localhost:5000` with Socket.IO enabled.
 
 ### 🌐 Frontend
 
-Open `http://localhost:5000` in your browser.
+Open `http://localhost:5000` in your browser — all pages are served by Flask.
+
+---
+
+## � API Endpoints
+
+All endpoints are available at both `/api/` and `/api/v1/` (versioned).
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/register` | Create account |
+| POST | `/api/auth/login` | Login |
+| POST | `/api/auth/forgot-password` | Request password reset |
+| GET | `/api/menu` | Get all menu items |
+| GET | `/api/restaurants` | Get all restaurants |
+| GET | `/api/offers` | Get active offers |
+| GET/POST | `/api/cart` | Get/update cart |
+| POST | `/api/orders` | Place order |
+| GET | `/api/orders` | Get order history |
+| GET | `/api/addresses` | Get saved addresses |
+| POST | `/api/addresses` | Save new address |
+| GET | `/api/payments` | Payment history |
+| GET | `/api/health` | Health check (v4.0.0) |
+| GET | `/api/admin/stats` | Admin dashboard stats |
+| POST | `/api/admin/analytics/snapshot` | Build analytics snapshot |
 
 ---
 
 ## 📊 Usage
 
-1. **Sign Up/Login**: Create an account to access profile and ordering features.
-2. **Browse & Filter**: Use the "Veg Only" toggle or category pills to find your favorite dishes.
-3. **Add to Cart**: Select items, adjust quantities, and view your cart summary.
+1. **Sign Up/Login**: Create an account or use demo credentials.
+2. **Browse & Filter**: Use category pills, search, or Veg/Non-Veg toggle.
+3. **Add to Cart**: Select items, adjust quantities, apply promo codes.
 4. **Checkout**: Enter delivery details and place your order.
-5. **Track Order**: Watch the real-time status updates on the tracking page.
+5. **Track Order**: Watch real-time status updates via Socket.IO.
+6. **Admin Panel**: Access at `/admin/` to manage menu, orders, analytics.
 
 ---
 
 ## 🛠 Architecture & Design
 
-This project adheres to clear separation of concerns:
+```
+┌────────────┐     ┌──────────────────┐     ┌──────────┐
+│  Frontend   │────▶│  Flask + SocketIO │────▶│  MongoDB  │
+│  (HTML/JS)  │◀────│  9 Blueprints     │◀────│  17 idx   │
+└────────────┘     └──────────────────┘     └──────────┘
+       │                     │
+       ▼                     ▼
+  Service Worker        Resend Email
+  (Offline Cache)      (Confirmations)
+```
 
-- **Modular Backend**: API endpoints organized by resource (Auth, Menu, Cart, Orders).
-- **Frontend Logic**: Split by domain responsibility (`auth.js` for user session, `cart.js` for state).
-- **Design System**: Centralized CSS variables for colors, typography, and spacing to ensure consistency.
+- **Modular Backend**: 9 Flask Blueprints with clear separation of concerns
+- **API Versioning**: All routes available at `/api/` and `/api/v1/`
+- **Real-Time**: Socket.IO rooms for per-order live tracking
+- **Security**: Rate limiting, bcrypt, server-side validation, soft deletes
+- **Frontend**: Dynamic API rendering with skeleton loading states
+- **Design System**: CSS variables for colors, typography, spacing
 
 ---
 
@@ -165,12 +244,20 @@ This project adheres to clear separation of concerns:
 
 ## 📈 Roadmap
 
-- [x] User Authentication
-- [x] Composable Filters
-- [x] Real-time Cart
-- [ ] Payment Gateway Integration (Stripe/Razorpay)
-- [ ] Admin Dashboard
-- [ ] WebSocket Live Tracking
+- [x] User Authentication & Sessions
+- [x] Composable Filters & Smart Search
+- [x] Real-time Cart with Promo Codes
+- [x] Admin Dashboard (full CRUD)
+- [x] Security: Rate limiting, bcrypt, validation
+- [x] Blueprint Architecture (9 modules)
+- [x] Dynamic API Rendering (menu, restaurants, offers)
+- [x] WebSocket Live Tracking (Socket.IO)
+- [x] PWA Support (manifest + service worker)
+- [x] Accessibility (ARIA, skip-to-content)
+- [x] API Versioning (`/api/v1/`)
+- [x] Payment & Address Management
+- [x] Materialized Analytics Snapshots
+- [x] Resend Email (order confirmation, password reset)
 
 ---
 

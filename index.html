@@ -17,9 +17,14 @@
 
 
   <meta name="description"
-
-
     content="Flavour Fleet — Order delicious food from 500+ restaurants. Fast delivery, exclusive deals, and amazing variety.">
+  <meta property="og:title" content="Flavour Fleet — Food Delivery">
+  <meta property="og:description" content="Order delicious food from 500+ restaurants. Fast delivery, exclusive deals.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Flavour Fleet">
+  <meta name="theme-color" content="#ff6b35">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="manifest.json">
 
 
   <title>Flavour Fleet — Food Delivery</title>
@@ -42,6 +47,11 @@
 
 <body>
 
+  <!-- Skip to content for keyboard/screen-reader users -->
+  <a href="#main-content" class="skip-link"
+    style="position:absolute;top:-40px;left:0;background:var(--primary);color:#fff;padding:8px 16px;z-index:9999;transition:top 0.3s"
+    onfocus="this.style.top='0'" onblur="this.style.top='-40px'">Skip to main content</a>
+
 
 
 
@@ -49,7 +59,7 @@
   <!-- NAVBAR -->
 
 
-  <nav class="navbar" id="navbar">
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
 
 
     <div class="container">
@@ -323,26 +333,18 @@
 
 
         <img loading="lazy" src="assets/images/hero-banner.png" alt="Delicious food spread"
-
-
           class="main-image float-animation">
 
 
         <img loading="lazy" src="assets/images/pizza.png" alt="Pizza" class="floating-food float-animation"
-
-
           style="animation-delay:0.5s">
 
 
         <img loading="lazy" src="assets/images/burger.png" alt="Burger" class="floating-food float-animation"
-
-
           style="animation-delay:1s">
 
 
         <img loading="lazy" src="assets/images/sushi.png" alt="Sushi" class="floating-food float-animation"
-
-
           style="animation-delay:1.5s">
 
 
@@ -686,8 +688,6 @@
 
 
           <div class="food-image"><img loading="lazy" src="assets/images/pizza.png" alt="Margherita Pizza"><span
-
-
               class="food-badge">Bestseller</span></div>
 
 
@@ -704,11 +704,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹299</span><span class="food-rating">â­ 4.9</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'p1',name:'Margherita Pizza',price:299,image:'assets/images/pizza.png',restaurant:'Pizza Paradise'})">+</button>
 
 
@@ -722,8 +718,6 @@
 
 
           <div class="food-image"><img loading="lazy" src="assets/images/pizza.png" alt="Pepperoni Pizza"><span
-
-
               class="food-badge">Popular</span></div>
 
 
@@ -740,11 +734,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹349</span><span class="food-rating">â­ 4.8</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'p2',name:'Pepperoni Pizza',price:349,image:'assets/images/pizza.png',restaurant:'Pizza Paradise'})">+</button>
 
 
@@ -773,11 +763,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹399</span><span class="food-rating">â­ 4.7</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'p3',name:'BBQ Chicken Pizza',price:399,image:'assets/images/pizza.png',restaurant:'Pizza Paradise'})">+</button>
 
 
@@ -791,8 +777,6 @@
 
 
           <div class="food-image"><img loading="lazy" src="assets/images/pizza.png" alt="Four Cheese Pizza"><span
-
-
               class="food-badge">New</span></div>
 
 
@@ -809,11 +793,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹399</span><span class="food-rating">â­ 4.8</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'p4',name:'Four Cheese Pizza',price:399,image:'assets/images/pizza.png',restaurant:'Pizza Paradise'})">+</button>
 
 
@@ -833,8 +813,6 @@
 
 
           <div class="food-image"><img loading="lazy" src="assets/images/burger.png" alt="Classic Cheeseburger"><span
-
-
               class="food-badge">Bestseller</span></div>
 
 
@@ -851,11 +829,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹199</span><span class="food-rating">â­ 4.8</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'b1',name:'Classic Cheeseburger',price:199,image:'assets/images/burger.png',restaurant:'Burger Palace'})">+</button>
 
 
@@ -869,8 +843,6 @@
 
 
           <div class="food-image"><img loading="lazy" src="assets/images/burger.png" alt="BBQ Bacon Burger"><span
-
-
               class="food-badge">Popular</span></div>
 
 
@@ -887,11 +859,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹349</span><span class="food-rating">â­ 4.9</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'b2',name:'BBQ Bacon Burger',price:349,image:'assets/images/burger.png',restaurant:'Burger Palace'})">+</button>
 
 
@@ -905,8 +873,6 @@
 
 
           <div class="food-image"><img loading="lazy" src="assets/images/burger.png" alt="Mushroom Swiss Burger"><span
-
-
               class="food-badge">Chef Pick</span></div>
 
 
@@ -923,11 +889,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹269</span><span class="food-rating">â­ 4.7</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'b3',name:'Mushroom Swiss Burger',price:269,image:'assets/images/burger.png',restaurant:'Burger Palace'})">+</button>
 
 
@@ -947,8 +909,6 @@
 
 
           <div class="food-image"><img loading="lazy" src="assets/images/sushi.png" alt="Dragon Roll"><span
-
-
               class="food-badge">Chef
 
 
@@ -968,11 +928,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹449</span><span class="food-rating">â­ 4.9</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'s1',name:'Dragon Roll',price:449,image:'assets/images/sushi.png',restaurant:'Tokyo Bites'})">+</button>
 
 
@@ -986,8 +942,6 @@
 
 
           <div class="food-image"><img loading="lazy" src="assets/images/sushi.png" alt="Salmon Nigiri"><span
-
-
               class="food-badge">Popular</span></div>
 
 
@@ -1004,11 +958,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹349</span><span class="food-rating">â­ 4.8</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'s2',name:'Salmon Nigiri',price:349,image:'assets/images/sushi.png',restaurant:'Tokyo Bites'})">+</button>
 
 
@@ -1037,11 +987,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹499</span><span class="food-rating">â­ 4.9</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'s3',name:'Rainbow Roll',price:499,image:'assets/images/sushi.png',restaurant:'Tokyo Bites'})">+</button>
 
 
@@ -1061,8 +1007,6 @@
 
 
           <div class="food-image"><img loading="lazy" src="assets/images/curry.png" alt="Butter Chicken"><span
-
-
               class="food-badge">Bestseller</span></div>
 
 
@@ -1079,11 +1023,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹349</span><span class="food-rating">â­ 4.9</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'i1',name:'Butter Chicken',price:349,image:'assets/images/curry.png',restaurant:'Spice Garden'})">+</button>
 
 
@@ -1097,8 +1037,6 @@
 
 
           <div class="food-image"><img loading="lazy" src="assets/images/curry.png" alt="Lamb Biryani"><span
-
-
               class="food-badge">Popular</span></div>
 
 
@@ -1115,11 +1053,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹449</span><span class="food-rating">â­ 4.8</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'i2',name:'Lamb Biryani',price:449,image:'assets/images/curry.png',restaurant:'Spice Garden'})">+</button>
 
 
@@ -1133,8 +1067,6 @@
 
 
           <div class="food-image"><img loading="lazy" src="assets/images/curry.png" alt="Paneer Tikka Masala"><span
-
-
               class="food-badge">Veg</span></div>
 
 
@@ -1151,11 +1083,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹299</span><span class="food-rating">â­ 4.7</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'i3',name:'Paneer Tikka Masala',price:299,image:'assets/images/curry.png',restaurant:'Spice Garden'})">+</button>
 
 
@@ -1184,11 +1112,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹399</span><span class="food-rating">â­ 4.8</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'i4',name:'Chicken Tandoori',price:399,image:'assets/images/curry.png',restaurant:'Tandoori Nights'})">+</button>
 
 
@@ -1208,8 +1132,6 @@
 
 
           <div class="food-image"><img loading="lazy" src="assets/images/tacos.png" alt="Street Tacos"><span
-
-
               class="food-badge">Bestseller</span></div>
 
 
@@ -1226,11 +1148,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹199</span><span class="food-rating">â­ 4.8</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'m1',name:'Street Tacos',price:199,image:'assets/images/tacos.png',restaurant:'El Fuego Cantina'})">+</button>
 
 
@@ -1244,8 +1162,6 @@
 
 
           <div class="food-image"><img loading="lazy" src="assets/images/tacos.png" alt="Loaded Burrito"><span
-
-
               class="food-badge">Popular</span></div>
 
 
@@ -1262,11 +1178,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹249</span><span class="food-rating">â­ 4.7</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'m2',name:'Loaded Burrito',price:249,image:'assets/images/tacos.png',restaurant:'El Fuego Cantina'})">+</button>
 
 
@@ -1295,11 +1207,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹199</span><span class="food-rating">â­ 4.6</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'m3',name:'Nachos Supreme',price:199,image:'assets/images/tacos.png',restaurant:'El Fuego Cantina'})">+</button>
 
 
@@ -1319,8 +1227,6 @@
 
 
           <div class="food-image"><img loading="lazy" src="assets/images/pasta.png" alt="Carbonara"><span
-
-
               class="food-badge">Chef
 
 
@@ -1340,11 +1246,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹349</span><span class="food-rating">â­ 4.9</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'pa1',name:'Classic Carbonara',price:349,image:'assets/images/pasta.png',restaurant:'Bella Cucina'})">+</button>
 
 
@@ -1358,8 +1260,6 @@
 
 
           <div class="food-image"><img loading="lazy" src="assets/images/pasta.png" alt="Penne Arrabbiata"><span
-
-
               class="food-badge">Spicy</span></div>
 
 
@@ -1376,11 +1276,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹249</span><span class="food-rating">â­ 4.6</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'pa2',name:'Penne Arrabbiata',price:249,image:'assets/images/pasta.png',restaurant:'Bella Cucina'})">+</button>
 
 
@@ -1394,8 +1290,6 @@
 
 
           <div class="food-image"><img loading="lazy" src="assets/images/pasta.png" alt="Truffle Mushroom Pasta"><span
-
-
               class="food-badge">Premium</span></div>
 
 
@@ -1412,11 +1306,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹499</span><span class="food-rating">â­ 4.9</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'pa3',name:'Truffle Mushroom Pasta',price:499,image:'assets/images/pasta.png',restaurant:'Bella Cucina'})">+</button>
 
 
@@ -1436,8 +1326,6 @@
 
 
           <div class="food-image"><img loading="lazy" src="assets/images/salad.png" alt="Caesar Salad"><span
-
-
               class="food-badge">Healthy</span></div>
 
 
@@ -1454,11 +1342,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹199</span><span class="food-rating">â­ 4.7</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'sa1',name:'Caesar Salad',price:199,image:'assets/images/salad.png',restaurant:'Green Bowl Co.'})">+</button>
 
 
@@ -1472,8 +1356,6 @@
 
 
           <div class="food-image"><img loading="lazy" src="assets/images/salad.png" alt="Quinoa Power Bowl"><span
-
-
               class="food-badge">Vegan</span></div>
 
 
@@ -1490,11 +1372,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹249</span><span class="food-rating">â­ 4.8</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'sa2',name:'Quinoa Power Bowl',price:249,image:'assets/images/salad.png',restaurant:'Green Bowl Co.'})">+</button>
 
 
@@ -1514,8 +1392,6 @@
 
 
           <div class="food-image"><img loading="lazy" src="assets/images/dessert.png" alt="Chocolate Lava Cake"><span
-
-
               class="food-badge">Must Try</span></div>
 
 
@@ -1532,11 +1408,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹149</span><span class="food-rating">â­ 4.9</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'d1',name:'Chocolate Lava Cake',price:149,image:'assets/images/dessert.png',restaurant:'Sweet Tooth Bakery'})">+</button>
 
 
@@ -1550,8 +1422,6 @@
 
 
           <div class="food-image"><img loading="lazy" src="assets/images/dessert.png" alt="Tiramisu"><span
-
-
               class="food-badge">Classic</span></div>
 
 
@@ -1568,11 +1438,7 @@
 
 
           <div class="food-footer"><span class="food-price">₹169</span><span class="food-rating">â­ 4.8</span><button
-
-
               class="add-to-cart-btn"
-
-
               onclick="Cart.addToCart({id:'d2',name:'Tiramisu',price:169,image:'assets/images/dessert.png',restaurant:'Sweet Tooth Bakery'})">+</button>
 
 
@@ -1631,12 +1497,8 @@
 
 
           <div class="card-image"><img loading="lazy" src="assets/images/pizza.png" alt="Pizza Paradise"><span
-
-
-              class="delivery-badge">• 25-35 min</span><button class="fav-btn"
-
-
-              onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
+              class="delivery-badge">• 25-35 min</span><button class="fav-btn" onclick="event.preventDefault()"><i
+                class="far fa-heart"></i></button></div>
 
 
           <div class="card-body">
@@ -1664,12 +1526,8 @@
 
 
           <div class="card-image"><img loading="lazy" src="assets/images/burger.png" alt="Burger Palace"><span
-
-
-              class="delivery-badge">• 20-30 min</span><button class="fav-btn"
-
-
-              onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
+              class="delivery-badge">• 20-30 min</span><button class="fav-btn" onclick="event.preventDefault()"><i
+                class="far fa-heart"></i></button></div>
 
 
           <div class="card-body">
@@ -1697,12 +1555,11 @@
 
 
           <div class="card-image"><img loading="lazy" src="assets/images/sushi.png" alt="Tokyo Bites"><span
-
-
               class="delivery-badge">•
 
 
-              30-40 min</span><button class="fav-btn" onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
+              30-40 min</span><button class="fav-btn" onclick="event.preventDefault()"><i
+                class="far fa-heart"></i></button></div>
 
 
           <div class="card-body">
@@ -1730,12 +1587,11 @@
 
 
           <div class="card-image"><img loading="lazy" src="assets/images/curry.png" alt="Spice Garden"><span
-
-
               class="delivery-badge">•
 
 
-              25-40 min</span><button class="fav-btn" onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
+              25-40 min</span><button class="fav-btn" onclick="event.preventDefault()"><i
+                class="far fa-heart"></i></button></div>
 
 
           <div class="card-body">
@@ -1763,12 +1619,8 @@
 
 
           <div class="card-image"><img loading="lazy" src="assets/images/tacos.png" alt="El Fuego Cantina"><span
-
-
-              class="delivery-badge">• 15-25 min</span><button class="fav-btn"
-
-
-              onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
+              class="delivery-badge">• 15-25 min</span><button class="fav-btn" onclick="event.preventDefault()"><i
+                class="far fa-heart"></i></button></div>
 
 
           <div class="card-body">
@@ -1796,12 +1648,11 @@
 
 
           <div class="card-image"><img loading="lazy" src="assets/images/pasta.png" alt="Bella Cucina"><span
-
-
               class="delivery-badge">•
 
 
-              30-45 min</span><button class="fav-btn" onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
+              30-45 min</span><button class="fav-btn" onclick="event.preventDefault()"><i
+                class="far fa-heart"></i></button></div>
 
 
           <div class="card-body">
@@ -2528,26 +2379,18 @@
 
 
             <a href="https://instagram.com/flavourfleet" target="_blank" aria-label="Instagram"><i
-
-
                 class="fab fa-instagram"></i></a>
 
 
             <a href="https://facebook.com/flavourfleet" target="_blank" aria-label="Facebook"><i
-
-
                 class="fab fa-facebook-f"></i></a>
 
 
             <a href="https://x.com/flavourfleet" target="_blank" aria-label="X / Twitter"><i
-
-
                 class="fab fa-x-twitter"></i></a>
 
 
             <a href="https://youtube.com/@flavourfleet" target="_blank" aria-label="YouTube"><i
-
-
                 class="fab fa-youtube"></i></a>
 
 
@@ -2659,7 +2502,8 @@
       <div class="footer-bottom">
 
 
-        <p>© 2026 Flavour Fleet. All rights reserved. Made with <i class="fas fa-heart" style="color:#ef4444"></i> by Atul</p>
+        <p>© 2026 Flavour Fleet. All rights reserved. Made with <i class="fas fa-heart" style="color:#ef4444"></i> by
+          Atul</p>
 
 
       </div>
@@ -2729,6 +2573,12 @@
 
 
   <script src="js/main.js"></script>
+  <script>
+    // Register Service Worker for PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').then(r => console.log('SW registered:', r.scope)).catch(e => console.warn('SW error:', e));
+    }
+  </script>
 
 
   <script>

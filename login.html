@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login — Flavour Fleet</title>
+    <meta name="description" content="Sign in or create an account on Flavour Fleet to order your favourite food.">
+    <meta property="og:title" content="Login — Flavour Fleet">
+    <meta property="og:description" content="Sign in or create an account to order your favourite food.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Flavour Fleet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
 </head>
@@ -101,11 +106,15 @@
                     <div class="form-group">
                         <label>Email Address</label>
                         <input type="email" id="auth-email" placeholder="you@example.com" autocomplete="username">
+                        <span class="field-error" id="email-error"
+                            style="display:none;color:#ef4444;font-size:0.75rem;margin-top:4px"></span>
                     </div>
                     <div class="form-group">
                         <label>Password</label>
                         <input type="password" id="auth-password" placeholder="••••••••"
                             autocomplete="current-password">
+                        <span class="field-error" id="password-error"
+                            style="display:none;color:#ef4444;font-size:0.75rem;margin-top:4px"></span>
                         <div id="password-strength" style="display:none;margin-top:6px">
                             <div style="display:flex;gap:4px;margin-bottom:4px">
                                 <div class="str-seg" id="str-1"
@@ -375,6 +384,40 @@
                 }
                 document.getElementById('str-label').textContent = val.length > 0 ? labels[score - 1] || '' : '';
                 document.getElementById('str-label').style.color = val.length > 0 ? colors[score - 1] || 'var(--text-muted)' : 'var(--text-muted)';
+            });
+
+            // ── Inline Form Validation ──
+            const emailInput = document.getElementById('auth-email');
+            const passInput = document.getElementById('auth-password');
+            const emailErr = document.getElementById('email-error');
+            const passErr = document.getElementById('password-error');
+
+            function showFieldError(input, errEl, msg) {
+                errEl.textContent = msg;
+                errEl.style.display = 'block';
+                input.style.borderColor = '#ef4444';
+            }
+            function clearFieldError(input, errEl) {
+                errEl.style.display = 'none';
+                input.style.borderColor = '';
+            }
+
+            emailInput.addEventListener('blur', function () {
+                if (!this.value) showFieldError(this, emailErr, 'Email is required');
+                else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value)) showFieldError(this, emailErr, 'Enter a valid email address');
+                else clearFieldError(this, emailErr);
+            });
+            emailInput.addEventListener('keyup', function () {
+                if (this.value && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value)) clearFieldError(this, emailErr);
+            });
+
+            passInput.addEventListener('blur', function () {
+                if (!this.value) showFieldError(this, passErr, 'Password is required');
+                else if (this.value.length < 6) showFieldError(this, passErr, 'Password must be at least 6 characters');
+                else clearFieldError(this, passErr);
+            });
+            passInput.addEventListener('keyup', function () {
+                if (this.value && this.value.length >= 6) clearFieldError(this, passErr);
             });
         </script>
 </body>

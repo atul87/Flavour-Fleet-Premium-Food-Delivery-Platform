@@ -17,9 +17,12 @@
 
 
     <meta name="description"
-
-
         content="Explore 500+ restaurants on Flavour Fleet. Filter by cuisine, rating, and delivery time.">
+    <meta property="og:title" content="Restaurants — Flavour Fleet">
+    <meta property="og:description"
+        content="Explore 500+ restaurants on Flavour Fleet. Filter by cuisine, rating, and delivery time.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Flavour Fleet">
 
 
     <title>Restaurants — Flavour Fleet</title>
@@ -49,7 +52,7 @@
     <!-- NAVBAR -->
 
 
-    <nav class="navbar" id="navbar">
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
 
 
         <div class="container">
@@ -80,8 +83,6 @@
 
 
                 <div class="nav-search"><i class="fas fa-search search-icon"></i><input type="text"
-
-
                         placeholder="Search restaurants..." id="search-input"></div>
 
 
@@ -248,8 +249,6 @@
 
 
             <div
-
-
                 style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--space-md);margin-bottom:var(--space-xl)">
 
 
@@ -299,8 +298,6 @@
 
 
                         <label class="toggle-switch"><input type="checkbox" id="veg-toggle"><span
-
-
                                 class="slider"></span></label>
 
 
@@ -308,8 +305,6 @@
 
 
                     <select id="sort-select"
-
-
                         style="padding:0.5rem 1rem;border-radius:var(--radius-md);background:var(--glass-bg);border:1px solid var(--glass-border);color:var(--text-primary);font-size:0.9rem">
 
 
@@ -341,607 +336,13 @@
 
 
             <div class="restaurants-grid"
-
-
                 style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:var(--space-lg)">
-
-
-
-
-
-                <!-- Pizza -->
-
-
-                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="pizza">
-
-
-                    <div class="card-image"><img loading="lazy" src="assets/images/pizza.png" alt="Pizza Paradise"><span
-
-
-                            class="delivery-badge">• 25-35 min</span><button class="fav-btn"
-
-
-                            onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
-
-
-                    <div class="card-body">
-
-
-                        <h3>Pizza Paradise</h3>
-
-
-                        <p class="cuisine">Italian â€¢ Pizza â€¢ Pasta</p>
-
-
-                        <div class="card-meta"><span class="rating">â­ 4.9 (2.1K)</span><span class="delivery-time">₹59
-
-
-                                delivery</span></div>
-
-
-                    </div>
-
-
-                </a>
-
-
-                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="pizza">
-
-
-                    <div class="card-image"><img loading="lazy" src="assets/images/pizza.png"
-
-
-                            alt="Naples Fire Pizza"><span class="delivery-badge">• 20-30 min</span><button
-
-
-                            class="fav-btn" onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
-
-
-                    <div class="card-body">
-
-
-                        <h3>Naples Fire Pizza</h3>
-
-
-                        <p class="cuisine">Neapolitan â€¢ Wood-fired â€¢ Calzone</p>
-
-
-                        <div class="card-meta"><span class="rating">â­ 4.7 (890)</span><span class="delivery-time">₹39
-
-
-                                delivery</span></div>
-
-
-                    </div>
-
-
-                </a>
-
-
-
-
-
-                <!-- Burgers -->
-
-
-                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="burger">
-
-
-                    <div class="card-image"><img loading="lazy" src="assets/images/burger.png" alt="Burger Palace"><span
-
-
-                            class="delivery-badge">• 20-30 min</span><button class="fav-btn"
-
-
-                            onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
-
-
-                    <div class="card-body">
-
-
-                        <h3>Burger Palace</h3>
-
-
-                        <p class="cuisine">American â€¢ Burgers â€¢ Fries</p>
-
-
-                        <div class="card-meta"><span class="rating">â­ 4.8 (1.8K)</span><span class="delivery-time">₹39
-
-
-                                delivery</span></div>
-
-
-                    </div>
-
-
-                </a>
-
-
-                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="burger">
-
-
-                    <div class="card-image"><img loading="lazy" src="assets/images/burger.png"
-
-
-                            alt="Smash Burger Co."><span class="delivery-badge">• 15-25 min</span><button
-
-
-                            class="fav-btn" onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
-
-
-                    <div class="card-body">
-
-
-                        <h3>Smash Burger Co.</h3>
-
-
-                        <p class="cuisine">Smash Burgers â€¢ Shakes â€¢ Wings</p>
-
-
-                        <div class="card-meta"><span class="rating">â­ 4.6 (650)</span><span class="delivery-time">FREE
-
-
-                                delivery</span></div>
-
-
-                    </div>
-
-
-                </a>
-
-
-
-
-
-                <!-- Japanese -->
-
-
-                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="sushi">
-
-
-                    <div class="card-image"><img loading="lazy" src="assets/images/sushi.png" alt="Tokyo Bites"><span
-
-
-                            class="delivery-badge">• 30-40 min</span><button class="fav-btn"
-
-
-                            onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
-
-
-                    <div class="card-body">
-
-
-                        <h3>Tokyo Bites</h3>
-
-
-                        <p class="cuisine">Japanese â€¢ Sushi â€¢ Ramen</p>
-
-
-                        <div class="card-meta"><span class="rating">â­ 4.9 (1.5K)</span><span class="delivery-time">₹69
-
-
-                                delivery</span></div>
-
-
-                    </div>
-
-
-                </a>
-
-
-                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="sushi">
-
-
-                    <div class="card-image"><img loading="lazy" src="assets/images/sushi.png"
-
-
-                            alt="Sakura Sushi Bar"><span class="delivery-badge">• 25-35 min</span><button
-
-
-                            class="fav-btn" onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
-
-
-                    <div class="card-body">
-
-
-                        <h3>Sakura Sushi Bar</h3>
-
-
-                        <p class="cuisine">Omakase â€¢ Sashimi â€¢ Tempura</p>
-
-
-                        <div class="card-meta"><span class="rating">â­ 4.8 (980)</span><span class="delivery-time">₹59
-
-
-                                delivery</span></div>
-
-
-                    </div>
-
-
-                </a>
-
-
-
-
-
-                <!-- Indian -->
-
-
-                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="indian">
-
-
-                    <div class="card-image"><img loading="lazy" src="assets/images/curry.png" alt="Spice Garden"><span
-
-
-                            class="delivery-badge">• 25-40 min</span><button class="fav-btn"
-
-
-                            onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
-
-
-                    <div class="card-body">
-
-
-                        <h3>Spice Garden</h3>
-
-
-                        <p class="cuisine">Indian â€¢ Curry â€¢ Naan â€¢ Biryani</p>
-
-
-                        <div class="card-meta"><span class="rating">â­ 4.8 (1.3K)</span><span class="delivery-time">₹49
-
-
-                                delivery</span></div>
-
-
-                    </div>
-
-
-                </a>
-
-
-                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="indian">
-
-
-                    <div class="card-image"><img loading="lazy" src="assets/images/curry.png"
-
-
-                            alt="Tandoori Nights"><span class="delivery-badge">• 30-45 min</span><button
-
-
-                            class="fav-btn" onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
-
-
-                    <div class="card-body">
-
-
-                        <h3>Tandoori Nights</h3>
-
-
-                        <p class="cuisine">Tandoori â€¢ Mughlai â€¢ Kebabs</p>
-
-
-                        <div class="card-meta"><span class="rating">â­ 4.7 (760)</span><span class="delivery-time">₹59
-
-
-                                delivery</span></div>
-
-
-                    </div>
-
-
-                </a>
-
-
-
-
-
-                <!-- Mexican -->
-
-
-                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="mexican">
-
-
-                    <div class="card-image"><img loading="lazy" src="assets/images/tacos.png"
-
-
-                            alt="El Fuego Cantina"><span class="delivery-badge">• 15-25 min</span><button
-
-
-                            class="fav-btn" onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
-
-
-                    <div class="card-body">
-
-
-                        <h3>El Fuego Cantina</h3>
-
-
-                        <p class="cuisine">Mexican â€¢ Tacos â€¢ Burritos</p>
-
-
-                        <div class="card-meta"><span class="rating">â­ 4.7 (1.1K)</span><span class="delivery-time">₹29
-
-
-                                delivery</span></div>
-
-
-                    </div>
-
-
-                </a>
-
-
-                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="mexican">
-
-
-                    <div class="card-image"><img loading="lazy" src="assets/images/tacos.png" alt="Guac & Roll"><span
-
-
-                            class="delivery-badge">• 20-30 min</span><button class="fav-btn"
-
-
-                            onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
-
-
-                    <div class="card-body">
-
-
-                        <h3>Guac & Roll</h3>
-
-
-                        <p class="cuisine">Tex-Mex â€¢ Quesadillas â€¢ Nachos</p>
-
-
-                        <div class="card-meta"><span class="rating">â­ 4.5 (420)</span><span class="delivery-time">FREE
-
-
-                                delivery</span></div>
-
-
-                    </div>
-
-
-                </a>
-
-
-
-
-
-                <!-- Italian / Pasta -->
-
-
-                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="pasta">
-
-
-                    <div class="card-image"><img loading="lazy" src="assets/images/pasta.png" alt="Bella Cucina"><span
-
-
-                            class="delivery-badge">• 30-45 min</span><button class="fav-btn"
-
-
-                            onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
-
-
-                    <div class="card-body">
-
-
-                        <h3>Bella Cucina</h3>
-
-
-                        <p class="cuisine">Italian â€¢ Pasta â€¢ Risotto</p>
-
-
-                        <div class="card-meta"><span class="rating">â­ 4.9 (1.7K)</span><span class="delivery-time">₹59
-
-
-                                delivery</span></div>
-
-
-                    </div>
-
-
-                </a>
-
-
-                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="pasta">
-
-
-                    <div class="card-image"><img loading="lazy" src="assets/images/pasta.png"
-
-
-                            alt="Trattoria Nonna"><span class="delivery-badge">• 35-50 min</span><button
-
-
-                            class="fav-btn" onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
-
-
-                    <div class="card-body">
-
-
-                        <h3>Trattoria Nonna</h3>
-
-
-                        <p class="cuisine">Homestyle Italian â€¢ Lasagna â€¢ Tiramisu</p>
-
-
-                        <div class="card-meta"><span class="rating">â­ 4.8 (540)</span><span class="delivery-time">₹69
-
-
-                                delivery</span></div>
-
-
-                    </div>
-
-
-                </a>
-
-
-
-
-
-                <!-- Chinese -->
-
-
-                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="chinese">
-
-
-                    <div class="card-image"><img loading="lazy" src="assets/images/chinese.png"
-
-
-                            alt="Golden Dragon"><span class="delivery-badge">• 20-30 min</span><button class="fav-btn"
-
-
-                            onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
-
-
-                    <div class="card-body">
-
-
-                        <h3>Golden Dragon</h3>
-
-
-                        <p class="cuisine">Chinese â€¢ Dim Sum â€¢ Noodles</p>
-
-
-                        <div class="card-meta"><span class="rating">â­ 4.6 (930)</span><span class="delivery-time">₹39
-
-
-                                delivery</span></div>
-
-
-                    </div>
-
-
-                </a>
-
-
-                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="chinese">
-
-
-                    <div class="card-image"><img loading="lazy" src="assets/images/chinese.png" alt="Wok This Way"><span
-
-
-                            class="delivery-badge">• 15-25 min</span><button class="fav-btn"
-
-
-                            onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
-
-
-                    <div class="card-body">
-
-
-                        <h3>Wok This Way</h3>
-
-
-                        <p class="cuisine">Stir-fry â€¢ Fried Rice â€¢ Dumplings</p>
-
-
-                        <div class="card-meta"><span class="rating">â­ 4.5 (380)</span><span class="delivery-time">FREE
-
-
-                                delivery</span></div>
-
-
-                    </div>
-
-
-                </a>
-
-
-
-
-
-                <!-- Healthy -->
-
-
-                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="healthy">
-
-
-                    <div class="card-image"><img loading="lazy" src="assets/images/salad.png" alt="Green Bowl Co."><span
-
-
-                            class="delivery-badge">• 15-25 min</span><button class="fav-btn"
-
-
-                            onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
-
-
-                    <div class="card-body">
-
-
-                        <h3>Green Bowl Co.</h3>
-
-
-                        <p class="cuisine">Salads â€¢ Bowls â€¢ Smoothies</p>
-
-
-                        <div class="card-meta"><span class="rating">â­ 4.7 (620)</span><span class="delivery-time">₹29
-
-
-                                delivery</span></div>
-
-
-                    </div>
-
-
-                </a>
-
-
-
-
-
-                <!-- Dessert -->
-
-
-                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="dessert">
-
-
-                    <div class="card-image"><img loading="lazy" src="assets/images/dessert.png"
-
-
-                            alt="Sweet Tooth Bakery"><span class="delivery-badge">• 20-35 min</span><button
-
-
-                            class="fav-btn" onclick="event.preventDefault()"><i class="far fa-heart"></i></button></div>
-
-
-                    <div class="card-body">
-
-
-                        <h3>Sweet Tooth Bakery</h3>
-
-
-                        <p class="cuisine">Cakes â€¢ Ice Cream â€¢ Waffles</p>
-
-
-                        <div class="card-meta"><span class="rating">â­ 4.9 (1.4K)</span><span class="delivery-time">₹49
-
-
-                                delivery</span></div>
-
-
-                    </div>
-
-
-                </a>
-
-
-
-
-
+                <!-- Dynamically populated from /api/restaurants -->
             </div>
-
 
         </div>
 
-
     </section>
-
-
-
-
 
     <!-- FOOTER -->
 
@@ -965,23 +366,11 @@
 
 
                     <div class="footer-social"><a href="https://instagram.com/flavourfleet" target="_blank"
-
-
                             aria-label="Instagram"><i class="fab fa-instagram"></i></a><a
-
-
                             href="https://facebook.com/flavourfleet" target="_blank" aria-label="Facebook"><i
-
-
                                 class="fab fa-facebook-f"></i></a><a href="https://x.com/flavourfleet" target="_blank"
-
-
                             aria-label="X / Twitter"><i class="fab fa-x-twitter"></i></a><a
-
-
                             href="https://youtube.com/@flavourfleet" target="_blank" aria-label="YouTube"><i
-
-
                                 class="fab fa-youtube"></i></a></div>
 
 
@@ -1084,10 +473,8 @@
 
 
 
-    <a href="cart.html" class="fab-cart" id="fab-cart" title="View Cart"><i class="fas fa-shopping-cart"></i><span class="fab-count"
-
-
-            id="fab-count">0</span></a>
+    <a href="cart.html" class="fab-cart" id="fab-cart" title="View Cart"><i class="fas fa-shopping-cart"></i><span
+            class="fab-count" id="fab-count">0</span></a>
 
 
     <div class="toast-container" id="toast-container"></div>
@@ -1109,29 +496,16 @@
 
 
     <script src="js/api.js"></script>
-
-
     <script src="js/cart.js"></script>
-
-
     <script src="js/auth.js"></script>
-
-
     <script src="js/main.js"></script>
-
-
+    <script src="js/dynamic-render.js"></script>
     <script>
-
-
-        // FAB count
-
-
         function updateFabCount() { const c = Cart.getCart().reduce((s, i) => s + i.quantity, 0); const el = document.getElementById('fab-count'); if (el) { el.textContent = c; el.style.display = c > 0 ? 'flex' : 'none' } }
-
-
-        document.addEventListener('DOMContentLoaded', updateFabCount);
-
-
+        document.addEventListener('DOMContentLoaded', async () => {
+            await DynamicRender.renderRestaurants('.restaurants-grid');
+            updateFabCount();
+        });
     </script>
 
 

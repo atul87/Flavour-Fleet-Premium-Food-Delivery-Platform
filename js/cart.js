@@ -247,9 +247,11 @@ async function applyPromoCode() {
     const result = await Cart.applyPromo(input.value);
     if (result) {
         showToast(`Promo applied: ${result.label}`, 'success');
+        localStorage.setItem('flavourfleet_promo_code', input.value.toUpperCase().trim());
         updateSummary(result.discountAmount);
     } else {
         showToast('Invalid promo code', 'error');
+        localStorage.removeItem('flavourfleet_promo_code');
     }
 }
 
