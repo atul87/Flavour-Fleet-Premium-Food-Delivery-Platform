@@ -98,9 +98,13 @@ const DynamicRender = (() => {
                 const deliveryTime = r.delivery_time || '30-40';
                 const category = (r.category || '').toLowerCase();
                 const cuisine = r.description || r.category || '';
+                const parsedTime = parseInt(String(deliveryTime).split('-')[0], 10) || 0;
+                const name = r.name || '';
+                const priceRange = r.price_range || '$$';
+                const priceLevel = (String(priceRange).match(/\$/g) || []).length || 0;
 
                 return `
-                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="${category}">
+                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="${category}" data-rating="${rating}" data-time="${parsedTime}" data-name="${name.toLowerCase()}" data-price-level="${priceLevel}">
                     <div class="card-image">
                         <img loading="lazy" src="${imgSrc}" alt="${r.name}">
                         <span class="delivery-badge">• ${deliveryTime} min</span>

@@ -159,10 +159,24 @@ function applyAllFilters() {
         card.style.display = show ? '' : 'none';
         if (show) visibleCount++;
     });
-    // Also filter restaurant cards by search
-    document.querySelectorAll('.restaurant-card').forEach(card => {
-        card.style.display = (!_filterState.search || card.textContent.toLowerCase().includes(_filterState.search)) ? '' : 'none';
-    });
+    // Filter restaurant cards only within restaurants page grid
+    const restaurantsGrid = document.querySelector('.restaurants-grid');
+    if (restaurantsGrid) {
+        const restaurantCards = restaurantsGrid.querySelectorAll('.restaurant-card[data-category]');
+        restaurantCards.forEach(card => {
+            let showRestaurant = true;
+
+            if (_filterState.category !== 'all' && card.dataset.category !== _filterState.category) {
+                showRestaurant = false;
+            }
+
+            if (_filterState.search && !card.textContent.toLowerCase().includes(_filterState.search)) {
+                showRestaurant = false;
+            }
+
+            card.style.display = showRestaurant ? '' : 'none';
+        });
+    }
     // Empty state
     let emptyEl = document.getElementById('filter-empty-state');
     const grid = document.getElementById('food-grid');
@@ -265,9 +279,11 @@ function initSort() {
         const sortBy = sortSelect.value;
         cards.sort((a, b) => {
             if (sortBy === 'rating') {
-                return parseFloat(b.dataset.rating) - parseFloat(a.dataset.rating);
+                return (parseFloat(b.dataset.rating) || 0) - (parseFloat(a.dataset.rating) || 0);
             } else if (sortBy === 'time') {
-                return parseInt(a.dataset.time) - parseInt(b.dataset.time);
+                return (parseInt(a.dataset.time, 10) || 0) - (parseInt(b.dataset.time, 10) || 0);
+            } else if (sortBy === 'price') {
+                return (parseInt(a.dataset.priceLevel, 10) || 0) - (parseInt(b.dataset.priceLevel, 10) || 0);
             } else if (sortBy === 'name') {
                 return a.dataset.name.localeCompare(b.dataset.name);
             }
