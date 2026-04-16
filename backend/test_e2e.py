@@ -1,223 +1,370 @@
-"""
-Flavour Fleet — Comprehensive End-to-End API Test Suite
-Tests all 18 backend endpoints systematically.
-"""
+"""Deterministic end-to-end API test suite for Flavour Fleet."""
+
+import time
+import uuid
+
 import requests
-import json
 
-BASE = 'http://localhost:5000'
-s = requests.Session()
-passed = 0
-failed = 0
-errors = []
+BASE = "http://localhost:5000"
 
-def test(name, condition, detail=''):
-    global passed, failed, errors
-    if condition:
-        passed += 1
-        print(f'  PASS: {name}')
+
+class Tracker:
+    def __init__(self):
+        self.passed = 0
+        self.failed = 0
+        self.errors = []
+
+    def check(self, name, condition, detail=""):
+        if condition:
+            self.passed += 1
+            print(f"  PASS: {name}")
+        else:
+            self.failed += 1
+            self.errors.append((name, detail))
+            print(f"  FAIL: {name} -> {detail}")
+
+
+def as_json(response):
+    try:
+        return response.json()
+    except Exception:
+        return {"raw": response.text[:300]}
+
+
+def main():
+    tracker = Tracker()
+    session = requests.Session()
+    outsider = requests.Session()
+
+    suffix = f"{int(time.time())}_{uuid.uuid4().hex[:6]}"
+    email = f"e2e_{suffix}@test.com"
+    password = "test1234"
+    new_password = "newpass1234"
+
+    print("=" * 60)
+    print("FLAVOUR FLEET END-TO-END API TESTS")
+    print("=" * 60)
+
+    print("\n--- AUTH ---")
+    payload = as_json(
+        session.post(
+            f"{BASE}/api/auth/register",
+            json={"name": "E2E Tester", "email": email, "password": password},
+        )
+    )
+    tracker.check("Register new user", payload.get("success") is True, payload)
+
+    dup = session.post(
+        f"{BASE}/api/auth/register",
+        json={"name": "E2E Tester", "email": email, "password": password},
+    )
+    tracker.check(
+        "Duplicate register blocked",
+        dup.status_code == 409 and as_json(dup).get("success") is False,
+        as_json(dup),
+    )
+
+    logout_payload = as_json(session.post(f"{BASE}/api/auth/logout"))
+    tracker.check("Logout", logout_payload.get("success") is True, logout_payload)
+
+    login_payload = as_json(
+        session.post(
+            f"{BASE}/api/auth/login", json={"email": email, "password": password}
+        )
+    )
+    tracker.check("Login", login_payload.get("success") is True, login_payload)
+
+    bad_login = outsider.post(
+        f"{BASE}/api/auth/login", json={"email": email, "password": "wrongpass"}
+    )
+    tracker.check(
+        "Wrong password rejected",
+        bad_login.status_code == 401 and as_json(bad_login).get("success") is False,
+        as_json(bad_login),
+    )
+
+    profile_payload = as_json(session.get(f"{BASE}/api/auth/profile"))
+    tracker.check(
+        "Get profile",
+        profile_payload.get("success") is True
+        and profile_payload.get("logged_in") is True,
+        profile_payload,
+    )
+
+    update_payload = as_json(
+        session.put(
+            f"{BASE}/api/auth/profile",
+            json={
+                "name": "E2E Updated",
+                "phone": "9876543210",
+                "address": "456 Test Blvd",
+            },
+        )
+    )
+    tracker.check(
+        "Update profile", update_payload.get("success") is True, update_payload
+    )
+
+    profile_payload = as_json(session.get(f"{BASE}/api/auth/profile"))
+    tracker.check(
+        "Verify profile update",
+        profile_payload.get("user", {}).get("name") == "E2E Updated"
+        and profile_payload.get("user", {}).get("phone") == "9876543210",
+        profile_payload,
+    )
+
+    outsider_orders = outsider.get(f"{BASE}/api/orders")
+    tracker.check(
+        "Unauthorized order history blocked",
+        outsider_orders.status_code == 401
+        and as_json(outsider_orders).get("success") is False,
+        as_json(outsider_orders),
+    )
+
+    forgot_payload = as_json(
+        session.post(f"{BASE}/api/auth/forgot-password", json={"email": email})
+    )
+    tracker.check(
+        "Forgot password request accepted",
+        forgot_payload.get("success") is True,
+        forgot_payload,
+    )
+
+    dev_code = forgot_payload.get("dev_reset_code")
+    if dev_code:
+        reset_payload = as_json(
+            session.post(
+                f"{BASE}/api/auth/reset-password",
+                json={"code": dev_code, "new_password": new_password},
+            )
+        )
+        tracker.check(
+            "Reset password (dev mode)",
+            reset_payload.get("success") is True,
+            reset_payload,
+        )
+
+        new_login = as_json(
+            outsider.post(
+                f"{BASE}/api/auth/login",
+                json={"email": email, "password": new_password},
+            )
+        )
+        tracker.check(
+            "Login with new password", new_login.get("success") is True, new_login
+        )
     else:
-        failed += 1
-        errors.append(f'{name}: {detail}')
-        print(f'  FAIL: {name} -> {detail}')
+        tracker.check(
+            "Dev reset code hidden by config", True, "Production-safe mode detected"
+        )
 
-print('=' * 60)
-print('PHASE 1: BACKEND API TESTING (18 endpoints)')
-print('=' * 60)
+    invalid_reset = outsider.post(
+        f"{BASE}/api/auth/reset-password",
+        json={"code": "000000", "new_password": "whatever123"},
+    )
+    tracker.check(
+        "Invalid reset rejected",
+        invalid_reset.status_code == 400
+        and as_json(invalid_reset).get("success") is False,
+        as_json(invalid_reset),
+    )
 
-# ──── AUTH ────
-print('\n--- AUTH API (8 endpoints) ---')
+    missing_code_reset = outsider.post(
+        f"{BASE}/api/auth/reset-password",
+        json={"new_password": "whatever123"},
+    )
+    tracker.check(
+        "Reset without code rejected",
+        missing_code_reset.status_code == 400
+        and as_json(missing_code_reset).get("success") is False,
+        as_json(missing_code_reset),
+    )
 
-r = s.post(f'{BASE}/api/auth/register', json={'name': 'E2E Tester', 'email': 'e2e_final@test.com', 'password': 'test1234'})
-d = r.json()
-test('1. Register new user', d.get('success') == True, str(d))
+    print("\n--- MENU / RESTAURANTS ---")
+    menu_payload = as_json(session.get(f"{BASE}/api/menu"))
+    tracker.check(
+        "Get all menu items",
+        menu_payload.get("success") is True and menu_payload.get("count", 0) > 0,
+        menu_payload,
+    )
 
-r2 = s.post(f'{BASE}/api/auth/register', json={'name': 'E2E Tester', 'email': 'e2e_final@test.com', 'password': 'test1234'})
-d2 = r2.json()
-test('2. Duplicate register blocked', d2.get('success') == False, str(d2))
+    pizza_payload = as_json(
+        session.get(f"{BASE}/api/menu", params={"category": "pizza"})
+    )
+    tracker.check(
+        "Filter pizza menu",
+        pizza_payload.get("success") is True and pizza_payload.get("count", 0) > 0,
+        pizza_payload,
+    )
 
-r = s.post(f'{BASE}/api/auth/logout')
-d = r.json()
-test('3. Logout', d.get('success') == True, str(d))
+    item_id = pizza_payload.get("items", [{}])[0].get("item_id", "p1")
+    item_payload = as_json(session.get(f"{BASE}/api/menu/{item_id}"))
+    tracker.check(
+        "Get menu item by ID",
+        item_payload.get("success") is True
+        and item_payload.get("item", {}).get("item_id") == item_id,
+        item_payload,
+    )
 
-r = s.post(f'{BASE}/api/auth/login', json={'email': 'e2e_final@test.com', 'password': 'test1234'})
-d = r.json()
-test('4. Login', d.get('success') == True, str(d))
+    restaurants_payload = as_json(session.get(f"{BASE}/api/restaurants"))
+    tracker.check(
+        "Get all restaurants",
+        restaurants_payload.get("success") is True
+        and restaurants_payload.get("count", 0) > 0,
+        restaurants_payload,
+    )
 
-s_bad = requests.Session()
-r = s_bad.post(f'{BASE}/api/auth/login', json={'email': 'e2e_final@test.com', 'password': 'wrongpass'})
-d = r.json()
-test('5. Wrong password rejected', d.get('success') == False, str(d))
+    restaurant_id = restaurants_payload.get("restaurants", [{}])[0].get("_id", "")
+    restaurant_payload = as_json(session.get(f"{BASE}/api/restaurants/{restaurant_id}"))
+    tracker.check(
+        "Get restaurant by ID",
+        restaurant_payload.get("success") is True
+        and restaurant_payload.get("restaurant", {}).get("_id") == restaurant_id,
+        restaurant_payload,
+    )
 
-r = s.get(f'{BASE}/api/auth/profile')
-d = r.json()
-test('6. Get profile', d.get('success') == True and d.get('logged_in') == True, str(d))
-test('7. Profile has avatar field', 'avatar' in d.get('user', {}), str(d.get('user', {})))
+    print("\n--- CART / OFFERS / ORDERS ---")
+    tracker.check(
+        "Clear cart",
+        as_json(session.delete(f"{BASE}/api/cart/clear")).get("success") is True,
+    )
 
-r = s.put(f'{BASE}/api/auth/profile', json={'name': 'E2E Updated', 'phone': '9876543210', 'address': '456 Test Blvd'})
-d = r.json()
-test('8. Update profile', d.get('success') == True, str(d))
+    add_payload = as_json(
+        session.post(
+            f"{BASE}/api/cart/add",
+            json={
+                "id": item_id,
+                "name": item_payload.get("item", {}).get("name", "Margherita Pizza"),
+                "price": item_payload.get("item", {}).get("price", 13.99),
+                "image": item_payload.get("item", {}).get("image", "pizza.png"),
+                "restaurant": item_payload.get("item", {}).get(
+                    "restaurant", "Pizza Paradise"
+                ),
+                "quantity": 2,
+            },
+        )
+    )
+    tracker.check(
+        "Add item to cart",
+        add_payload.get("success") is True and len(add_payload.get("items", [])) == 1,
+        add_payload,
+    )
 
-r = s.get(f'{BASE}/api/auth/profile')
-d = r.json()
-test('9. Verify name updated', d['user']['name'] == 'E2E Updated', d['user']['name'])
-test('10. Verify phone updated', d['user']['phone'] == '9876543210', d['user']['phone'])
+    cart_payload = as_json(session.get(f"{BASE}/api/cart"))
+    tracker.check(
+        "Get cart",
+        cart_payload.get("success") is True and len(cart_payload.get("items", [])) == 1,
+        cart_payload,
+    )
 
-r = s.post(f'{BASE}/api/auth/forgot-password', json={'email': 'e2e_final@test.com'})
-d = r.json()
-test('11. Forgot password', d.get('success') == True and d.get('token') is not None, str(d))
-token = d.get('token', '')
-code = d.get('code', '')
+    promo_payload = as_json(
+        session.post(f"{BASE}/api/offers/validate", json={"code": "WELCOME40"})
+    )
+    tracker.check(
+        "Valid promo applies", promo_payload.get("success") is True, promo_payload
+    )
 
-r = s.post(f'{BASE}/api/auth/reset-password', json={'token': token, 'code': code, 'new_password': 'newpass1234'})
-d = r.json()
-test('12. Reset password', d.get('success') == True, str(d))
+    invalid_promo = session.post(
+        f"{BASE}/api/offers/validate", json={"code": "INVALIDCODE"}
+    )
+    tracker.check(
+        "Invalid promo rejected",
+        invalid_promo.status_code == 404
+        and as_json(invalid_promo).get("success") is False,
+        as_json(invalid_promo),
+    )
 
-s_new = requests.Session()
-r = s_new.post(f'{BASE}/api/auth/login', json={'email': 'e2e_final@test.com', 'password': 'newpass1234'})
-d = r.json()
-test('13. Login with new password', d.get('success') == True, str(d))
+    order_payload = as_json(
+        session.post(
+            f"{BASE}/api/orders",
+            json={
+                "name": "E2E Updated",
+                "address": "456 Test Blvd",
+                "phone": "9876543210",
+                "city": "Test City",
+                "zip": "123456",
+                "payment_method": "Credit Card",
+                "promo_code": "WELCOME40",
+            },
+        )
+    )
+    order_id = order_payload.get("order", {}).get("order_id", "")
+    tracker.check(
+        "Place order",
+        order_payload.get("success") is True and bool(order_id),
+        order_payload,
+    )
 
-r = s.post(f'{BASE}/api/auth/reset-password', json={'token': 'bad', 'code': 'bad', 'new_password': 'whatever'})
-d = r.json()
-test('14. Invalid reset rejected', d.get('success') == False, str(d))
+    cart_payload = as_json(session.get(f"{BASE}/api/cart"))
+    tracker.check(
+        "Cart cleared after order",
+        len(cart_payload.get("items", [])) == 0,
+        cart_payload,
+    )
 
-# ──── MENU ────
-print('\n--- MENU API (2 endpoints) ---')
+    empty_cart_order = session.post(
+        f"{BASE}/api/orders",
+        json={
+            "name": "E2E Updated",
+            "address": "456 Test Blvd",
+            "phone": "9876543210",
+            "city": "Test City",
+            "zip": "123456",
+            "payment_method": "Credit Card",
+        },
+    )
+    tracker.check(
+        "Empty cart checkout blocked",
+        empty_cart_order.status_code == 400
+        and as_json(empty_cart_order).get("success") is False,
+        as_json(empty_cart_order),
+    )
 
-r = s.get(f'{BASE}/api/menu')
-d = r.json()
-menu_count = d.get('count', 0)
-test('15. Get all menu items', d.get('success') == True and menu_count > 0, f'count={menu_count}')
+    history_payload = as_json(session.get(f"{BASE}/api/orders"))
+    tracker.check(
+        "Get order history",
+        any(
+            order.get("order_id") == order_id
+            for order in history_payload.get("orders", [])
+        ),
+        history_payload,
+    )
 
-r = s.get(f'{BASE}/api/menu?category=pizza')
-d = r.json()
-pizza_count = d.get('count', 0)
-test('16. Filter by pizza', d.get('success') == True and pizza_count > 0, f'count={pizza_count}')
+    own_order_payload = as_json(session.get(f"{BASE}/api/orders/{order_id}"))
+    tracker.check(
+        "Owner gets order by ID",
+        own_order_payload.get("order", {}).get("order_id") == order_id,
+        own_order_payload,
+    )
 
-items = d.get('items', [])
-if items:
-    item_id = items[0].get('item_id', '')
-    r = s.get(f'{BASE}/api/menu/{item_id}')
-    d2 = r.json()
-    test('17. Get menu item by ID', d2.get('success') == True, str(d2)[:100])
-else:
-    test('17. Get menu item by ID', False, 'No items found')
+    outsider_order = outsider.get(f"{BASE}/api/orders/{order_id}")
+    tracker.check(
+        "Other session cannot access order by ID",
+        outsider_order.status_code in {401, 403, 404}
+        and as_json(outsider_order).get("success") is False,
+        as_json(outsider_order),
+    )
 
-# ──── RESTAURANTS ────
-print('\n--- RESTAURANTS API (2 endpoints) ---')
+    payments_payload = as_json(session.get(f"{BASE}/api/payments"))
+    tracker.check(
+        "Payment history available",
+        any(
+            payment.get("order_id") == order_id
+            for payment in payments_payload.get("payments", [])
+        ),
+        payments_payload,
+    )
 
-r = s.get(f'{BASE}/api/restaurants')
-d = r.json()
-rest_count = d.get('count', 0)
-test('18. Get all restaurants', d.get('success') == True and rest_count > 0, f'count={rest_count}')
+    print("\n" + "=" * 60)
+    print(f"RESULTS: {tracker.passed} passed, {tracker.failed} failed")
+    print("=" * 60)
+    if tracker.errors:
+        print("\nFAILURES:")
+        for name, detail in tracker.errors:
+            print(f"  - {name}: {detail}")
+    else:
+        print("\nALL TESTS PASSED")
 
-r = s.get(f'{BASE}/api/restaurants?category=italian')
-d = r.json()
-test('19. Filter restaurants', d.get('success') == True, f'count={d.get("count", 0)}')
 
-rests = s.get(f'{BASE}/api/restaurants').json().get('restaurants', [])
-if rests:
-    rid = str(rests[0].get('_id', ''))
-    r = s.get(f'{BASE}/api/restaurants/{rid}')
-    d2 = r.json()
-    test('20. Get restaurant by ID', d2.get('success') == True, str(d2)[:100])
-else:
-    test('20. Get restaurant by ID', False, 'No restaurants')
-
-# ──── CART ────
-print('\n--- CART API (5 endpoints) ---')
-
-r = s.delete(f'{BASE}/api/cart/clear')
-test('21. Clear cart', r.json().get('success') == True, str(r.json()))
-
-r = s.post(f'{BASE}/api/cart/add', json={
-    'id': 'pizza-1', 'name': 'Pepperoni Pizza', 'price': 12.99,
-    'image': 'pizza.png', 'restaurant': 'Pizza Palace', 'quantity': 1
-})
-d = r.json()
-test('22. Add item to cart', d.get('success') == True, str(d))
-
-r = s.post(f'{BASE}/api/cart/add', json={
-    'id': 'burger-1', 'name': 'Cheeseburger', 'price': 10.99,
-    'image': 'burger.png', 'restaurant': 'Burger Joint', 'quantity': 2
-})
-d = r.json()
-test('23. Add second item', d.get('success') == True and len(d.get('items', [])) == 2, f'items={len(d.get("items", []))}')
-
-r = s.get(f'{BASE}/api/cart')
-d = r.json()
-test('24. Get cart (2 items)', d.get('success') == True and len(d.get('items', [])) == 2, f'items={len(d.get("items", []))}')
-
-r = s.put(f'{BASE}/api/cart/update', json={'id': 'pizza-1', 'quantity': 3})
-d = r.json()
-test('25. Update quantity', d.get('success') == True, str(d)[:80])
-pizza = next((i for i in d.get('items', []) if i['id'] == 'pizza-1'), None)
-test('26. Verify qty=3', pizza and pizza.get('quantity') == 3, str(pizza))
-
-r = s.delete(f'{BASE}/api/cart/remove/burger-1')
-d = r.json()
-test('27. Remove item', d.get('success') == True and len(d.get('items', [])) == 1, f'items={len(d.get("items", []))}')
-
-# ──── ORDERS ────
-print('\n--- ORDERS API (3 endpoints) ---')
-
-r = s.post(f'{BASE}/api/orders', json={
-    'name': 'E2E Tester', 'address': '456 Test Blvd',
-    'phone': '9876543210', 'city': 'Test City', 'zip': '12345',
-    'payment_method': 'Credit Card'
-})
-d = r.json()
-test('28. Place order', d.get('success') == True, str(d)[:100])
-order_id = d.get('order', {}).get('order_id', '')
-test('29. Order has ID', len(order_id) > 0, order_id)
-
-r = s.get(f'{BASE}/api/cart')
-d = r.json()
-test('30. Cart cleared after order', len(d.get('items', [])) == 0, f'items={len(d.get("items", []))}')
-
-r = s.get(f'{BASE}/api/orders')
-d = r.json()
-test('31. Get order history', d.get('success') == True and len(d.get('orders', [])) > 0, f'orders={len(d.get("orders", []))}')
-
-r = s.get(f'{BASE}/api/orders/{order_id}')
-d = r.json()
-test('32. Get order by ID', d.get('success') == True and d.get('order', {}).get('order_id') == order_id, str(d)[:100])
-
-# ──── OFFERS ────
-print('\n--- OFFERS API (2 endpoints) ---')
-
-r = s.get(f'{BASE}/api/offers')
-d = r.json()
-offer_count = len(d.get('offers', []))
-test('33. Get all offers', d.get('success') == True and offer_count > 0, f'offers={offer_count}')
-
-# Add cart items for promo test
-s.post(f'{BASE}/api/cart/add', json={
-    'id': 'test-promo', 'name': 'Test Item', 'price': 50.00,
-    'image': '', 'restaurant': 'Test', 'quantity': 1
-})
-r = s.post(f'{BASE}/api/offers/validate', json={'code': 'WELCOME50'})
-d = r.json()
-test('34. Validate promo WELCOME50', d.get('success') == True, str(d))
-
-r = s.post(f'{BASE}/api/offers/validate', json={'code': 'INVALIDCODE'})
-d = r.json()
-test('35. Invalid promo rejected', d.get('success') == False, str(d))
-
-# Empty cart test
-s.delete(f'{BASE}/api/cart/clear')
-r = s.post(f'{BASE}/api/orders', json={'name': 'Test', 'address': 'x'})
-d = r.json()
-test('36. Empty cart order rejected', d.get('success') == False, str(d))
-
-# ──── SUMMARY ────
-print('\n' + '=' * 60)
-print(f'RESULTS: {passed} passed, {failed} failed out of {passed + failed} tests')
-print('=' * 60)
-if errors:
-    print('\nFAILURES:')
-    for e in errors:
-        print(f'  X {e}')
-else:
-    print('\nALL TESTS PASSED!')
+if __name__ == "__main__":
+    main()

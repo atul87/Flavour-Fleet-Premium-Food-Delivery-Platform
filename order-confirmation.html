@@ -577,7 +577,7 @@
             <p class="subtitle">Your food is being prepared with love</p>
 
 
-            <div class="estimate-badge">• Estimated Delivery: 25-35 min</div>
+            <div class="estimate-badge">Estimated delivery: 25-35 min</div>
 
 
 
@@ -592,7 +592,7 @@
                     <span class="detail-label">Order ID</span>
 
 
-                    <span class="detail-value" id="conf-order-id">#—</span>
+                    <span class="detail-value" id="conf-order-id">#-</span>
 
 
                 </div>
@@ -616,7 +616,7 @@
                     <span class="detail-label">Delivery To</span>
 
 
-                    <span class="detail-value" id="conf-address">—</span>
+                    <span class="detail-value" id="conf-address">-</span>
 
 
                 </div>
@@ -664,7 +664,7 @@
                     <span class="detail-label">Delivery Fee</span>
 
 
-                    <span class="detail-value" id="conf-delivery">?49</span>
+                    <span class="detail-value" id="conf-delivery">₹49</span>
 
 
                 </div>
@@ -703,7 +703,7 @@
             <div class="confirm-actions">
 
 
-                <a href="tracking.html" class="btn btn-primary btn-lg"><i class="fas fa-truck" style="margin-right:8px"></i> Track Order</a>
+                <a href="tracking.html" class="btn btn-primary btn-lg" id="track-order-link"><i class="fas fa-truck" style="margin-right:8px"></i> Track Order</a>
 
 
                 <a href="menu.html" class="btn btn-outline btn-lg"><i class="fas fa-utensils" style="margin-right:8px"></i> Order More</a>
@@ -790,7 +790,7 @@
                 document.querySelector('.confirm-card .subtitle').textContent = 'Place an order to see your confirmation here';
 
 
-                document.querySelector('.confirm-icon').textContent = '<i class="fas fa-shopping-cart"></i>';
+                document.querySelector('.confirm-icon').innerHTML = '<i class="fas fa-shopping-cart"></i>';
 
 
                 document.querySelector('.estimate-badge').style.display = 'none';
@@ -808,13 +808,15 @@
             // Populate order details
 
 
-            document.getElementById('conf-order-id').textContent = '#' + (orderData.order_id || orderData._id || '—');
+            const orderId = orderData.order_id || orderData._id || '-';
+            document.getElementById('conf-order-id').textContent = '#' + orderId;
 
 
             document.getElementById('conf-payment').textContent = orderData.payment_method || 'UPI';
 
 
-            document.getElementById('conf-address').textContent = [orderData.address, orderData.city, orderData.zip].filter(Boolean).join(', ') || '—';
+            document.getElementById('conf-address').textContent = [orderData.address, orderData.city, orderData.zip].filter(Boolean).join(', ') || '-';
+            document.getElementById('track-order-link').href = `tracking.html?order_id=${encodeURIComponent(orderId)}`;
 
 
 

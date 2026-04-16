@@ -62,5 +62,5 @@ def record_payment(user_id, order_id, amount, method, status='completed'):
     }
     result = payments_col.insert_one(payment)
     payment['_id'] = str(result.inserted_id)
-    logger.info(f'Payment recorded: {order_id} — ₹{amount} via {method}')
+    logger.info('Payment recorded: %s amount=%.2f method=%s', order_id, amount, method)
     return payment

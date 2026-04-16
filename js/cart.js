@@ -115,16 +115,7 @@ const Cart = {
 
     // ── Promo code validation ──
     async applyPromo(code) {
-        const result = await API.post('/offers/validate', { code });
-        if (result.success) {
-            return {
-                discount: result.discount_value,
-                type: result.discount_type,
-                label: result.label || result.message,
-                discountAmount: result.discount_amount
-            };
-        }
-        return null;
+        return await API.post('/offers/validate', { code });
     },
 
     // ── Badge update (synchronous) ──
@@ -245,12 +236,12 @@ async function applyPromoCode() {
     const input = document.getElementById('promo-code');
     if (!input) return;
     const result = await Cart.applyPromo(input.value);
-    if (result) {
+    if (result.success) {
         showToast(`Promo applied: ${result.label}`, 'success');
         localStorage.setItem('flavourfleet_promo_code', input.value.toUpperCase().trim());
-        updateSummary(result.discountAmount);
+        updateSummary(result.discount_amount);
     } else {
-        showToast('Invalid promo code', 'error');
+        showToast(result.message || 'Invalid promo code', 'error');
         localStorage.removeItem('flavourfleet_promo_code');
     }
 }

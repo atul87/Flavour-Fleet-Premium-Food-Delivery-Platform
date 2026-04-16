@@ -560,6 +560,7 @@ function openAddOffer() {
     document.getElementById('offer-modal-title').textContent = 'Add Promo Code';
     document.getElementById('offer-form').reset();
     document.getElementById('offer-active-toggle').checked = true;
+    document.getElementById('offer-code-field').value = '';
     document.getElementById('offer-code-field').disabled = false;
     openModal('offer-modal');
 }
@@ -567,7 +568,7 @@ function openAddOffer() {
 function editOffer(o) {
     state.editingId = o._id;
     document.getElementById('offer-modal-title').textContent = 'Edit Offer';
-    document.getElementById('offer-code').value = o.code || '';
+    document.getElementById('offer-code-field').value = o.code || '';
     document.getElementById('offer-code-field').disabled = true;
     document.getElementById('offer-title').value = o.title || '';
     document.getElementById('offer-description').value = o.description || '';
@@ -582,7 +583,7 @@ function editOffer(o) {
 
 async function saveOffer() {
     const body = {
-        code: val('offer-code').toUpperCase(),
+        code: val('offer-code-field').toUpperCase(),
         title: val('offer-title'),
         description: val('offer-description'),
         discount_type: val('offer-discount-type'),

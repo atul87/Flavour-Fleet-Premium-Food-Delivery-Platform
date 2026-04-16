@@ -1,62 +1,69 @@
-"""Quick test script for Flavour Fleet API endpoints"""
-import urllib.request
-import json
+"""Deterministic API smoke test for Flavour Fleet."""
+import time
+import uuid
+
+import requests
 
 BASE = 'http://localhost:5000/api'
 
-def test(name, url, method='GET', data=None):
+
+def check(name, response, expected_status=200, expect_success=None):
     try:
-        if data:
-            req = urllib.request.Request(url, data=json.dumps(data).encode(), headers={'Content-Type': 'application/json'}, method=method)
-        else:
-            req = urllib.request.Request(url, method=method)
-        r = urllib.request.urlopen(req)
-        d = json.loads(r.read())
-        print(f'  ✅ {name}: {json.dumps({k:v for k,v in d.items() if k != "items" and k != "offers" and k != "restaurants" and k != "orders"}, default=str)}')
-        return d
-    except Exception as e:
-        print(f'  ❌ {name}: {e}')
-        return None
+        payload = response.json()
+    except Exception:
+        payload = {'raw': response.text[:200]}
 
-print('\n🧪 Testing Flavour Fleet API\n')
+    ok = response.status_code == expected_status
+    if expect_success is not None:
+        ok = ok and payload.get('success') is expect_success
 
-# Menu
-print('── Menu ──')
-d = test('GET /api/menu', f'{BASE}/menu')
-if d: print(f'     → {d["count"]} items')
-test('GET /api/menu?category=pizza', f'{BASE}/menu?category=pizza')
-test('GET /api/menu/p1', f'{BASE}/menu/p1')
+    status = 'PASS' if ok else 'FAIL'
+    print(f'[{status}] {name} -> HTTP {response.status_code}')
+    if not ok:
+        print(f'       {payload}')
+    return payload
 
-# Restaurants
-print('\n── Restaurants ──')
-d = test('GET /api/restaurants', f'{BASE}/restaurants')
-if d: print(f'     → {d["count"]} restaurants')
 
-# Offers
-print('\n── Offers ──')
-d = test('GET /api/offers', f'{BASE}/offers')
-if d: print(f'     → {len(d["offers"])} offers')
+def main():
+    session = requests.Session()
+    email = f'apitest_{int(time.time())}_{uuid.uuid4().hex[:6]}@test.com'
 
-# Auth
-print('\n── Auth ──')
-test('GET /api/auth/profile (no session)', f'{BASE}/auth/profile')
-test('POST /api/auth/register', f'{BASE}/auth/register', 'POST', {
-    'name': 'Test User', 'email': 'apitest@test.com', 'password': 'test123'
-})
-test('POST /api/auth/login', f'{BASE}/auth/login', 'POST', {
-    'email': 'apitest@test.com', 'password': 'test123'
-})
+    print('\nFlavour Fleet API smoke test\n')
 
-# Cart (uses session cookies, so will test basic responses)
-print('\n── Cart ──')
-test('GET /api/cart', f'{BASE}/cart')
-test('POST /api/cart/add', f'{BASE}/cart/add', 'POST', {
-    'id': 'p1', 'name': 'Margherita Pizza', 'price': 13.99, 'image': 'pizza.png', 'restaurant': 'Pizza Paradise', 'quantity': 2
-})
+    payload = check('GET /menu', session.get(f'{BASE}/menu'), expect_success=True)
+    if payload.get('success'):
+        print(f'       items={payload.get("count", 0)}')
 
-# Offers validation
-print('\n── Offers Validation ──')
-test('POST /api/offers/validate (WELCOME40)', f'{BASE}/offers/validate', 'POST', {'code': 'WELCOME40'})
-test('POST /api/offers/validate (INVALID)', f'{BASE}/offers/validate', 'POST', {'code': 'INVALID'})
+    check('GET /menu?category=pizza', session.get(f'{BASE}/menu', params={'category': 'pizza'}), expect_success=True)
+    check('GET /menu/p1', session.get(f'{BASE}/menu/p1'), expect_success=True)
 
-print('\n✅ All tests completed!\n')
+    payload = check('GET /restaurants', session.get(f'{BASE}/restaurants'), expect_success=True)
+    if payload.get('success'):
+        print(f'       restaurants={payload.get("count", 0)}')
+
+    payload = check('GET /offers', session.get(f'{BASE}/offers'), expect_success=True)
+    if payload.get('success'):
+        print(f'       offers={len(payload.get("offers", []))}')
+
+    check('GET /auth/profile (anon)', session.get(f'{BASE}/auth/profile'), expected_status=200, expect_success=False)
+    check('POST /auth/register', session.post(f'{BASE}/auth/register', json={'name': 'API Test User', 'email': email, 'password': 'test1234'}), expected_status=201, expect_success=True)
+    check('POST /auth/login', session.post(f'{BASE}/auth/login', json={'email': email, 'password': 'test1234'}), expect_success=True)
+
+    check('GET /cart', session.get(f'{BASE}/cart'), expect_success=True)
+    check('POST /cart/add', session.post(f'{BASE}/cart/add', json={
+        'id': 'p1',
+        'name': 'Margherita Pizza',
+        'price': 13.99,
+        'image': 'pizza.png',
+        'restaurant': 'Pizza Paradise',
+        'quantity': 2,
+    }), expect_success=True)
+
+    check('POST /offers/validate (valid)', session.post(f'{BASE}/offers/validate', json={'code': 'WELCOME40'}), expect_success=True)
+    check('POST /offers/validate (invalid)', session.post(f'{BASE}/offers/validate', json={'code': 'INVALID'}), expected_status=404, expect_success=False)
+
+    print('\nSmoke test complete.\n')
+
+
+if __name__ == '__main__':
+    main()

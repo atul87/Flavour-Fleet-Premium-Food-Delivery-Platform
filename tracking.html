@@ -1,1042 +1,714 @@
-﻿<!DOCTYPE html>
-
-
+<!doctype html>
 <html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Track Order - Flavour Fleet</title>
+    <meta
+      name="description"
+      content="Track your Flavour Fleet order with live status updates and delivery progress."
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <style>
+      .tracking-shell {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: var(--space-xl);
+      }
 
+      .tracking-panel,
+      .tracking-map-panel {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius-xl);
+        backdrop-filter: var(--glass-blur);
+        box-shadow: var(--shadow-lg);
+      }
 
+      .tracking-panel {
+        padding: var(--space-xl);
+      }
 
+      .tracking-meta-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: var(--space-lg);
+      }
 
+      .tracking-meta-item {
+        padding: 14px 16px;
+        border-radius: var(--radius-lg);
+        background: rgba(255, 255, 255, 0.04);
+      }
 
-<head>
+      .tracking-meta-item span {
+        display: block;
+        color: var(--text-secondary);
+        font-size: 0.78rem;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
 
+      .tracking-meta-item strong {
+        font-size: 1rem;
+      }
 
-    <meta charset="UTF-8">
+      .tracking-progress {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin: var(--space-xl) 0;
+      }
 
+      .tracking-progress::before {
+        content: "";
+        position: absolute;
+        top: 22px;
+        left: 40px;
+        right: 40px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 999px;
+      }
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      .progress-fill {
+        position: absolute;
+        top: 22px;
+        left: 40px;
+        height: 4px;
+        width: 0;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        border-radius: 999px;
+        transition: width 0.3s ease;
+      }
 
+      .tracking-step {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+      }
 
-    <title>Track Order — Flavour Fleet</title>
-    <meta name="description" content="Track your Flavour Fleet order in real-time with live status updates.">
-    <meta property="og:title" content="Track Order — Flavour Fleet">
-    <meta property="og:description" content="Track your food delivery order in real-time.">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Flavour Fleet">
+      .tracking-step-dot {
+        width: 44px;
+        height: 44px;
+        margin: 0 auto 10px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        background: rgba(255, 255, 255, 0.08);
+        border: 2px solid transparent;
+        transition: all 0.25s ease;
+      }
 
+      .tracking-step.active .tracking-step-dot {
+        background: rgba(255, 107, 53, 0.16);
+        border-color: var(--primary);
+        color: var(--primary);
+      }
 
-    <link rel="stylesheet" href="css/style.css">
+      .tracking-step.complete .tracking-step-dot {
+        background: rgba(34, 197, 94, 0.16);
+        border-color: #22c55e;
+        color: #86efac;
+      }
 
+      .tracking-step-label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
 
-    <link rel="stylesheet" href="css/animations.css">
+      .tracking-step-copy {
+        color: var(--text-secondary);
+        font-size: 0.82rem;
+      }
 
+      .status-banner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px 20px;
+        border-radius: var(--radius-lg);
+        background: linear-gradient(
+          135deg,
+          rgba(255, 107, 53, 0.18),
+          rgba(46, 196, 182, 0.12)
+        );
+      }
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+      .status-banner p {
+        margin: 6px 0 0;
+        color: var(--text-secondary);
+      }
 
+      .live-indicator {
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+      }
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+      .tracking-map-panel {
+        padding: var(--space-xl);
+      }
 
+      .map-frame {
+        width: 100%;
+        height: 420px;
+        border-radius: var(--radius-xl);
+        overflow: hidden;
+        margin-top: var(--space-lg);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
 
-</head>
+      .empty-tracking {
+        text-align: center;
+        padding: var(--space-3xl) var(--space-xl);
+      }
 
+      .empty-tracking h2 {
+        margin-bottom: 10px;
+      }
 
+      .empty-tracking p {
+        color: var(--text-secondary);
+        max-width: 420px;
+        margin: 0 auto var(--space-xl);
+      }
 
+      @media (max-width: 960px) {
+        .tracking-shell {
+          grid-template-columns: 1fr;
+        }
+      }
 
+      @media (max-width: 720px) {
+        .tracking-progress {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
 
-<body>
+        .tracking-progress::before,
+        .progress-fill {
+          display: none;
+        }
 
-
-
-
-
+        .tracking-meta-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
     <nav class="navbar" id="navbar">
-
-
-        <div class="container">
-
-
-            <a href="index.html" class="nav-logo"><i class="fas fa-fire logo-icon"></i><span>Flavour Fleet</span></a>
-
-
-            <div class="nav-links" id="nav-links">
-
-
-                <a href="restaurants.html">Restaurants</a>
-
-
-                <a href="menu.html">Menu</a>
-
-
-                <a href="offers.html" class="offers-link">Offers <span class="offers-badge">NEW</span></a>
-
-
-                <a href="tracking.html" class="active">Track</a>
-
-
-            </div>
-
-
-            <div class="nav-actions">
-
-
-                <button class="icon-btn theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-
-
-                    <svg viewBox="0 0 24 24">
-
-
-                        <circle cx="12" cy="12" r="5" />
-
-
-                        <line x1="12" y1="1" x2="12" y2="3" />
-
-
-                        <line x1="12" y1="21" x2="12" y2="23" />
-
-
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-
-
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-
-
-                        <line x1="1" y1="12" x2="3" y2="12" />
-
-
-                        <line x1="21" y1="12" x2="23" y2="12" />
-
-
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-
-
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-
-
-                    </svg>
-
-
-                </button>
-
-
-                <a href="cart.html" class="icon-btn nav-cart" aria-label="Cart">
-
-
-                    <svg viewBox="0 0 24 24">
-
-
-                        <circle cx="9" cy="21" r="1" />
-
-
-                        <circle cx="20" cy="21" r="1" />
-
-
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-
-
-                    </svg>
-
-
-                    <span class="cart-count" id="cart-count">0</span>
-
-
-                </a>
-
-
-                <div class="profile-dropdown-wrapper" id="profile-dropdown-wrapper">
-
-
-                    <button class="icon-btn nav-profile" aria-label="Profile">
-
-
-                        <svg viewBox="0 0 24 24">
-
-
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-
-
-                            <circle cx="12" cy="7" r="4" />
-
-
-                        </svg>
-
-
-                    </button>
-
-
-                    <div class="profile-dropdown" id="profile-dropdown">
-
-
-                        <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
-
-
-                        <a href="tracking.html"><i class="fas fa-box"></i> My Orders</a>
-
-
-                        <a href="help.html"><i class="fas fa-cog"></i> Settings</a>
-
-
-                        <div class="dropdown-divider"></div>
-
-
-                        <a href="login.html" class="dropdown-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
-
-
-                    </div>
-
-
-                </div>
-
-
-                <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
-
-
-            </div>
-
-
+      <div class="container">
+        <a href="index.html" class="nav-logo"
+          ><span class="logo-icon">FF</span><span>Flavour Fleet</span></a
+        >
+        <div class="nav-links" id="nav-links">
+          <a href="restaurants.html">Restaurants</a>
+          <a href="menu.html">Menu</a>
+          <a href="offers.html" class="offers-link"
+            >Offers <span class="offers-badge">NEW</span></a
+          >
+          <a href="tracking.html" class="active">Track</a>
         </div>
-
-
+        <div class="nav-actions">
+          <button
+            class="icon-btn theme-toggle"
+            id="theme-toggle"
+            aria-label="Toggle theme"
+          >
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="5" />
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
+          </button>
+          <a href="cart.html" class="icon-btn nav-cart" aria-label="Cart">
+            <svg viewBox="0 0 24 24">
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path
+                d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+              />
+            </svg>
+            <span class="cart-count" id="cart-count">0</span>
+          </a>
+          <a
+            href="profile.html"
+            class="icon-btn nav-profile"
+            aria-label="Profile"
+          >
+            <svg viewBox="0 0 24 24">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </a>
+          <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
     </nav>
-
-
-
-
 
     <section class="page-header">
-
-
-        <div class="container">
-
-
-            <h1>“ Track Your Order</h1>
-
-
-            <p>Real-time order status</p>
-
-
-        </div>
-
-
+      <div class="container">
+        <h1>Track Your Order</h1>
+        <p>Live status updates for the order you are currently waiting on.</p>
+      </div>
     </section>
 
-
-
-
-
-    <section class="tracking-page">
-
-
-        <div class="container">
-
-
-            <div class="tracking-card animate-on-scroll">
-
-
-                <div class="tracking-header">
-
-
-                    <h2>Order Status</h2>
-
-
-                    <p class="order-id" id="order-id">ORD-DEMO123</p>
-
-
-                    <p class="eta" id="eta">Estimated delivery: <strong>Calculating...</strong></p>
-
-
-                    <div class="countdown-timer" id="countdown-timer">
-
-
-                        <span class="timer-icon">â±ï</span>
-
-
-                        <span class="timer-value" id="timer-value">--:--</span>
-
-
-                        <span class="timer-label">remaining</span>
-
-
-                    </div>
-
-
-                </div>
-
-
-
-
-
-                <div class="tracking-progress" id="tracking-progress">
-
-
-                    <div class="progress-fill" id="progress-fill" style="width:0%"></div>
-
-
-                    <div class="tracking-step completed" id="step-1">
-
-
-                        <div class="step-dot"><i class="fas fa-receipt"></i></div>
-
-
-                        <span class="step-label">Order Placed</span>
-
-
-                        <span class="step-description">Your order has been confirmed</span>
-
-
-                    </div>
-
-
-                    <div class="tracking-step" id="step-2">
-
-
-                        <div class="step-dot"><i class="fas fa-fire"></i>â€</div>
-
-
-                        <span class="step-label">Preparing</span>
-
-
-                        <span class="step-description">Kitchen is cooking your food</span>
-
-
-                    </div>
-
-
-                    <div class="tracking-step" id="step-3">
-
-
-                        <div class="step-dot"><i class="fas fa-motorcycle"></i></div>
-
-
-                        <span class="step-label">Out for Delivery</span>
-
-
-                        <span class="step-description">Driver is on the way to you</span>
-
-
-                    </div>
-
-
-                    <div class="tracking-step" id="step-4">
-
-
-                        <div class="step-dot">✅</div>
-
-
-                        <span class="step-label">Delivered</span>
-
-
-                        <span class="step-description">Enjoy your meal!</span>
-
-
-                    </div>
-
-
-                </div>
-
-
-
-
-
-                <div class="tracking-details">
-
-
-                    <div class="tracking-detail-row"><span class="label">Restaurant</span><span class="value"
-                            id="track-restaurant">Pizza Paradise</span></div>
-
-
-                    <div class="tracking-detail-row"><span class="label">Items</span><span class="value"
-                            id="track-items">—</span></div>
-
-
-                    <div class="tracking-detail-row"><span class="label">Total</span><span class="value"
-                            id="track-total" style="color:var(--primary)">—</span></div>
-
-
-                    <div class="tracking-detail-row"><span class="label">Payment</span><span class="value">UPI
-
-
-                            ****4242</span></div>
-
-
-                </div>
-
-
-
-
-
-                <!-- Live Map -->
-
-
-                <div class="map-wrapper">
-
-
-                    <div id="map"></div>
-
-
-                    <div class="map-overlay">
-
-
-                        <span class="map-overlay-dot"></span>
-
-
-                        <span class="map-overlay-text">Live tracking active</span>
-
-
-                    </div>
-
-
-                </div>
-
-
+    <section class="section">
+      <div class="container" id="tracking-root">
+        <div class="tracking-shell">
+          <div class="tracking-panel animate-on-scroll">
+            <div class="status-banner">
+              <div>
+                <span class="eyebrow">Live Order Status</span>
+                <h2 id="order-id" style="margin: 6px 0 0">Loading...</h2>
+                <p id="eta-copy">Checking your latest order details...</p>
+              </div>
+              <div class="live-indicator" id="live-indicator">
+                Preparing live updates...
+              </div>
             </div>
 
+            <div class="tracking-progress" id="tracking-progress">
+              <div class="progress-fill" id="progress-fill"></div>
+              <div class="tracking-step" data-step="1">
+                <div class="tracking-step-dot">1</div>
+                <span class="tracking-step-label">Placed</span>
+                <span class="tracking-step-copy">Order confirmed</span>
+              </div>
+              <div class="tracking-step" data-step="2">
+                <div class="tracking-step-dot">2</div>
+                <span class="tracking-step-label">Preparing</span>
+                <span class="tracking-step-copy">Kitchen is cooking</span>
+              </div>
+              <div class="tracking-step" data-step="3">
+                <div class="tracking-step-dot">3</div>
+                <span class="tracking-step-label">Out for Delivery</span>
+                <span class="tracking-step-copy">Driver is on the way</span>
+              </div>
+              <div class="tracking-step" data-step="4">
+                <div class="tracking-step-dot">4</div>
+                <span class="tracking-step-label">Delivered</span>
+                <span class="tracking-step-copy">Enjoy your order</span>
+              </div>
+            </div>
 
+            <div class="tracking-meta-grid">
+              <div class="tracking-meta-item">
+                <span>Restaurant</span>
+                <strong id="track-restaurant">-</strong>
+              </div>
+              <div class="tracking-meta-item">
+                <span>Payment</span>
+                <strong id="track-payment">-</strong>
+              </div>
+              <div class="tracking-meta-item">
+                <span>Items</span>
+                <strong id="track-items">-</strong>
+              </div>
+              <div class="tracking-meta-item">
+                <span>Total</span>
+                <strong id="track-total">-</strong>
+              </div>
+            </div>
+          </div>
+
+          <aside class="tracking-map-panel animate-on-scroll">
+            <h2 style="margin-bottom: 6px">Delivery Map</h2>
+            <p style="margin: 0; color: var(--text-secondary)">
+              This map updates the driver marker as the order status changes.
+            </p>
+            <div class="map-frame" id="map"></div>
+          </aside>
         </div>
-
-
+      </div>
     </section>
-
-
-
-
 
     <footer class="footer">
-
-
-        <div class="container">
-
-
-            <div class="footer-bottom">
-
-
-                <p>© 2026 Flavour Fleet. All rights reserved.</p>
-
-
-            </div>
-
-
+      <div class="container">
+        <div class="footer-bottom">
+          <p>&copy; 2026 Flavour Fleet. All rights reserved.</p>
         </div>
-
-
+      </div>
     </footer>
 
-
     <div class="toast-container" id="toast-container"></div>
-
-
     <div class="page-loader" id="page-loader">
-
-
-        <div class="loader-spinner"></div>
-
-
-        <p>Loading tracking...</p>
-
-
+      <div class="loader-spinner"></div>
+      <p>Loading tracking...</p>
     </div>
 
-
-
-
-
     <script src="js/api.js"></script>
-
-
     <script src="js/cart.js"></script>
-
-
     <script src="js/auth.js"></script>
-
-
     <script src="js/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.min.js"></script>
-
-
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-
-
-        document.addEventListener('DOMContentLoaded', async () => {
-
-
-            // Try to get current order from localStorage (set after checkout)
-
-
-            let order = JSON.parse(localStorage.getItem('flavourfleet_current_order'));
-
-
-
-
-
-            // If no current order in localStorage, try to get most recent from API
-
-
-            if (!order) {
-
-
-                const result = await API.get('/orders');
-
-
-                if (result.success && result.orders && result.orders.length > 0) {
-
-
-                    order = result.orders[0]; // most recent order
-
-
-                }
-
-
-            }
-
-
-
-
-
-            // Fallback to demo
-
-
-            if (!order) {
-
-
-                order = { order_id: 'ORD-DEMO123', items_summary: 'Pepperoni Pizza, Butter Chicken', total: 31.98, restaurant: 'Pizza Paradise' };
-
-
-            }
-
-
-
-
-
-            const displayId = order.order_id || order.id || 'ORD-DEMO123';
-
-
-            const displayItems = order.items_summary || (Array.isArray(order.items) ? order.items.map(i => i.name).join(', ') : order.items) || '—';
-
-
-
-
-
-            document.getElementById('order-id').textContent = displayId;
-
-
-            document.getElementById('track-restaurant').textContent = order.restaurant || 'Pizza Paradise';
-
-
-            document.getElementById('track-items').textContent = displayItems;
-
-
-            document.getElementById('track-total').textContent = order.total ? '$' + Number(order.total).toFixed(2) : '—';
-
-
-
-
-
-            // Countdown timer
-
-
-            let totalSeconds = 25 * 60; // 25 minutes
-
-
-            const timerEl = document.getElementById('timer-value');
-
-
-            function updateTimer() {
-
-
-                if (totalSeconds <= 0) {
-
-
-                    timerEl.textContent = '00:00';
-
-
-                    return;
-
-
-                }
-
-
-                const mins = Math.floor(totalSeconds / 60);
-
-
-                const secs = totalSeconds % 60;
-
-
-                timerEl.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-
-
-                totalSeconds--;
-
-
-                setTimeout(updateTimer, 1000);
-
-
-            }
-
-
-            updateTimer();
-
-
-
-
-
-            let step = 1;
-
-
-            const etas = ['25 min ', '18 min <i class="fas fa-fire"></i>â€', '8 min <i class="fas fa-motorcycle"></i>', 'Delivered! ¥'];
-
-
-            const statusNames = ['Placed', 'Preparing', 'Out for Delivery', 'Delivered'];
-
-            const backendStatus = order.status || 'preparing';
-            let targetStep = 1;
-            if (backendStatus === 'pending') targetStep = 1;
-            if (backendStatus === 'preparing') targetStep = 2;
-            if (backendStatus === 'on-way') targetStep = 3;
-            if (backendStatus === 'delivered') targetStep = 4;
-            if (backendStatus === 'cancelled') {
-                targetStep = 1;
-                document.getElementById('eta').innerHTML = 'Estimated delivery: <strong>Cancelled</strong>';
-            }
-
-            function simulateProgress() {
-                if (step > targetStep || step > 4) return;
-
-
-
-
-
-                // Write current status to localStorage for the Active Order Pill
-
-
-                localStorage.setItem('flavourfleet_order_status', statusNames[step - 1]);
-
-
-
-
-
-                document.getElementById('progress-fill').style.width = ((step - 1) / 3 * 100) + '%';
-
-
-                for (let i = 1; i <= 4; i++) {
-
-
-                    const el = document.getElementById('step-' + i);
-
-
-                    el.classList.remove('completed', 'active');
-
-
-                    if (i < step) el.classList.add('completed');
-
-
-                    else if (i === step) el.classList.add('active');
-
-
-                }
-
-
-                document.getElementById('eta').innerHTML = 'Estimated delivery: <strong>' + etas[Math.min(step - 1, 3)] + '</strong>';
-
-
-
-
-
-                // Update countdown on each step
-
-
-                if (step === 2) totalSeconds = 18 * 60;
-
-
-                if (step === 3) totalSeconds = 8 * 60;
-
-
-                if (step === 4) {
-
-
-                    totalSeconds = 0;
-
-
-                    document.getElementById('countdown-timer').style.background = 'rgba(46, 196, 182, 0.15)';
-
-
-                    timerEl.textContent = '✅';
-
-
-                    // Clear status after delivery (pill will auto-hide)
-
-
-                    setTimeout(() => localStorage.removeItem('flavourfleet_order_status'), 3000);
-
-
-                }
-
-
-
-
-
-                step++;
-                if (step <= targetStep) setTimeout(simulateProgress, 1000);
-
-
-            }
-
-
-            simulateProgress();
-
-
-            // ===== SOCKET.IO REAL-TIME TRACKING =====
-            if (typeof io !== 'undefined' && displayId !== 'ORD-DEMO123') {
-                try {
-                    const socket = io();
-                    socket.on('connect', () => {
-                        console.log('Connected to tracking server');
-                        socket.emit('track_order', { order_id: displayId });
-                    });
-                    socket.on('order_update', (data) => {
-                        const statusMap = { 'placed': 1, 'pending': 1, 'preparing': 2, 'out_for_delivery': 3, 'on-way': 3, 'delivered': 4 };
-                        const newStep = statusMap[data.status] || 1;
-                        document.getElementById('progress-fill').style.width = ((newStep - 1) / 3 * 100) + '%';
-                        for (let i = 1; i <= 4; i++) {
-                            const el = document.getElementById('step-' + i);
-                            el.classList.remove('completed', 'active');
-                            if (i < newStep) el.classList.add('completed');
-                            else if (i === newStep) el.classList.add('active');
-                        }
-                        if (data.eta) document.getElementById('eta').innerHTML = 'Estimated delivery: <strong>' + data.eta + '</strong>';
-                        if (data.status === 'delivered') {
-                            totalSeconds = 0;
-                            document.getElementById('countdown-timer').style.background = 'rgba(46, 196, 182, 0.15)';
-                            timerEl.textContent = '✅';
-                        }
-                    });
-                } catch (e) { console.warn('Socket.IO unavailable'); }
-            }
-
-
-
-            // ===== LEAFLET MAP =====
-
-
-            const restaurantLat = 19.0760, restaurantLng = 72.8777;
-
-
-            const deliveryLat = 19.0920, deliveryLng = 72.9050;
-
-
-
-
-
-            // Pick tile layer based on theme
-
-
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-
-
-            const tileUrl = isDark
-
-
-                ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-
-
-                : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
-
-
-
-
-
-            const map = L.map('map', { zoomControl: false, attributionControl: false }).setView(
-
-
-                [(restaurantLat + deliveryLat) / 2, (restaurantLng + deliveryLng) / 2], 14
-
-
-            );
-
-
-            L.control.zoom({ position: 'topright' }).addTo(map);
-
-
-            L.tileLayer(tileUrl, { maxZoom: 19 }).addTo(map);
-
-
-
-
-
-            // Custom emoji markers
-
-
-            function emojiIcon(emoji, size = 32) {
-
-
-                return L.divIcon({
-
-
-                    html: `<span style="font-size:${size}px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4))">${emoji}</span>`,
-
-
-                    className: 'emoji-marker',
-
-
-                    iconSize: [size, size],
-
-
-                    iconAnchor: [size / 2, size / 2]
-
-
-                });
-
-
-            }
-
-
-
-
-
-            // Restaurant marker
-
-
-            L.marker([restaurantLat, restaurantLng], { icon: emojiIcon('”', 36) })
-
-
-                .addTo(map)
-
-
-                .bindPopup('<b>Pizza Paradise</b><br>Restaurant');
-
-
-
-
-
-            // Delivery marker (bouncing)
-
-
-            const deliveryMarker = L.marker([deliveryLat, deliveryLng], { icon: emojiIcon(' ', 36) })
-
-
-                .addTo(map)
-
-
-                .bindPopup('<b>Your Address</b><br>Delivery location');
-
-
-
-
-
-            // ETA radius circle
-
-
-            const etaCircle = L.circle([deliveryLat, deliveryLng], {
-
-
-                radius: 600, color: '#ff6b35', fillColor: '#ff6b35',
-
-
-                fillOpacity: 0.08, weight: 2, dashArray: '8 6'
-
-
-            }).addTo(map);
-
-
-
-
-
-            // Route line (curved waypoints for realism)
-
-
-            const routePoints = [
-
-
-                [restaurantLat, restaurantLng],
-
-
-                [19.0785, 72.8850],
-
-
-                [19.0810, 72.8910],
-
-
-                [19.0850, 72.8950],
-
-
-                [19.0880, 72.8990],
-
-
-                [deliveryLat, deliveryLng]
-
-
-            ];
-
-
-            L.polyline(routePoints, {
-
-
-                color: '#ff6b35', weight: 4, opacity: 0.7,
-
-
-                dashArray: '12 8', lineCap: 'round'
-
-
-            }).addTo(map);
-
-
-
-
-
-            // Animated driver marker
-
-
-            const driverMarker = L.marker([restaurantLat, restaurantLng], {
-
-
-                icon: emojiIcon('›', 40), zIndexOffset: 1000
-
-
-            }).addTo(map).bindPopup('Your delivery driver');
-
-
-
-
-
-            // Animate driver along route
-
-
-            let routeIndex = 0;
-
-
-            function animateDriver() {
-
-
-                if (routeIndex >= routePoints.length) {
-
-
-                    driverMarker.setIcon(emojiIcon('✅', 40));
-
-
-                    driverMarker.setPopupContent('Delivered! 🎉').openPopup();
-
-
-                    etaCircle.setStyle({ color: '#2ec4b6', fillColor: '#2ec4b6', fillOpacity: 0.12 });
-
-
-                    return;
-
-
-                }
-
-
-                const [lat, lng] = routePoints[routeIndex];
-
-
-                driverMarker.setLatLng([lat, lng]);
-
-
-                routeIndex++;
-
-
-                setTimeout(animateDriver, 3500);
-
-
-            }
-
-
-            // Start driver after 2s
-
-
-            setTimeout(animateDriver, 2000);
-
-
+      const trackingState = {
+        order: null,
+        socket: null,
+        pollTimer: null,
+        map: null,
+        driverMarker: null,
+        route: [
+          [19.076, 72.8777],
+          [19.0785, 72.885],
+          [19.081, 72.891],
+          [19.085, 72.895],
+          [19.088, 72.899],
+          [19.092, 72.905],
+        ],
+      };
+
+      function formatINR(amount) {
+        return new Intl.NumberFormat("en-IN", {
+          style: "currency",
+          currency: "INR",
+          maximumFractionDigits: 0,
+        }).format(amount || 0);
+      }
+
+      function humanizeStatus(status) {
+        return (status || "placed").replace(/_/g, " ");
+      }
+
+      function statusToStep(status) {
+        const map = {
+          placed: 1,
+          pending: 1,
+          preparing: 2,
+          out_for_delivery: 3,
+          delivered: 4,
+        };
+        return map[status] || 1;
+      }
+
+      function defaultEta(status) {
+        const etaMap = {
+          placed: "Order received. Kitchen assignment is next.",
+          pending: "Order received. Kitchen assignment is next.",
+          preparing: "Preparing your meal now.",
+          out_for_delivery: "Driver is on the way.",
+          delivered: "Delivered successfully.",
+          cancelled: "This order was cancelled.",
+        };
+        return etaMap[status] || "Checking delivery progress.";
+      }
+
+      function setLiveIndicator(message) {
+        document.getElementById("live-indicator").textContent = message;
+      }
+
+      function updateProgress(status, etaText) {
+        const step = statusToStep(status);
+        const progressFill = document.getElementById("progress-fill");
+        const widthByStep = { 1: "0%", 2: "33%", 3: "66%", 4: "100%" };
+        progressFill.style.width = widthByStep[step] || "0%";
+
+        document.querySelectorAll(".tracking-step").forEach((element) => {
+          const itemStep = Number(element.dataset.step);
+          element.classList.toggle(
+            "complete",
+            itemStep < step || (status === "delivered" && itemStep <= step),
+          );
+          element.classList.toggle(
+            "active",
+            status !== "delivered" && itemStep === step,
+          );
+          if (status === "cancelled") {
+            element.classList.remove("complete", "active");
+          }
         });
 
+        document.getElementById("eta-copy").textContent =
+          etaText || defaultEta(status);
 
+        if (status === "cancelled" || status === "delivered") {
+          localStorage.removeItem("flavourfleet_order_status");
+        } else {
+          localStorage.setItem(
+            "flavourfleet_order_status",
+            humanizeStatus(status),
+          );
+        }
+
+        updateDriverMarker(step, status);
+      }
+
+      function renderOrder(order) {
+        trackingState.order = order;
+        localStorage.setItem(
+          "flavourfleet_current_order",
+          JSON.stringify(order),
+        );
+
+        document.getElementById("order-id").textContent =
+          order.order_id || order.id || "Order";
+        document.getElementById("track-restaurant").textContent =
+          order.restaurant || "Assigned restaurant";
+        document.getElementById("track-payment").textContent =
+          order.payment_method || "Online payment";
+        document.getElementById("track-items").textContent =
+          order.items_summary ||
+          (Array.isArray(order.items)
+            ? order.items.map((item) => item.name).join(", ")
+            : "-");
+        document.getElementById("track-total").textContent = formatINR(
+          order.total,
+        );
+
+        updateProgress(order.status || "placed");
+      }
+
+      function showEmptyState(message) {
+        clearInterval(trackingState.pollTimer);
+        if (trackingState.socket) {
+          trackingState.socket.disconnect();
+          trackingState.socket = null;
+        }
+
+        document.getElementById("tracking-root").innerHTML = `
+                <div class="tracking-panel empty-tracking animate-on-scroll">
+                    <h2>No active order found</h2>
+                    <p>${message}</p>
+                    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+                        <a href="menu.html" class="btn btn-primary">Browse Menu</a>
+                        <a href="profile.html" class="btn btn-secondary">View Order History</a>
+                    </div>
+                </div>
+            `;
+      }
+
+      async function fetchOrderById(orderId) {
+        const result = await API.get(`/orders/${encodeURIComponent(orderId)}`);
+        return result.success ? result.order : null;
+      }
+
+      async function fetchLatestOrder() {
+        const result = await API.get("/orders");
+        if (
+          result.success &&
+          Array.isArray(result.orders) &&
+          result.orders.length > 0
+        ) {
+          return result.orders[0];
+        }
+        return null;
+      }
+
+      function getRequestedOrderId() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has("order_id")) {
+          const rawOrderId = (urlParams.get("order_id") || "").trim();
+          return rawOrderId || null;
+        }
+
+        try {
+          const localOrder = JSON.parse(
+            localStorage.getItem("flavourfleet_current_order") || "null",
+          );
+          return localOrder?.order_id || null;
+        } catch {
+          return null;
+        }
+      }
+
+      async function refreshCurrentOrder() {
+        const orderId = trackingState.order?.order_id || getRequestedOrderId();
+        if (!orderId) return;
+
+        const refreshedOrder = await fetchOrderById(orderId);
+        if (refreshedOrder) {
+          renderOrder(refreshedOrder);
+        }
+      }
+
+      function startPolling() {
+        clearInterval(trackingState.pollTimer);
+        trackingState.pollTimer = setInterval(async () => {
+          if (!trackingState.order?.order_id) return;
+          await refreshCurrentOrder();
+        }, 15000);
+      }
+
+      function connectRealtime(orderId) {
+        if (typeof io === "undefined" || !orderId) {
+          setLiveIndicator(
+            "Live updates unavailable. Refresh fallback is active.",
+          );
+          startPolling();
+          return;
+        }
+
+        try {
+          trackingState.socket = io({ transports: ["websocket", "polling"] });
+
+          trackingState.socket.on("connect", () => {
+            setLiveIndicator("Connected to live tracking.");
+            trackingState.socket.emit("track_order", { order_id: orderId });
+          });
+
+          trackingState.socket.on("reconnect", () => {
+            setLiveIndicator("Reconnected to live tracking.");
+            trackingState.socket.emit("track_order", { order_id: orderId });
+          });
+
+          trackingState.socket.on("tracking_joined", () => {
+            setLiveIndicator("Live tracking connected.");
+          });
+
+          trackingState.socket.on("order_update", async (payload) => {
+            if (!payload || payload.order_id !== orderId) return;
+            updateProgress(payload.status, payload.eta);
+            setLiveIndicator("Live update received just now.");
+            await refreshCurrentOrder();
+          });
+
+          trackingState.socket.on("connect_error", () => {
+            setLiveIndicator(
+              "Live socket unavailable. Refresh fallback is active.",
+            );
+            startPolling();
+          });
+        } catch (error) {
+          setLiveIndicator(
+            "Live tracking failed to initialize. Refresh fallback is active.",
+          );
+          startPolling();
+        }
+      }
+
+      function initMap() {
+        if (typeof L === "undefined" || trackingState.map) return;
+
+        trackingState.map = L.map("map", {
+          zoomControl: false,
+          attributionControl: false,
+        }).setView([19.084, 72.892], 14);
+
+        const isDark =
+          document.documentElement.getAttribute("data-theme") === "dark";
+        const tileUrl = isDark
+          ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+          : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
+
+        L.tileLayer(tileUrl, { maxZoom: 19 }).addTo(trackingState.map);
+        L.control.zoom({ position: "topright" }).addTo(trackingState.map);
+
+        const restaurant = trackingState.route[0];
+        const destination = trackingState.route[trackingState.route.length - 1];
+
+        function icon(emoji) {
+          return L.divIcon({
+            className: "emoji-marker",
+            html: `<span style="font-size:30px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.35));">${emoji}</span>`,
+            iconSize: [30, 30],
+            iconAnchor: [15, 15],
+          });
+        }
+
+        L.marker(restaurant, { icon: icon("🍽️") })
+          .addTo(trackingState.map)
+          .bindPopup("Restaurant");
+        L.marker(destination, { icon: icon("📍") })
+          .addTo(trackingState.map)
+          .bindPopup("Delivery destination");
+        L.polyline(trackingState.route, {
+          color: "#ff6b35",
+          weight: 4,
+          opacity: 0.7,
+          dashArray: "10 8",
+        }).addTo(trackingState.map);
+
+        trackingState.driverMarker = L.marker(restaurant, { icon: icon("🛵") })
+          .addTo(trackingState.map)
+          .bindPopup("Driver");
+      }
+
+      function updateDriverMarker(step, status) {
+        if (!trackingState.driverMarker) return;
+
+        const indexByStep = {
+          1: 0,
+          2: 2,
+          3: 4,
+          4: 5,
+        };
+        const pointIndex = indexByStep[step] ?? 0;
+        trackingState.driverMarker.setLatLng(trackingState.route[pointIndex]);
+
+        if (status === "delivered") {
+          trackingState.driverMarker.bindPopup("Delivered").openPopup();
+        } else if (status === "cancelled") {
+          trackingState.driverMarker
+            .bindPopup("Delivery cancelled")
+            .openPopup();
+        }
+      }
+
+      async function bootstrapTracking() {
+        initMap();
+
+        let order = null;
+        const requestedOrderId = getRequestedOrderId();
+        const hasOrderIdQuery = new URLSearchParams(window.location.search).has(
+          "order_id",
+        );
+
+        if (hasOrderIdQuery && !requestedOrderId) {
+          showEmptyState(
+            "Invalid order ID. Please open tracking from your order history or confirmation page.",
+          );
+          return;
+        }
+
+        if (requestedOrderId) {
+          order = await fetchOrderById(requestedOrderId);
+          if (!order) {
+            showEmptyState(
+              "Invalid order ID. Please verify the link and try again.",
+            );
+            return;
+          }
+        }
+
+        if (!order && !hasOrderIdQuery) {
+          order = await fetchLatestOrder();
+        }
+
+        if (!order) {
+          showEmptyState(
+            "We could not find an order tied to this browser session. Place a new order or open a specific order from your profile.",
+          );
+          return;
+        }
+
+        renderOrder(order);
+        connectRealtime(order.order_id);
+        startPolling();
+      }
+
+      document.addEventListener("DOMContentLoaded", bootstrapTracking);
     </script>
-
-
-
-
-
-    <!-- MOBILE BOTTOM NAV -->
-
-
-    <nav class="bottom-nav" id="bottom-nav">
-
-
-        <div class="nav-items">
-
-
-            <a href="index.html" class="nav-item">
-
-
-                <span class="nav-icon"> </span>
-
-
-                <span>Home</span>
-
-
-            </a>
-
-
-            <a href="menu.html" class="nav-item">
-
-
-                <span class="nav-icon">ï</span>
-
-
-                <span>Menu</span>
-
-
-            </a>
-
-
-            <a href="cart.html" class="nav-item">
-
-
-                <span class="nav-icon"><i class="fas fa-shopping-cart"></i></span>
-
-
-                <span>Cart</span>
-
-
-                <span class="nav-badge cart-count" style="display:none">0</span>
-
-
-            </a>
-
-
-            <a href="tracking.html" class="nav-item active">
-
-
-                <span class="nav-icon">“</span>
-
-
-                <span>Orders</span>
-
-
-            </a>
-
-
-            <a href="profile.html" class="nav-item">
-
-
-                <span class="nav-icon"><i class="fas fa-receipt"></i></span>
-
-
-                <span>Profile</span>
-
-
-            </a>
-
-
-        </div>
-
-
-    </nav>
-
-
-
-
-
-</body>
-
-
-
-
-
+  </body>
 </html>

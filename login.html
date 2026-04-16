@@ -214,7 +214,6 @@
         <script>
             let mode = 'login';
             let loginRole = 'user';
-            let resetToken = '';
             let resetCode = '';
 
             function selectRole(role) {
@@ -320,11 +319,7 @@
 
                 const result = await API.post('/auth/forgot-password', { email });
                 if (result.success) {
-                    if (result.token) {
-                        resetToken = result.token;
-                        // In demo mode, show the code via toast
-                        showToast(`Demo mode — Your reset code is: ${result.code}`, 'success');
-                    }
+                    showToast('If an account exists, a reset code has been sent.', 'success');
                     document.getElementById('reset-step-1').style.display = 'none';
                     document.getElementById('reset-step-2').style.display = 'block';
                     document.getElementById('reset-subtitle').textContent = 'Enter the 6-digit code sent to your email';
@@ -352,7 +347,6 @@
                 if (newPass !== confirmPass) { showToast('Passwords do not match', 'error'); return; }
 
                 const result = await API.post('/auth/reset-password', {
-                    token: resetToken,
                     code: resetCode,
                     new_password: newPass
                 });

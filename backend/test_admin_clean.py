@@ -1,156 +1,111 @@
-"""
-Clean ASCII test for Admin Dashboard APIs
-"""
-import requests, json, sys
+"""ASCII-only admin API verification for Flavour Fleet."""
+import time
+import uuid
+
+import requests
 
 BASE = 'http://localhost:5000'
-s = requests.Session()
-PASS = 0
-FAIL = 0
 
-def test(name, response, expect_success=True, expect_status=200):
-    global PASS, FAIL
-    ok = response.status_code == expect_status
-    data = None
+
+def check(name, response, expected_status=200, expect_success=None):
     try:
-        data = response.json()
-        if expect_success and not data.get('success'):
-            ok = False
-    except:
-        if expect_status == 200:
-            ok = False
-    if ok:
-        PASS += 1
-        print(f'  [PASS] {name} -- HTTP {response.status_code}')
-    else:
-        FAIL += 1
-        print(f'  [FAIL] {name} -- HTTP {response.status_code}')
-        if data:
-            print(f'     Resp: {json.dumps(data)[:200]}')
-    return data
+        payload = response.json()
+    except Exception:
+        payload = {'raw': response.text[:200]}
 
-print('\n--- TEST 1: Admin Login ---')
-data = test('Login as admin', s.post(f'{BASE}/api/auth/login', json={
-    'email': 'admin@flavourfleet.com', 'password': 'admin123'
-}))
+    ok = response.status_code == expected_status
+    if expect_success is not None:
+        ok = ok and payload.get('success') is expect_success
 
-print('\n--- TEST 2: Profile (role=admin) ---')
-data = test('Profile check', s.get(f'{BASE}/api/auth/profile'))
-if data:
-    role = data.get('user', {}).get('role', 'MISSING')
-    print(f'     role = {role}')
+    status = 'PASS' if ok else 'FAIL'
+    print(f'[{status}] {name} -> HTTP {response.status_code}')
+    if not ok:
+        print(f'       {payload}')
+    return ok, payload
 
-print('\n--- TEST 3: Admin Stats ---')
-data = test('GET /api/admin/stats', s.get(f'{BASE}/api/admin/stats'))
-if data:
-    st = data.get('stats', {})
-    print(f'     orders={st.get("total_orders")} revenue={st.get("total_revenue")} users={st.get("total_users")} menu={st.get("total_menu_items")} restaurants={st.get("total_restaurants")}')
 
-print('\n--- TEST 4: Admin Orders ---')
-data = test('GET /api/admin/orders', s.get(f'{BASE}/api/admin/orders', params={'page':1,'per_page':5}))
-if data:
-    print(f'     total={data.get("total")} page={data.get("page")}')
+def main():
+    session = requests.Session()
+    suffix = uuid.uuid4().hex[:6]
 
-print('\n--- TEST 5: Menu CRUD ---')
-data = test('GET /api/admin/menu', s.get(f'{BASE}/api/admin/menu'))
-if data:
-    print(f'     count={data.get("count")}')
+    print('\nAdmin API verification\n')
 
-data = test('POST /api/admin/menu', s.post(f'{BASE}/api/admin/menu', json={
-    'name': 'TEST_Spicy_Taco', 'price': 8.99, 'category': 'mexican',
-    'restaurant': 'Test Restaurant', 'description': 'Test item', 'rating': 4.2
-}))
+    check('Login as admin', session.post(f'{BASE}/api/auth/login', json={
+        'email': 'admin@flavourfleet.com',
+        'password': 'admin123',
+    }), expect_success=True)
 
-# Find test item
-data = test('GET menu find test', s.get(f'{BASE}/api/admin/menu'))
-mid = None
-if data:
-    for item in data.get('items', []):
-        if item.get('name') == 'TEST_Spicy_Taco':
-            mid = item.get('_id')
-            print(f'     found _id: {mid}')
-            break
+    check('Profile check', session.get(f'{BASE}/api/auth/profile'), expect_success=True)
+    check('GET /api/admin/stats', session.get(f'{BASE}/api/admin/stats'), expect_success=True)
+    check('GET /api/admin/orders', session.get(f'{BASE}/api/admin/orders', params={'page': 1, 'per_page': 5}), expect_success=True)
+    check('GET /api/admin/menu', session.get(f'{BASE}/api/admin/menu'), expect_success=True)
 
-if mid:
-    data = test('PUT /api/admin/menu/<id>', s.put(f'{BASE}/api/admin/menu/{mid}', json={'name': 'TEST_Updated_Taco', 'price': 9.49}))
-    data = test('DELETE /api/admin/menu/<id>', s.delete(f'{BASE}/api/admin/menu/{mid}'))
+    menu_name = f'TEST_MENU_{suffix}'
+    ok, payload = check('POST /api/admin/menu', session.post(f'{BASE}/api/admin/menu', json={
+        'name': menu_name,
+        'price': 8.99,
+        'category': 'mexican',
+        'restaurant': 'Test Restaurant',
+        'description': 'Test item',
+        'rating': 4.2,
+    }), expected_status=201, expect_success=True)
+    menu_id = payload.get('item', {}).get('_id') if ok else None
+    if menu_id:
+        check('PUT /api/admin/menu/<id>', session.put(f'{BASE}/api/admin/menu/{menu_id}', json={'name': f'{menu_name}_UPDATED', 'price': 9.49}), expect_success=True)
+        check('DELETE /api/admin/menu/<id>', session.delete(f'{BASE}/api/admin/menu/{menu_id}'), expect_success=True)
 
-print('\n--- TEST 6: Restaurants CRUD ---')
-data = test('GET /api/admin/restaurants', s.get(f'{BASE}/api/admin/restaurants'))
-if data:
-    print(f'     count={len(data.get("restaurants", []))}')
+    restaurant_name = f'TEST_RESTAURANT_{suffix}'
+    ok, payload = check('POST /api/admin/restaurants', session.post(f'{BASE}/api/admin/restaurants', json={
+        'name': restaurant_name,
+        'category': 'italian',
+        'rating': 4.5,
+        'delivery_time': '25-35',
+        'price_range': '$$',
+        'address': '123 Test St',
+    }), expected_status=201, expect_success=True)
+    restaurant_id = payload.get('restaurant', {}).get('_id') if ok else None
+    if restaurant_id:
+        check('PUT /api/admin/restaurants/<id>', session.put(f'{BASE}/api/admin/restaurants/{restaurant_id}', json={'name': f'{restaurant_name}_UPDATED'}), expect_success=True)
+        check('DELETE /api/admin/restaurants/<id>', session.delete(f'{BASE}/api/admin/restaurants/{restaurant_id}'), expect_success=True)
 
-data = test('POST /api/admin/restaurants', s.post(f'{BASE}/api/admin/restaurants', json={
-    'name': 'TEST_Bistro', 'category': 'italian', 'rating': 4.5,
-    'delivery_time': '25-35', 'price_range': '$$', 'address': '123 Test St'
-}))
+    offer_code = f'TEST{suffix}'.upper()
+    ok, payload = check('POST /api/admin/offers', session.post(f'{BASE}/api/admin/offers', json={
+        'code': offer_code,
+        'title': 'Test Offer',
+        'description': '50 percent off',
+        'discount_type': 'percent',
+        'discount_value': 50,
+        'min_order': 10,
+        'valid_till': 'Dec 31',
+        'icon': 'tag',
+    }), expected_status=201, expect_success=True)
+    offer_id = payload.get('offer', {}).get('_id') if ok else None
+    if offer_id:
+        check('PUT /api/admin/offers/<id>', session.put(f'{BASE}/api/admin/offers/{offer_id}', json={'title': 'Updated Test Offer'}), expect_success=True)
+        check('DELETE /api/admin/offers/<id>', session.delete(f'{BASE}/api/admin/offers/{offer_id}'), expect_success=True)
 
-data = test('GET restaurants find test', s.get(f'{BASE}/api/admin/restaurants'))
-rid = None
-if data:
-    for r in data.get('restaurants', []):
-        if r.get('name') == 'TEST_Bistro':
-            rid = r.get('_id')
-            print(f'     found _id: {rid}')
-            break
+    check('GET /api/admin/users', session.get(f'{BASE}/api/admin/users', params={'page': 1, 'per_page': 10}), expect_success=True)
+    check('GET /api/admin/analytics', session.get(f'{BASE}/api/admin/analytics'), expect_success=True)
+    check('GET /api/admin/settings', session.get(f'{BASE}/api/admin/settings'), expect_success=True)
+    check('PUT /api/admin/settings', session.put(f'{BASE}/api/admin/settings', json={
+        'platform_name': 'Flavour Fleet',
+        'delivery_fee': 3.99,
+        'free_delivery_threshold': 25,
+        'tax_percent': 8.5,
+        'contact_email': 'admin@test.com',
+    }), expect_success=True)
 
-if rid:
-    data = test('PUT /api/admin/restaurants/<id>', s.put(f'{BASE}/api/admin/restaurants/{rid}', json={'name': 'TEST_Updated_Bistro'}))
-    data = test('DELETE /api/admin/restaurants/<id>', s.delete(f'{BASE}/api/admin/restaurants/{rid}'))
+    session.post(f'{BASE}/api/auth/logout')
+    check('Unauthenticated admin stats blocked', session.get(f'{BASE}/api/admin/stats'), expected_status=401, expect_success=False)
 
-print('\n--- TEST 7: Offers CRUD ---')
-data = test('GET /api/admin/offers', s.get(f'{BASE}/api/admin/offers'))
-if data:
-    print(f'     count={len(data.get("offers", []))}')
+    user_email = f'testuser_{int(time.time())}_{suffix}@test.com'
+    regular = requests.Session()
+    regular.post(f'{BASE}/api/auth/register', json={'name': 'Test User', 'email': user_email, 'password': 'pass1234'})
+    regular.post(f'{BASE}/api/auth/login', json={'email': user_email, 'password': 'pass1234'})
+    check('Regular user admin stats blocked', regular.get(f'{BASE}/api/admin/stats'), expected_status=403, expect_success=False)
 
-data = test('POST /api/admin/offers', s.post(f'{BASE}/api/admin/offers', json={
-    'code': 'TESTCODE50', 'title': 'Test Offer', 'description': '50pct off',
-    'discount_type': 'percent', 'discount_value': 50, 'min_order': 10, 'valid_till': 'Dec 31', 'icon': 'tag'
-}))
+    print('\nAdmin verification complete.\n')
 
-data = test('GET offers find test', s.get(f'{BASE}/api/admin/offers'))
-oid = None
-if data:
-    for o in data.get('offers', []):
-        if o.get('code') == 'TESTCODE50':
-            oid = o.get('_id')
-            print(f'     found _id: {oid}')
-            break
 
-if oid:
-    data = test('PUT /api/admin/offers/<id>', s.put(f'{BASE}/api/admin/offers/{oid}', json={'title': 'Updated Test Offer'}))
-    data = test('DELETE /api/admin/offers/<id>', s.delete(f'{BASE}/api/admin/offers/{oid}'))
-
-print('\n--- TEST 8: Users ---')
-data = test('GET /api/admin/users', s.get(f'{BASE}/api/admin/users', params={'page':1,'per_page':10}))
-if data:
-    print(f'     total={data.get("total")}')
-
-print('\n--- TEST 9: Analytics ---')
-data = test('GET /api/admin/analytics', s.get(f'{BASE}/api/admin/analytics'))
-if data:
-    print(f'     daily_data={len(data.get("daily_data",[]))} top_items={len(data.get("top_items",[]))}')
-
-print('\n--- TEST 10: Settings ---')
-data = test('GET /api/admin/settings', s.get(f'{BASE}/api/admin/settings'))
-data = test('PUT /api/admin/settings', s.put(f'{BASE}/api/admin/settings', json={
-    'platform_name': 'Flavour Fleet', 'delivery_fee': 3.99,
-    'free_delivery_threshold': 25, 'tax_percent': 8.5, 'contact_email': 'admin@test.com'
-}))
-
-print('\n--- TEST 11: Non-Admin Redirect ---')
-s.post(f'{BASE}/api/auth/logout')
-data = test('Unauth /api/admin/stats -> 401', s.get(f'{BASE}/api/admin/stats'), expect_success=False, expect_status=401)
-
-s2 = requests.Session()
-s2.post(f'{BASE}/api/auth/register', json={'name':'TestUser','email':'testuser99@test.com','password':'pass123'})
-s2.post(f'{BASE}/api/auth/login', json={'email':'testuser99@test.com','password':'pass123'})
-data = test('Regular user -> 403', s2.get(f'{BASE}/api/admin/stats'), expect_success=False, expect_status=403)
-
-print(f'\n{"="*50}')
-print(f'RESULTS: {PASS} passed, {FAIL} failed out of {PASS+FAIL} tests')
-if FAIL == 0:
-    print('ALL TESTS PASSED!')
-else:
-    print('Some tests failed')
-print(f'{"="*50}')
+if __name__ == '__main__':
+    main()
