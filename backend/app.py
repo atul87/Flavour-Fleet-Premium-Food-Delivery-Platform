@@ -40,6 +40,21 @@ from flask_socketio import SocketIO
 from helpers import register_error_handlers, logger
 from db import db  # Ensures indexes are created on import
 
+
+def parse_frontend_origins():
+    configured = os.environ.get("FRONTEND_ORIGINS", "").strip()
+    if configured:
+        return [origin.strip() for origin in configured.split(",") if origin.strip()]
+
+    return [
+        "http://localhost:5000",
+        "http://127.0.0.1:5000",
+        "http://localhost:5500",
+        "http://127.0.0.1:5500",
+        "https://atul87.github.io",
+    ]
+
+
 # ─── App Setup ────────────────────────────────────────
 app = Flask(
     __name__,
@@ -47,10 +62,24 @@ app = Flask(
     static_url_path="",
 )
 app.secret_key = os.environ.get("SECRET_KEY", secrets.token_hex(32))
-CORS(app, supports_credentials=True)
+app_env = os.environ.get("APP_ENV", "development").lower()
+frontend_origins = parse_frontend_origins()
+CORS(app, supports_credentials=True, origins=frontend_origins)
+
+if app_env == "production":
+    # Required for cross-site session cookies when frontend and backend are on different domains.
+    app.config["SESSION_COOKIE_SECURE"] = True
+    app.config["SESSION_COOKIE_SAMESITE"] = "None"
+else:
+    app.config["SESSION_COOKIE_SECURE"] = False
+    app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
 # ─── Socket.IO ───────────────────────────────────────
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
+socketio = SocketIO(
+    app,
+    cors_allowed_origins=frontend_origins,
+    async_mode="threading",
+)
 
 # Rate limiter (disabled when TESTING_MODE is set)
 limiter = Limiter(
@@ -153,7 +182,6 @@ if not os.environ.get("RESEND_API_KEY"):
 
 
 def validate_environment():
-    app_env = os.environ.get("APP_ENV", "development").lower()
     if app_env == "production":
         if not os.environ.get("SECRET_KEY"):
             raise RuntimeError("SECRET_KEY is required when APP_ENV=production")

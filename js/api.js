@@ -2,8 +2,22 @@
 // FLAVOUR FLEET — API Client (js/api.js)
 // ============================================
 
+function resolveApiBase() {
+    const explicitBase = (window.FLAVOUR_FLEET_API_BASE || '').trim();
+    if (explicitBase) {
+        return explicitBase.replace(/\/+$/, '') + '/api';
+    }
+
+    // GitHub Pages cannot serve backend routes, so use hosted API in production.
+    if (window.location.hostname.includes('github.io')) {
+        return 'https://flavour-fleet-api.onrender.com/api';
+    }
+
+    return '/api';
+}
+
 const API = {
-    BASE: '/api',
+    BASE: resolveApiBase(),
 
     async request(method, endpoint, data = null) {
         const options = {
@@ -15,7 +29,8 @@ const API = {
             options.body = JSON.stringify(data);
         }
         try {
-            const res = await fetch(this.BASE + endpoint, options);
+            const normalizedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+            const res = await fetch(this.BASE + normalizedEndpoint, options);
             const json = await res.json();
             return json;
         } catch (err) {
