@@ -7,14 +7,60 @@ import threading
 from datetime import datetime
 
 from flask import Blueprint, request, jsonify, session
-from db import carts_col, orders_col, users_col
-from helpers import get_user_id, logger, login_required
+from db import carts_col, menu_col, orders_col, users_col
+from helpers import get_user_id, logger, login_required, token_required
 from routes.offers import calculate_offer_discount, validate_offer_for_subtotal
+from routes.menu import normalize_menu_item
 
 from utils.email_service import send_email
 from utils.email_templates import order_confirmation_template
 
 orders_bp = Blueprint("orders", __name__, url_prefix="/api/orders")
+
+
+def canonicalize_order_items(items):
+    canonical_items = []
+
+    for item in items:
+        item_id = str(item.get("id") or item.get("item_id") or "").strip()
+        if not item_id:
+            continue
+
+        quantity = max(1, int(item.get("quantity", 1) or 1))
+        menu_item = menu_col.find_one(
+            {
+                "item_id": item_id,
+                "is_deleted": {"$ne": True},
+                "active": {"$ne": False},
+            }
+        )
+        if menu_item:
+            menu_item = normalize_menu_item(dict(menu_item))
+            canonical_items.append(
+                {
+                    "id": menu_item.get("item_id", item_id),
+                    "name": menu_item.get("name", item.get("name", "Menu item")),
+                    "price": float(menu_item.get("price", 0)),
+                    "image": menu_item.get("image", item.get("image", "")),
+                    "restaurant": menu_item.get(
+                        "restaurant", item.get("restaurant", "")
+                    ),
+                    "quantity": quantity,
+                }
+            )
+        else:
+            canonical_items.append(
+                {
+                    "id": item_id,
+                    "name": item.get("name", "Menu item"),
+                    "price": float(item.get("price", 0)),
+                    "image": item.get("image", ""),
+                    "restaurant": item.get("restaurant", ""),
+                    "quantity": quantity,
+                }
+            )
+
+    return canonical_items
 
 
 def sanitize_order(order):
@@ -33,7 +79,9 @@ def sanitize_order(order):
 
 
 @orders_bp.route("", methods=["POST"])
+@login_required
 def place_order():
+    """Place new order (requires authentication)."""
     uid = get_user_id()
     data = request.get_json()
 
@@ -42,10 +90,14 @@ def place_order():
     if not cart or not cart.get("items"):
         return jsonify({"success": False, "message": "Cart is empty"}), 400
 
-    items = cart["items"]
+    items = canonicalize_order_items(cart["items"])
+    if not items:
+        return jsonify({"success": False, "message": "Cart is empty"}), 400
+    carts_col.update_one({"user_id": uid}, {"$set": {"items": items}})
+
     subtotal = sum(i["price"] * i["quantity"] for i in items)
-    delivery_fee = 0 if subtotal > 30 else 4.99
-    tax = round(subtotal * 0.08, 2)
+    delivery_fee = 0 if subtotal > 499 else 49
+    tax = round(subtotal * 0.05, 2)
 
     # Server-side promo code re-validation (never trust client discount)
     promo_code = data.get("promo_code", "").upper().strip()
@@ -152,8 +204,9 @@ def get_orders():
 @orders_bp.route("/<order_id>", methods=["GET"])
 @login_required
 def get_order(order_id):
-    current_user_id = session.get("user_id")
-    if not current_user_id:
+    """Get specific order (requires authentication)."""
+    current_user_id = get_user_id()
+    if not current_user_id or current_user_id.startswith("guest_"):
         return jsonify({"success": False, "message": "Unauthorized"}), 401
 
     order = orders_col.find_one({"order_id": order_id})

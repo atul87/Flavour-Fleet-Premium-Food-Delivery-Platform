@@ -6,3 +6,6 @@ resend
 python-dotenv
 flask-limiter
 flask-socketio
+supabase
+PyJWT
+requests

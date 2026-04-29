@@ -24,6 +24,7 @@ def seed_menu_items():
             "restaurant": "Pizza Paradise",
             "rating": 4.9,
             "badge": "Bestseller",
+            "is_veg": True,
             "description": "Fresh mozzarella, basil, tomato sauce on hand-tossed dough",
         },
         {
@@ -295,6 +296,7 @@ def seed_menu_items():
             "restaurant": "Wok This Way",
             "rating": 4.6,
             "badge": "Veg",
+            "is_veg": True,
             "description": "Stir-fried noodles with mixed vegetables and soy sauce",
         },
         # ── Dessert ──
