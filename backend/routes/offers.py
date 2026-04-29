@@ -17,7 +17,7 @@ def get_public_offer(code):
     })
 
 
-def validate_offer_for_subtotal(code, subtotal, delivery_fee=4.99):
+def validate_offer_for_subtotal(code, subtotal, delivery_fee=49):
     offer = get_public_offer(code)
     if not offer:
         return None, 'Invalid or inactive promo code', 404
@@ -29,7 +29,7 @@ def validate_offer_for_subtotal(code, subtotal, delivery_fee=4.99):
     return offer, None, None
 
 
-def calculate_offer_discount(offer, subtotal, delivery_fee=4.99):
+def calculate_offer_discount(offer, subtotal, delivery_fee=49):
     discount_amount = 0
     dtype = offer.get('discount_type', 'percent')
     dval = float(offer.get('discount_value', 0) or 0)
@@ -59,12 +59,12 @@ def get_offers():
 def validate_offer():
     data = request.get_json()
     code = data.get('code', '').upper().strip()
-    delivery_fee = 4.99
 
     uid = get_user_id()
     cart = carts_col.find_one({'user_id': uid})
     items = cart['items'] if cart and 'items' in cart else []
     subtotal = sum(i['price'] * i['quantity'] for i in items)
+    delivery_fee = 0 if subtotal > 499 else 49
 
     offer, error_message, error_status = validate_offer_for_subtotal(code, subtotal, delivery_fee)
     if error_message:

@@ -164,12 +164,17 @@ from routes.realtime import register_socketio_events
 
 register_socketio_events(socketio)
 
-# ─── Apply Rate Limits ───────────────────────────────
-limiter.limit("3/minute")(app.view_functions["auth.register"])
-limiter.limit("5/minute")(app.view_functions["auth.login"])
-limiter.limit("3/minute")(app.view_functions["auth.forgot_password"])
-limiter.limit("5/minute")(app.view_functions["auth.reset_password"])
-limiter.limit("10/minute")(app.view_functions["orders.place_order"])
+# ─── Apply Rate Limits (Anti-Brute-Force, Anti-Spam) ───────────────────────
+try:
+    # Auth endpoints - brute force protection
+    limiter.limit("3/minute;5/hour")(app.view_functions["auth.register"])
+    limiter.limit("5/minute;20/hour")(app.view_functions["auth.login"])
+    limiter.limit("3/minute;10/hour")(app.view_functions["auth.request_password_reset"])
+    logger.info(
+        "Rate limiting applied to auth endpoints (register, login, password-reset)"
+    )
+except KeyError as e:
+    logger.warning(f"Could not apply rate limit to auth endpoint: {e}")
 
 logger.info("9 Blueprints registered (+ v1 versioned aliases, Socket.IO)")
 
