@@ -243,10 +243,15 @@ function toggleFavorite(btn) {
 }
 
 // ---------- Page Loader ----------
-function hideLoader() {
+function hideLoader(delay = 600) {
     const loader = document.querySelector('.page-loader');
     if (loader) {
-        setTimeout(() => loader.classList.add('hidden'), 600);
+        if (delay === 0) {
+            loader.classList.add('hidden');
+            loader.style.display = 'none';
+            return;
+        }
+        setTimeout(() => loader.classList.add('hidden'), delay);
     }
 }
 
@@ -295,14 +300,25 @@ function initSort() {
 
 // ---------- Floating Active Order Pill ----------
 function initOrderPill() {
-    // Don't show pill on the tracking page itself
-    if (window.location.pathname.includes('tracking')) return;
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const hiddenPages = new Set([
+        'cart.html',
+        'checkout.html',
+        'login.html',
+        'order-confirmation.html',
+        'tracking.html',
+    ]);
+    if (hiddenPages.has(currentPage)) return;
 
     const statusConfig = {
-        'Placed': { text: 'Your order has been placed', dot: 'dot-blue', progress: 10 },
-        'Preparing': { text: 'Kitchen is preparing your meal', dot: 'dot-green', progress: 40 },
-        'Out for Delivery': { text: 'Driver is on the way <i class="fas fa-motorcycle" style="margin-left:4px"></i>', dot: 'dot-orange', progress: 75 },
+        'placed': { text: 'Your order has been placed', dot: 'dot-blue', progress: 10 },
+        'preparing': { text: 'Kitchen is preparing your meal', dot: 'dot-green', progress: 40 },
+        'out_for_delivery': { text: 'Driver is on the way <i class="fas fa-motorcycle" style="margin-left:4px"></i>', dot: 'dot-orange', progress: 75 },
     };
+
+    function normalizeOrderStatus(status) {
+        return String(status || '').trim().toLowerCase().replace(/\s+/g, '_');
+    }
 
     // Create pill element
     const pill = document.createElement('a');
@@ -321,17 +337,19 @@ function initOrderPill() {
     const progressFill = pill.querySelector('.pill-progress-fill');
 
     function updatePill() {
-        const status = localStorage.getItem('flavourfleet_order_status');
+        const status = normalizeOrderStatus(localStorage.getItem('flavourfleet_order_status'));
         const config = statusConfig[status];
 
         if (!config) {
             // No active order or Delivered/Cancelled — hide
             pill.classList.add('pill-hidden');
+            document.body.classList.remove('has-active-order');
             return;
         }
 
         // Show pill with correct content
         pill.classList.remove('pill-hidden');
+        document.body.classList.add('has-active-order');
         text.innerHTML = config.text;
         dot.className = 'pill-status-dot ' + config.dot;
         progressFill.style.width = config.progress + '%';
@@ -342,6 +360,12 @@ function initOrderPill() {
 
     // Poll localStorage every 3s for cross-tab/status sync
     setInterval(updatePill, 3000);
+}
+
+function syncFloatingCartState() {
+    const mobileCartBar = document.getElementById('mobile-cart-bar');
+    const isVisible = mobileCartBar && getComputedStyle(mobileCartBar).display !== 'none';
+    document.body.classList.toggle('has-mobile-cart', Boolean(isVisible));
 }
 
 // ---------- Initialize Everything ----------
@@ -358,4 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update cart badge
     if (typeof Cart !== 'undefined') Cart.updateCartBadge();
     if (typeof updateAuthUI !== 'undefined') updateAuthUI();
+    syncFloatingCartState();
+    window.addEventListener('cartUpdated', syncFloatingCartState);
+    window.addEventListener('resize', syncFloatingCartState);
 });

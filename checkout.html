@@ -23,6 +23,7 @@
 
 
     <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 
 </head>
@@ -220,7 +221,7 @@
             <div class="checkout-layout">
 
 
-                <div>
+                <div id="checkout-form-column">
 
 
                     <div class="glass-card" style="padding:var(--space-xl);margin-bottom:var(--space-xl)">
@@ -335,7 +336,7 @@
                         <div id="checkout-summary"></div>
 
 
-                        <button class="btn btn-primary btn-lg" style="width:100%;margin-top:var(--space-lg)"
+                        <button class="btn btn-primary btn-lg" id="place-order-btn" style="width:100%;margin-top:var(--space-lg)"
                             onclick="placeOrder()">Place Order</button>
 
 
@@ -436,17 +437,41 @@
 
 
             const summaryEl = document.getElementById('checkout-summary');
+            const layoutEl = document.querySelector('.checkout-layout');
+            const formColumn = document.getElementById('checkout-form-column');
+            const placeOrderBtn = document.getElementById('place-order-btn');
 
 
             if (!items.length) {
 
 
-                itemsEl.innerHTML = '<p style="color:var(--text-muted)">Your cart is empty. <a href="menu.html" style="color:var(--primary)">Browse Menu</a></p>';
+                layoutEl?.classList.add('empty-cart');
+                if (formColumn) formColumn.style.display = 'none';
+                if (summaryEl) summaryEl.innerHTML = '';
+                if (placeOrderBtn) {
+                    placeOrderBtn.disabled = true;
+                    placeOrderBtn.textContent = 'Add items to continue';
+                }
+                itemsEl.innerHTML = `
+                    <div class="checkout-empty-state">
+                        <div class="empty-icon"><i class="fas fa-shopping-basket"></i></div>
+                        <h3>Your cart is empty</h3>
+                        <p>Add at least one item before entering delivery details or placing an order.</p>
+                        <a href="menu.html" class="btn btn-primary">Browse Menu</a>
+                    </div>`;
+                if (typeof hideLoader === 'function') hideLoader(0);
 
 
                 return;
 
 
+            }
+
+            layoutEl?.classList.remove('empty-cart');
+            if (formColumn) formColumn.style.display = '';
+            if (placeOrderBtn) {
+                placeOrderBtn.disabled = false;
+                placeOrderBtn.textContent = 'Place Order';
             }
 
 
@@ -466,6 +491,7 @@
 
 
             summaryEl.innerHTML = `<div class="summary-row"><span>Subtotal</span><span>₹${Math.round(sub)}</span></div><div class="summary-row"><span>Delivery Fee</span><span>₹${Math.round(del)}</span></div><div class="summary-row"><span>GST (5%)</span><span>₹${Math.round(tax)}</span></div><div class="summary-row total"><span>Total</span><span>₹${Math.round(total)}</span></div>`;
+            if (typeof hideLoader === 'function') hideLoader(0);
 
 
         }
@@ -645,7 +671,7 @@
             // Disable button to prevent double-click
 
 
-            const btn = document.querySelector('.btn-primary.btn-lg');
+            const btn = document.getElementById('place-order-btn');
 
 
             if (btn) { btn.disabled = true; btn.textContent = 'Placing order...'; }
@@ -697,6 +723,7 @@
 
 
                 localStorage.setItem('flavourfleet_current_order', JSON.stringify(result.order));
+                localStorage.setItem('flavourfleet_order_status', result.order?.status || 'preparing');
 
 
                 localStorage.removeItem('flavourfleet_promo_code');

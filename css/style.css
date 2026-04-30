@@ -514,6 +514,14 @@ h6 {
   transform: translateY(-3px)
 }
 
+.btn:disabled,
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none
+}
+
 .btn-outline {
   background: transparent;
   color: var(--primary);
@@ -1351,6 +1359,39 @@ h6 {
   padding: var(--space-2xl) 0
 }
 
+.checkout-layout.empty-cart {
+  grid-template-columns: minmax(0, 640px);
+  justify-content: center
+}
+
+.checkout-empty-state {
+  text-align: center;
+  padding: var(--space-xl) var(--space-md);
+  color: var(--text-secondary)
+}
+
+.checkout-empty-state h3 {
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm)
+}
+
+.checkout-empty-state p {
+  margin-bottom: var(--space-lg)
+}
+
+.checkout-empty-state .empty-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 107, 53, 0.14);
+  color: var(--primary);
+  font-size: 1.5rem;
+  margin-bottom: var(--space-md)
+}
+
 .form-group {
   margin-bottom: var(--space-lg)
 }
@@ -1433,7 +1474,10 @@ h6 {
   align-items: center;
   justify-content: center;
   padding: 80px var(--space-lg);
-  position: relative
+  position: relative;
+  background:
+    linear-gradient(135deg, rgba(18, 18, 24, 0.92), rgba(20, 32, 36, 0.86)),
+    url('../assets/images/hero-banner.png') center/cover fixed
 }
 
 .auth-page::before {
@@ -1455,11 +1499,23 @@ h6 {
 }
 
 .auth-card {
-  background: var(--bg-card);
+  background: rgba(30, 30, 40, 0.84);
   border-radius: var(--radius-xl);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--glass-border);
   padding: var(--space-2xl);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--shadow-xl)
+}
+
+[data-theme="light"] .auth-page {
+  background:
+    linear-gradient(135deg, rgba(255, 247, 240, 0.9), rgba(238, 252, 249, 0.86)),
+    url('../assets/images/hero-banner.png') center/cover fixed
+}
+
+[data-theme="light"] .auth-card {
+  background: rgba(255, 255, 255, 0.9)
 }
 
 .auth-card h2 {
@@ -2532,6 +2588,14 @@ h6 {
   text-transform: uppercase
 }
 
+.veg-indicator::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor
+}
+
 .veg-indicator.veg {
   color: #22c55e;
   border: 1px solid #22c55e
@@ -3231,7 +3295,7 @@ h6 {
 /* ========== FLOATING ACTIVE ORDER PILL ========== */
 #active-order-pill {
   position: fixed;
-  bottom: 24px;
+  bottom: 96px;
   right: 24px;
   display: flex;
   align-items: center;
@@ -3371,6 +3435,16 @@ h6 {
     left: 5%;
     max-width: none;
     justify-content: center;
+  }
+}
+
+body.has-mobile-cart #active-order-pill {
+  bottom: 92px
+}
+
+@media (min-width: 769px) {
+  body.has-mobile-cart #active-order-pill {
+    bottom: 96px
   }
 }
 

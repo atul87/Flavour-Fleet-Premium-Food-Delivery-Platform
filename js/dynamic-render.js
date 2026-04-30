@@ -6,6 +6,24 @@
 
 const DynamicRender = (() => {
     const API_BASE = '';
+    const VEG_ITEM_IDS = new Set([
+        'p1', 'p4', 'i3', 'i5', 'm3', 'pa2', 'pa3', 'c3',
+        'sa2', 'sa3', 'd1', 'd2', 'd3', 'd4'
+    ]);
+
+    function inferIsVeg(item) {
+        const explicit = item.is_veg;
+        if (explicit === true || explicit === 'yes' || explicit === 'true' || explicit === 1) return true;
+        if (explicit === false || explicit === 'no' || explicit === 'false' || explicit === 0) return false;
+
+        const itemId = String(item.item_id || item.id || '').toLowerCase();
+        if (VEG_ITEM_IDS.has(itemId)) return true;
+
+        const badge = String(item.badge || '').toLowerCase();
+        if (badge === 'veg' || badge === 'vegan') return true;
+
+        return false;
+    }
 
     // ─── Menu Page ──────────────────────────────────
     async function renderMenu(gridId) {
@@ -29,12 +47,12 @@ const DynamicRender = (() => {
             }
 
             grid.innerHTML = data.items.map(item => {
-                const isVeg = item.is_veg === true || item.is_veg === 'yes';
+                const isVeg = inferIsVeg(item);
                 const vegClass = isVeg ? 'veg' : 'non-veg';
                 const vegLabel = isVeg ? 'Veg' : 'Non-Veg';
                 const badge = item.badge ? `<span class="food-badge">${item.badge}</span>` : '';
                 const price = Math.round(item.price);
-                const rating = (item.rating || 4.5).toFixed(1);
+                const rating = (Number(item.rating) || 4.5).toFixed(1);
                 const imgSrc = item.image || 'assets/images/default.png';
                 const category = (item.category || '').toLowerCase();
 
@@ -42,7 +60,7 @@ const DynamicRender = (() => {
                 <div class="food-card tilt-card animate-on-scroll" data-category="${category}" data-veg="${isVeg ? 'yes' : 'no'}">
                     <div class="food-image"><img loading="lazy" src="${imgSrc}" alt="${item.name}">${badge}</div>
                     <div class="food-body">
-                        <h4>${item.name} <span class="veg-indicator ${vegClass}"> ${vegLabel}</span></h4>
+                        <h4>${item.name} <span class="veg-indicator ${vegClass}">${vegLabel}</span></h4>
                         <p class="food-desc">${item.description || ''}</p>
                     </div>
                     <div class="food-footer"><span class="food-price">₹${price}</span><span class="food-rating">⭐ ${rating}</span>
