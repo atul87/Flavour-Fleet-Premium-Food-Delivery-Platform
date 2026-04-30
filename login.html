@@ -12,6 +12,7 @@
     <meta property="og:site_name" content="Flavour Fleet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
@@ -206,6 +207,15 @@
             <div class="loader-spinner"></div>
             <p>Loading...</p>
         </div>
+
+        <!-- Supabase Configuration -->
+        <script>
+            window.SUPABASE_URL = localStorage.getItem('supabase_url') || 'https://YOUR_PROJECT_ID.supabase.co';
+            window.SUPABASE_ANON_KEY = localStorage.getItem('supabase_key') || 'YOUR_ANON_KEY';
+        </script>
+
+        <!-- Supabase Client Library -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
         <script src="js/api.js"></script>
         <script src="js/cart.js"></script>

@@ -407,10 +407,18 @@
         async function loadProfile() {
             const profileResult = await API.get('/auth/profile');
             if (!profileResult.success || !profileResult.logged_in) {
-                showToast('Please log in to view your profile', 'info');
-                setTimeout(() => {
-                    window.location.href = 'login.html?redirect=profile';
-                }, 700);
+                const profileLayout = document.querySelector('.profile-grid');
+                if (profileLayout) {
+                    profileLayout.innerHTML = `
+                        <div class="glass-card" style="grid-column:1/-1;padding:var(--space-2xl);text-align:center;">
+                            <h2 style="margin-bottom:var(--space-sm)">Sign in to view your profile</h2>
+                            <p style="color:var(--text-secondary);max-width:460px;margin:0 auto var(--space-lg)">
+                                Your saved details and order history are available after login.
+                            </p>
+                            <a href="login.html?redirect=profile" class="btn btn-primary">Sign In</a>
+                        </div>`;
+                }
+                if (typeof hideLoader === 'function') hideLoader(0);
                 return;
             }
 
@@ -424,6 +432,7 @@
 
             const ordersResult = await API.get('/orders');
             renderOrders(ordersResult.success ? ordersResult.orders : []);
+            if (typeof hideLoader === 'function') hideLoader(0);
         }
 
         async function saveProfile(event) {

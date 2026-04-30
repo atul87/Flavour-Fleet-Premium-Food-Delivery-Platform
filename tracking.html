@@ -389,10 +389,18 @@
       }
 
       function humanizeStatus(status) {
-        return (status || "placed").replace(/_/g, " ");
+        return normalizeStatus(status).replace(/_/g, " ");
+      }
+
+      function normalizeStatus(status) {
+        return String(status || "placed")
+          .trim()
+          .toLowerCase()
+          .replace(/[\s-]+/g, "_");
       }
 
       function statusToStep(status) {
+        status = normalizeStatus(status);
         const map = {
           placed: 1,
           pending: 1,
@@ -404,6 +412,7 @@
       }
 
       function defaultEta(status) {
+        status = normalizeStatus(status);
         const etaMap = {
           placed: "Order received. Kitchen assignment is next.",
           pending: "Order received. Kitchen assignment is next.",
@@ -420,6 +429,7 @@
       }
 
       function updateProgress(status, etaText) {
+        status = normalizeStatus(status);
         const step = statusToStep(status);
         const progressFill = document.getElementById("progress-fill");
         const widthByStep = { 1: "0%", 2: "33%", 3: "66%", 4: "100%" };
@@ -427,16 +437,19 @@
 
         document.querySelectorAll(".tracking-step").forEach((element) => {
           const itemStep = Number(element.dataset.step);
-          element.classList.toggle(
-            "complete",
-            itemStep < step || (status === "delivered" && itemStep <= step),
-          );
+          const isComplete =
+            itemStep < step || (status === "delivered" && itemStep <= step);
+          const dot = element.querySelector(".tracking-step-dot");
+          element.classList.toggle("complete", isComplete);
           element.classList.toggle(
             "active",
             status !== "delivered" && itemStep === step,
           );
           if (status === "cancelled") {
             element.classList.remove("complete", "active");
+          }
+          if (dot) {
+            dot.textContent = isComplete && status !== "cancelled" ? "✓" : String(itemStep);
           }
         });
 
@@ -448,7 +461,7 @@
         } else {
           localStorage.setItem(
             "flavourfleet_order_status",
-            humanizeStatus(status),
+            status,
           );
         }
 
@@ -478,6 +491,7 @@
         );
 
         updateProgress(order.status || "placed");
+        if (typeof hideLoader === "function") hideLoader(0);
       }
 
       function showEmptyState(message) {
@@ -488,7 +502,7 @@
         }
 
         document.getElementById("tracking-root").innerHTML = `
-                <div class="tracking-panel empty-tracking animate-on-scroll">
+                <div class="tracking-panel empty-tracking">
                     <h2>No active order found</h2>
                     <p>${message}</p>
                     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
@@ -497,6 +511,7 @@
                     </div>
                 </div>
             `;
+        if (typeof hideLoader === "function") hideLoader(0);
       }
 
       async function fetchOrderById(orderId) {

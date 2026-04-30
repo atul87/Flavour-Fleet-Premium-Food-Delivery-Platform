@@ -199,6 +199,32 @@ All endpoints are available at both `/api/` and `/api/v1/` (versioned).
 
 ## 📊 Usage
 
+## CI/CD and Vercel deployment
+
+This repository includes a GitHub Actions workflow that runs backend tests and deploys to Vercel on pushes to `main`:
+
+- Workflow: `.github/workflows/ci-cd.yml`
+
+Required GitHub Secrets (set in your repository Settings → Secrets):
+
+- `VERCEL_TOKEN` — your Vercel personal token (create at <https://vercel.com/account/tokens>)
+- `VERCEL_ORG_ID` — Vercel organization ID for the project
+- `VERCEL_PROJECT_ID` — Vercel project ID for the repo
+- `SUPABASE_URL` — your Supabase project URL
+- `SUPABASE_SERVICE_KEY` — Supabase service role key (server-side)
+- `SECRET_KEY` — Flask `SECRET_KEY` for sessions
+
+How it works:
+
+1. Push to `main` triggers the workflow.
+2. The job installs Python deps from `backend/requirements.txt` and runs `pytest` (if tests exist).
+3. If tests pass, the workflow runs the Vercel deploy action to publish to your Vercel project.
+
+Notes:
+
+- Vercel is ideal for hosting the static frontend (`index.html`, `css/`, `js/`). If you prefer the Flask backend to run on a hosted server, deploy the backend to a platform such as Render, Fly, or Docker hosting, and set the backend URL in the frontend config.
+- You must connect this GitHub repository to a Vercel project (<https://vercel.com/new>) or provide `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` for the GitHub Action to deploy automatically.
+
 1. **Sign Up/Login**: Create an account or use demo credentials.
 2. **Browse & Filter**: Use category pills, search, or Veg/Non-Veg toggle.
 3. **Add to Cart**: Select items, adjust quantities, apply promo codes.
