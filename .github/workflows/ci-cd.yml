@@ -39,12 +39,12 @@ jobs:
 
       - name: Run backend tests
         working-directory: backend
+        env:
+          TESTING_MODE: "1"
+          SECRET_KEY: "ci-test-secret-key"
+          MONGODB_URI: "mongodb://localhost:27017/flavourfleet_test"
         run: |
-          if [ -f pytest.ini ] || ls test_*.py 1> /dev/null 2>&1; then
-            pytest -q || (echo "Some tests failed" && exit 1)
-          else
-            echo "No tests found, skipping pytest"
-          fi
+          pytest test_app.py -v --tb=short
 
       - name: Build frontend (no-op for static files)
         run: echo "No frontend build step configured; static HTML/CSS/JS ready to deploy"

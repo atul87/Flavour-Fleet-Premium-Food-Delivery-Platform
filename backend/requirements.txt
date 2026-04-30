@@ -9,3 +9,5 @@ flask-socketio
 supabase
 PyJWT
 requests
+gunicorn
+eventlet

@@ -169,9 +169,9 @@ try:
     # Auth endpoints - brute force protection
     limiter.limit("3/minute;5/hour")(app.view_functions["auth.register"])
     limiter.limit("5/minute;20/hour")(app.view_functions["auth.login"])
-    limiter.limit("3/minute;10/hour")(app.view_functions["auth.request_password_reset"])
+    limiter.limit("3/minute;10/hour")(app.view_functions["auth.forgot_password"])
     logger.info(
-        "Rate limiting applied to auth endpoints (register, login, password-reset)"
+        "Rate limiting applied to auth endpoints (register, login, forgot-password)"
     )
 except KeyError as e:
     logger.warning(f"Could not apply rate limit to auth endpoint: {e}")
