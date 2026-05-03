@@ -8,9 +8,16 @@ echo   Flavour Fleet - Launch Script
 echo ==========================================
 
 REM Check for Python
+set "PY_CMD="
 python --version >nul 2>&1
-if %errorlevel% neq 0 (
+if %errorlevel% equ 0 set "PY_CMD=python"
+if "%PY_CMD%"=="" (
+    py --version >nul 2>&1
+    if %errorlevel% equ 0 set "PY_CMD=py"
+)
+if "%PY_CMD%"=="" (
     echo Python is not installed or not in PATH.
+    echo Install Python or ensure either "python" or "py" command is available.
     pause
     exit /b 1
 )
@@ -27,7 +34,7 @@ if "%ERRORLEVEL%"=="1" (
 REM Setup Virtual Environment if missing
 if not exist ".venv" (
     echo [INFO] Creating virtual environment...
-    python -m venv .venv
+    %PY_CMD% -m venv .venv
     echo [INFO] Installing dependencies...
     .venv\Scripts\python -m pip install -r backend/requirements.txt
 )

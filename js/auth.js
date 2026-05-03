@@ -1,17 +1,6 @@
 // ============================================
-// FLAVOUR FLEET — Supabase Auth Module
+// FLAVOUR FLEET — Auth Module (API-powered)
 // ============================================
-
-// Initialize Supabase client
-const supabaseUrl = window.SUPABASE_URL || 'https://YOUR_PROJECT_ID.supabase.co';
-const supabaseAnonKey = window.SUPABASE_ANON_KEY || 'YOUR_ANON_KEY';
-
-// Check if Supabase is loaded
-if (typeof supabase === 'undefined') {
-    console.error('Supabase client not loaded. Add script tag before this script.');
-}
-
-const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
 const Auth = {
     SESSION_KEY: 'flavourfleet_session',
@@ -30,195 +19,52 @@ const Auth = {
         return this.getSession() !== null;
     },
 
-    // ── Register with Supabase ──
+    // ── Register ──
     async signup(name, email, password) {
-        try {
-            const { data, error } = await supabaseClient.auth.signUp({
-                email: email,
-                password: password,
-                options: {
-                    data: {
-                        name: name
-                    }
-                }
-            });
-
-            if (error) {
-                return {
-                    success: false,
-                    message: error.message || 'Registration failed'
-                };
-            }
-
-            if (data.user) {
-                // Create user profile in public.users table
-                const { error: profileError } = await supabaseClient
-                    .from('users')
-                    .insert({
-                        id: data.user.id,
-                        email: email,
-                        name: name,
-                        role: 'user',
-                        created_at: new Date().toISOString()
-                    });
-
-                if (profileError) {
-                    console.warn('Profile creation failed:', profileError);
-                }
-
-                this._cacheSession({
-                    id: data.user.id,
-                    email: email,
-                    name: name,
-                    role: 'user'
-                });
-
-                return {
-                    success: true,
-                    message: 'Registration successful!',
-                    user: {
-                        id: data.user.id,
-                        email: email,
-                        name: name,
-                        role: 'user'
-                    }
-                };
-            }
-
-            return {
-                success: false,
-                message: 'Registration failed'
-            };
-        } catch (error) {
-            return {
-                success: false,
-                message: error.message || 'Registration failed'
-            };
+        const result = await API.post('/auth/register', { name, email, password });
+        if (result.success && result.user) {
+            this._cacheSession(result.user);
         }
+        return result;
     },
 
-    // ── Login with Supabase ──
+    // ── Login ──
     async login(email, password) {
-        try {
-            const { data, error } = await supabaseClient.auth.signInWithPassword({
-                email: email,
-                password: password
-            });
-
-            if (error) {
-                return {
-                    success: false,
-                    message: error.message || 'Login failed'
-                };
-            }
-
-            if (data.user && data.session) {
-                // Fetch user profile
-                const { data: profile, error: profileError } = await supabaseClient
-                    .from('users')
-                    .select('*')
-                    .eq('id', data.user.id)
-                    .single();
-
-                const user = profile || {
-                    id: data.user.id,
-                    email: email,
-                    name: email.split('@')[0]
-                };
-
-                this._cacheSession(user);
-
-                // Store token in sessionStorage for API calls
-                sessionStorage.setItem('supabase_token', data.session.access_token);
-
-                return {
-                    success: true,
-                    message: 'Login successful!',
-                    user: user,
-                    access_token: data.session.access_token
-                };
-            }
-
-            return {
-                success: false,
-                message: 'Login failed'
-            };
-        } catch (error) {
-            return {
-                success: false,
-                message: error.message || 'Login failed'
-            };
+        const result = await API.post('/auth/login', { email, password });
+        if (result.success && result.user) {
+            this._cacheSession(result.user);
         }
+        return result;
     },
 
     // ── Logout ──
     async logout() {
-        try {
-            await supabaseClient.auth.signOut();
-            localStorage.removeItem(this.SESSION_KEY);
-            sessionStorage.removeItem('supabase_token');
-            showToast('Logged out successfully', 'info');
-            setTimeout(() => window.location.href = 'index.html', 500);
-        } catch (error) {
-            console.error('Logout error:', error);
-            localStorage.removeItem(this.SESSION_KEY);
-            sessionStorage.removeItem('supabase_token');
-            showToast('Logged out', 'info');
-            setTimeout(() => window.location.href = 'index.html', 500);
-        }
+        await API.post('/auth/logout');
+        localStorage.removeItem(this.SESSION_KEY);
+        showToast('Logged out successfully', 'info');
+        setTimeout(() => window.location.href = 'index.html', 500);
     },
 
-    // ── Get current user from backend ──
+    // ── Get current user profile from backend ──
     async getCurrentUser() {
-        try {
-            const result = await API.get('/auth/profile');
-            if (result.success && result.logged_in) {
-                this._cacheSession(result.user);
-                return result.user;
-            }
-        } catch (error) {
-            console.error('Error fetching user profile:', error);
+        const result = await API.get('/auth/profile');
+        if (result.success && result.logged_in) {
+            this._cacheSession(result.user);
+            return result.user;
         }
+        // If server says not logged in, clear local cache
         localStorage.removeItem(this.SESSION_KEY);
         return null;
     },
 
     // ── Update profile ──
     async updateProfile(data) {
-        try {
-            const result = await API.put('/auth/profile', data);
-            if (result.success) {
-                await this.getCurrentUser();
-            }
-            return result;
-        } catch (error) {
-            return {
-                success: false,
-                message: error.message || 'Update failed'
-            };
+        const result = await API.put('/auth/profile', data);
+        if (result.success) {
+            // Refresh local cache
+            await this.getCurrentUser();
         }
-    },
-
-    // ── Password reset ──
-    async requestPasswordReset(email) {
-        try {
-            const { error } = await supabaseClient.auth.resetPasswordForEmail(email);
-            if (error) {
-                return {
-                    success: false,
-                    message: error.message
-                };
-            }
-            return {
-                success: true,
-                message: 'If email is registered, password reset link will be sent'
-            };
-        } catch (error) {
-            return {
-                success: false,
-                message: error.message
-            };
-        }
+        return result;
     },
 
     // ── Validation helpers ──
@@ -238,7 +84,6 @@ function initAuthPage() {
     const signupForm = document.getElementById('signup-form');
 
     if (!loginTab) return;
-    if (!loginForm || !signupForm) return;
 
     loginTab.addEventListener('click', () => {
         loginTab.classList.add('active');
@@ -319,11 +164,6 @@ function updateAuthUI() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const currentPage = window.location.pathname.split('/').pop();
-    if (currentPage === 'login.html' && Auth.isLoggedIn()) {
-        window.location.replace('profile.html');
-        return;
-    }
     initAuthPage();
     updateAuthUI();
 });
