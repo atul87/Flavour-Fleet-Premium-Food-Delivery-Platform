@@ -7,13 +7,19 @@
 #   Password: admin123
 
 import bcrypt
+import os
 from pymongo import MongoClient
 from datetime import datetime
 
 from utils.logger import logger
 
-client = MongoClient("mongodb://localhost:27017/")
-db = client["flavourfleet"]
+client = MongoClient(
+    os.getenv("DATABASE_URL")
+    or os.getenv("MONGODB_URI")
+    or os.getenv("MONGO_URI")
+    or "mongodb://localhost:27017/"
+)
+db = client[os.getenv("DATABASE_NAME", "flavourfleet")]
 users_col = db["users"]
 
 ADMIN_EMAIL = "admin@flavourfleet.com"

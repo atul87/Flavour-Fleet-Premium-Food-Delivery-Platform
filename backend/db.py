@@ -9,10 +9,18 @@ from pymongo import MongoClient, ASCENDING, DESCENDING
 database_url = (
     os.getenv("DATABASE_URL")
     or os.getenv("MONGODB_URI")
+    or os.getenv("MONGO_URI")
     or "mongodb://localhost:27017/"
 )
-client = MongoClient(database_url)
-db = client["flavourfleet"]
+database_name = os.getenv("DATABASE_NAME", "flavourfleet")
+connect_timeout_ms = int(os.getenv("MONGO_CONNECT_TIMEOUT_MS", "5000"))
+
+client = MongoClient(
+    database_url,
+    serverSelectionTimeoutMS=connect_timeout_ms,
+    connectTimeoutMS=connect_timeout_ms,
+)
+db = client[database_name]
 
 # ─── Core Collections ────────────────────────────────
 users_col = db["users"]

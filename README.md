@@ -159,13 +159,33 @@ FROM_EMAIL=onboarding@resend.dev
 python seed_data.py
 ```
 
-1. **Start the Server**
+1. **Start the Server (Development)**
 
 ```bash
 python app.py
 ```
 
 > The server starts at `http://localhost:5000` with Socket.IO enabled.
+
+### 🏭 Production Runtime (Gunicorn + Eventlet)
+
+Run the backend with Gunicorn in production instead of `app.run()`:
+
+```bash
+gunicorn --worker-class eventlet -w 1 wsgi:app --bind 0.0.0.0:5000
+```
+
+Recommended production environment variables:
+
+```env
+APP_ENV=production
+FLASK_ENV=production
+SECRET_KEY=strong_random_value
+DATABASE_URL=<your_mongodb_connection_string>
+TESTING_MODE=0
+RATE_LIMIT_STORAGE_URI=redis://<redis-host>:6379/0
+LOG_LEVEL=INFO
+```
 
 ### 🌐 Frontend
 

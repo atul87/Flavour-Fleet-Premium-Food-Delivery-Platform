@@ -9,7 +9,8 @@
 import os
 import secrets
 import sys
-import io
+import time
+import uuid
 
 from dotenv import load_dotenv
 
@@ -20,11 +21,11 @@ load_dotenv(ENV_PATH)
 def configure_console_encoding():
     """Force UTF-8 console streams to avoid cp1252 Unicode errors on Windows."""
     try:
-        if hasattr(sys.stdout, "buffer"):
-            sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
-        if hasattr(sys.stderr, "buffer"):
-            sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8")
-    except Exception:
+        if hasattr(sys.stdout, "reconfigure"):
+            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        if hasattr(sys.stderr, "reconfigure"):
+            sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, OSError, ValueError):
         # Keep startup resilient if streams are redirected/unavailable.
         pass
 
@@ -38,7 +39,7 @@ from flask_limiter.util import get_remote_address
 from flask_socketio import SocketIO
 
 from helpers import register_error_handlers, logger
-from db import db  # Ensures indexes are created on import
+import db  # noqa: F401  # Ensures indexes are created on import
 
 
 def parse_frontend_origins():
@@ -55,14 +56,24 @@ def parse_frontend_origins():
     ]
 
 
+def is_truthy(value):
+    return str(value).strip().lower() in {"1", "true", "yes", "on"}
+
+
 # ─── App Setup ────────────────────────────────────────
 app = Flask(
     __name__,
     static_folder=os.path.join(os.path.dirname(__file__), ".."),
     static_url_path="",
 )
-app.secret_key = os.environ.get("SECRET_KEY", secrets.token_hex(32))
-app_env = os.environ.get("APP_ENV", "development").lower()
+app_env = os.environ.get("APP_ENV") or os.environ.get("FLASK_ENV") or "development"
+app_env = app_env.lower()
+testing_mode = is_truthy(os.environ.get("TESTING_MODE", "0"))
+
+secret_key = os.environ.get("SECRET_KEY")
+if app_env == "production" and not secret_key:
+    raise RuntimeError("SECRET_KEY is required when APP_ENV/FLASK_ENV=production")
+app.secret_key = secret_key or secrets.token_hex(32)
 frontend_origins = parse_frontend_origins()
 CORS(app, supports_credentials=True, origins=frontend_origins)
 
@@ -78,16 +89,21 @@ else:
 socketio = SocketIO(
     app,
     cors_allowed_origins=frontend_origins,
-    async_mode="threading",
+    async_mode=os.environ.get("SOCKETIO_ASYNC_MODE", "threading"),
 )
 
 # Rate limiter (disabled when TESTING_MODE is set)
+rate_limit_storage_uri = (
+    os.environ.get("RATE_LIMIT_STORAGE_URI")
+    or os.environ.get("REDIS_URL")
+    or "memory://"
+)
 limiter = Limiter(
     get_remote_address,
     app=app,
     default_limits=[],
-    storage_uri="memory://",
-    enabled=not os.environ.get("TESTING_MODE", False),
+    storage_uri=rate_limit_storage_uri,
+    enabled=not testing_mode,
 )
 
 # Register global error handlers
@@ -117,6 +133,36 @@ def health():
             "api_versions": ["v1"],
         }
     )
+
+
+@app.before_request
+def start_request_timer():
+    from flask import g, request
+
+    g.request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+    g.request_start_time = time.perf_counter()
+
+
+@app.after_request
+def log_request(response):
+    from flask import g, request
+
+    start_time = getattr(g, "request_start_time", None)
+    duration_ms = 0.0
+    if start_time is not None:
+        duration_ms = (time.perf_counter() - start_time) * 1000
+
+    logger.info(
+        "request_id=%s method=%s path=%s status=%s duration_ms=%.2f ip=%s",
+        getattr(g, "request_id", "-"),
+        request.method,
+        request.path,
+        response.status_code,
+        duration_ms,
+        request.remote_addr,
+    )
+    response.headers["X-Request-ID"] = getattr(g, "request_id", "-")
+    return response
 
 
 # ─── Register Blueprints ─────────────────────────────
@@ -174,7 +220,7 @@ try:
         "Rate limiting applied to auth endpoints (register, login, forgot-password)"
     )
 except KeyError as e:
-    logger.warning(f"Could not apply rate limit to auth endpoint: {e}")
+    logger.warning("Could not apply rate limit to auth endpoint: %s", e)
 
 logger.info("9 Blueprints registered (+ v1 versioned aliases, Socket.IO)")
 
@@ -184,19 +230,32 @@ if not os.environ.get("SECRET_KEY"):
     logger.warning("SECRET_KEY not set; using an ephemeral development secret")
 if not os.environ.get("RESEND_API_KEY"):
     logger.warning("RESEND_API_KEY not set; email delivery is disabled")
+if app_env == "production" and rate_limit_storage_uri == "memory://":
+    logger.warning(
+        "RATE_LIMIT_STORAGE_URI not configured; using in-memory limiter in production"
+    )
 
 
 def validate_environment():
     if app_env == "production":
-        if not os.environ.get("SECRET_KEY"):
-            raise RuntimeError("SECRET_KEY is required when APP_ENV=production")
-        if not os.environ.get("DATABASE_URL"):
-            raise RuntimeError("DATABASE_URL is required when APP_ENV=production")
+        database_url = (
+            os.environ.get("DATABASE_URL")
+            or os.environ.get("MONGODB_URI")
+            or os.environ.get("MONGO_URI")
+        )
+        if not database_url:
+            raise RuntimeError(
+                "DATABASE_URL (or MONGODB_URI/MONGO_URI) is required in production"
+            )
+        if testing_mode:
+            raise RuntimeError("TESTING_MODE must be 0/false in production")
+
+
+validate_environment()
 
 
 # ─── Run ─────────────────────────────────────────────
 if __name__ == "__main__":
-    validate_environment()
     debug_mode = os.environ.get("FLASK_DEBUG", "").lower() in {"1", "true", "yes"}
     logger.info("Flavour Fleet backend running at http://localhost:5000")
     logger.info("Architecture: Flask Blueprints + Socket.IO + API v1")
