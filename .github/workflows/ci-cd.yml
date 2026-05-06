@@ -50,6 +50,7 @@ jobs:
         run: echo "No frontend build step configured; static HTML/CSS/JS ready to deploy"
 
       - name: Deploy to Vercel
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         id: vercel
         uses: amondnet/vercel-action@v20
         with:
