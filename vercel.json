@@ -1,0 +1,35 @@
+{
+  "buildCommand": "echo 'Build complete'",
+  "outputDirectory": ".",
+  "env": {
+    "FLASK_ENV": "production",
+    "APP_ENV": "production"
+  },
+  "functions": {
+    "backend/wsgi.py": {
+      "runtime": "python3.11"
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/backend/wsgi.py",
+      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH"]
+    },
+    {
+      "src": "/socket.io/(.*)",
+      "dest": "/backend/wsgi.py",
+      "methods": ["GET", "POST"]
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1.html",
+      "status": 200
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html",
+      "status": 200
+    }
+  ]
+}
