@@ -10,6 +10,7 @@
 ## 📋 DEPLOYMENT CHECKLIST
 
 ### ✅ COMPLETED ITEMS
+
 - [x] Backend API fully functional (14/14 smoke tests passing)
 - [x] Frontend static files ready
 - [x] Environment configuration prepared
@@ -25,17 +26,20 @@
 ### **STEP 1: Create Vercel Project**
 
 #### 1.1 Sign Up / Login to Vercel
-1. Go to https://vercel.com
+
+1. Go to <https://vercel.com>
 2. Click "Sign Up" or login with GitHub
 3. Click "New Project"
 
 #### 1.2 Import from GitHub
+
 1. Select "Import Git Repository"
 2. Search for: `Flavour-Fleet-Premium-Food-Delivery-Platform`
 3. Select the repository
 4. Click "Import"
 
 #### 1.3 Configure Project Settings
+
 - **Project Name:** `flavour-fleet` (or your preferred name)
 - **Framework:** Select "Other" (since we have Flask + static HTML)
 - **Root Directory:** `.` (root)
@@ -48,12 +52,14 @@
 ### **STEP 2: Add GitHub Secrets (for CI/CD)**
 
 #### 2.1 Get Vercel Credentials
+
 1. In Vercel dashboard, go to **Settings** → **Tokens**
 2. Click "Create Token"
 3. Name: `VERCEL_DEPLOYMENT`
 4. Copy the token value
 
 #### 2.2 Get Vercel Project IDs
+
 1. Go to your Flavour Fleet project in Vercel
 2. Go to **Settings** → **General**
 3. Copy:
@@ -61,7 +67,8 @@
    - **Team ID** (if org) → `VERCEL_ORG_ID`
 
 #### 2.3 Add Secrets to GitHub
-1. Go to GitHub: https://github.com/atul87/Flavour-Fleet-Premium-Food-Delivery-Platform
+
+1. Go to GitHub: <https://github.com/atul87/Flavour-Fleet-Premium-Food-Delivery-Platform>
 2. Click **Settings** → **Secrets and variables** → **Actions**
 3. Click "New repository secret" and add:
 
@@ -79,7 +86,9 @@
 ### **STEP 3: Deploy via GitHub Actions**
 
 #### 3.1 Trigger Deployment
+
 1. Make a commit to the `main` branch:
+
    ```bash
    git checkout main
    git add .
@@ -95,6 +104,7 @@
    - Deploy to Vercel (if tests pass)
 
 #### 3.2 Monitor Deployment
+
 1. View logs in GitHub Actions
 2. Check Vercel dashboard for live deployment
 3. Visit `https://YOUR-PROJECT.vercel.app`
@@ -104,6 +114,7 @@
 ### **STEP 4: Test Production Deployment**
 
 #### 4.1 Verify Backend API
+
 ```bash
 # Test menu endpoint
 curl https://YOUR-PROJECT.vercel.app/api/menu
@@ -116,12 +127,14 @@ curl https://YOUR-PROJECT.vercel.app/api/offers
 ```
 
 #### 4.2 Test Frontend
+
 1. Visit: `https://YOUR-PROJECT.vercel.app/index.html`
 2. Test signup/login flow
 3. Test cart functionality
 4. Verify real-time order tracking
 
 #### 4.3 Verify WebSocket Connection
+
 1. Open DevTools (F12)
 2. Check Console for Socket.IO connection messages
 3. Should show: `Socket connected with ID: ...`
@@ -131,18 +144,21 @@ curl https://YOUR-PROJECT.vercel.app/api/offers
 ### **STEP 5: Configure Custom Domain** *(Optional)*
 
 #### 5.1 Add Domain in Vercel
+
 1. In Vercel dashboard, go to project **Settings** → **Domains**
 2. Click "Add Domain"
 3. Enter your domain (e.g., `flavourfleet.com`)
 4. Follow DNS configuration steps
 
 #### 5.2 Update DNS Records
+
 1. Go to your domain registrar (GoDaddy, Namecheap, etc.)
 2. Add Vercel's DNS records:
    - CNAME pointing to your Vercel deployment
 3. Wait 5-30 minutes for DNS propagation
 
 #### 5.3 Enable HTTPS
+
 - Vercel automatically generates SSL certificate
 - Wait 5-10 minutes after DNS is active
 - Visit `https://yourdomain.com`
@@ -152,6 +168,7 @@ curl https://YOUR-PROJECT.vercel.app/api/offers
 ### **STEP 6: Post-Deployment Checks**
 
 #### 6.1 Security Verification
+
 - [ ] JWT tokens working
 - [ ] Password reset sending emails
 - [ ] Rate limiting active on /auth endpoints
@@ -159,12 +176,14 @@ curl https://YOUR-PROJECT.vercel.app/api/offers
 - [ ] CORS configured for production domain
 
 #### 6.2 Performance Checks
+
 - [ ] Page load under 3 seconds
 - [ ] API responses under 200ms
 - [ ] WebSocket latency acceptable
 - [ ] Database queries optimized
 
 #### 6.3 Monitoring Setup
+
 1. Add error tracking (Sentry, DataDog)
 2. Set up uptime monitoring (UptimeRobot)
 3. Configure logging and analytics
@@ -189,6 +208,7 @@ curl https://YOUR-PROJECT.vercel.app/api/offers
 ## 🔑 ENVIRONMENT VARIABLES
 
 **For Vercel Deployment, these should be in GitHub Secrets:**
+
 ```
 VERCEL_TOKEN=<your-vercel-token>
 VERCEL_ORG_ID=<your-vercel-org-id>
@@ -213,21 +233,25 @@ SECRET_KEY=<random-32-char-hex>
 ## 🆘 TROUBLESHOOTING
 
 ### Deployment Failed
+
 - Check GitHub Actions logs for errors
 - Verify all secrets are set correctly
 - Ensure branch is `main` for production
 
 ### API Not Responding
+
 - Check Vercel Function logs
 - Verify CORS configuration
 - Check backend `.env` variables
 
 ### WebSocket Connection Issues
+
 - Verify Socket.IO is configured in `backend/app.py`
 - Check CORS origins include your domain
 - Test with `socket.io-client` library
 
 ### Database Connection Failed
+
 - Verify MongoDB URI is correct
 - Check IP whitelist in MongoDB Atlas
 - Test connection string locally

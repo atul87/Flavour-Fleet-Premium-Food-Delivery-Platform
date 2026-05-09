@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gulab Jamun - DhaabaSweet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="assets/logo.png" type="image/png">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="assets/logo.png" alt="DhaabaSweet Logo">
+                <h1>Dhaaba<span>Sweet</span></h1>
+            </div>
+            
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#products" class="active">Sweets</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#testimonials">Reviews</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-actions">
+                <button class="search-btn"><i class="fas fa-search"></i></button>
+                <button class="wishlist-btn"><i class="fas fa-heart"></i></button>
+                <button class="cart-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </button>
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Product Detail Section -->
+    <section class="product-detail">
+        <div class="container">
+            <div class="product-detail-content">
+                <div class="product-detail-gallery">
+                    <div class="main-image">
+                        <img src="assets/gulab-jamun.jpg" alt="Gulab Jamun">
+                    </div>
+                    <div class="thumbnail-images">
+                        <img src="assets/gulab-jamun.jpg" alt="Gulab Jamun 1" class="active">
+                        <img src="assets/gulab-jamun-2.jpg" alt="Gulab Jamun 2">
+                        <img src="assets/gulab-jamun-3.jpg" alt="Gulab Jamun 3">
+                    </div>
+                </div>
+                
+                <div class="product-detail-info">
+                    <h1>Gulab Jamun</h1>
+                    <div class="product-rating">
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span>(128 reviews)</span>
+                        </div>
+                        <a href="#reviews">Write a review</a>
+                    </div>
+                    
+                    <div class="product-price">
+                        <span class="current-price">₹180</span>
+                        <span class="original-price">₹200</span>
+                        <span class="discount">10% OFF</span>
+                    </div>
+                    
+                    <div class="product-description">
+                        <p>Indulge in the rich, aromatic delight of our Gulab Jamun - soft, spongy milk-solid dumplings deep-fried to golden perfection and soaked in our signature rose-flavored sugar syrup. Each bite offers a burst of sweetness that melts in your mouth.</p>
+                        
+                        <ul>
+                            <li>Made with 100% pure khoya (milk solids)</li>
+                            <li>Prepared using traditional recipes</li>
+                            <li>Soaked in premium saffron-infused syrup</li>
+                            <li>Perfect for festivals, celebrations, and gifting</li>
+                            <li>12 pieces per pack</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="product-options">
+                        <div class="option">
+                            <label>Quantity:</label>
+                            <div class="quantity-selector">
+                                <button class="qty-btn" id="decrease-qty">-</button>
+                                <input type="number" id="quantity" value="1" min="1" max="10">
+                                <button class="qty-btn" id="increase-qty">+</button>
+                            </div>
+                        </div>
+                        
+                        <div class="option">
+                            <label>Size:</label>
+                            <select>
+                                <option>Regular (12 pieces)</option>
+                                <option>Large (20 pieces)</option>
+                                <option>Family Pack (30 pieces)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="product-actions">
+                        <button class="btn btn-primary add-to-cart">Add to Cart</button>
+                        <button class="btn btn-secondary wishlist-action">
+                            <i class="far fa-heart"></i> Wishlist
+                        </button>
+                    </div>
+                    
+                    <div class="product-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-truck"></i>
+                            <div>
+                                <h4>Free Delivery</h4>
+                                <p>On orders above ₹500</p>
+                            </div>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-undo"></i>
+                            <div>
+                                <h4>Easy Returns</h4>
+                                <p>Within 7 days</p>
+                            </div>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <div>
+                                <h4>100% Hygienic</h4>
+                                <p>Prepared with safety</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Reviews -->
+    <section class="product-reviews" id="reviews">
+        <div class="container">
+            <div class="section-header">
+                <h2>Customer Reviews</h2>
+                <p>What our sweet lovers say about this product</p>
+            </div>
+            
+            <div class="review-stats">
+                <div class="avg-rating">
+                    <div class="rating-value">4.5</div>
+                    <div class="rating-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p>Based on 128 reviews</p>
+                </div>
+                
+                <div class="rating-distribution">
+                    <div class="rating-bar">
+                        <span>5 stars</span>
+                        <div class="bar">
+                            <div class="fill" style="width: 70%"></div>
+                        </div>
+                        <span>70%</span>
+                    </div>
+                    <div class="rating-bar">
+                        <span>4 stars</span>
+                        <div class="bar">
+                            <div class="fill" style="width: 20%"></div>
+                        </div>
+                        <span>20%</span>
+                    </div>
+                    <div class="rating-bar">
+                        <span>3 stars</span>
+                        <div class="bar">
+                            <div class="fill" style="width: 7%"></div>
+                        </div>
+                        <span>7%</span>
+                    </div>
+                    <div class="rating-bar">
+                        <span>2 stars</span>
+                        <div class="bar">
+                            <div class="fill" style="width: 2%"></div>
+                        </div>
+                        <span>2%</span>
+                    </div>
+                    <div class="rating-bar">
+                        <span>1 star</span>
+                        <div class="bar">
+                            <div class="fill" style="width: 1%"></div>
+                        </div>
+                        <span>1%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="reviews-list">
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer">
+                            <img src="assets/customer1.jpg" alt="Priya Sharma">
+                            <div>
+                                <h4>Priya Sharma</h4>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="review-date">2 days ago</div>
+                    </div>
+                    <h3>Perfect for Diwali celebrations!</h3>
+                    <p>These Gulab Jamuns are absolutely divine! They remind me of my grandmother's recipe. Fresh, soft, and perfectly sweet. I ordered them for Diwali and my family loved them. Will definitely order again!</p>
+                </div>
+                
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer">
+                            <img src="assets/customer2.jpg" alt="Rajesh Kumar">
+                            <div>
+                                <h4>Rajesh Kumar</h4>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="review-date">1 week ago</div>
+                    </div>
+                    <h3>Great taste, but a bit sweet</h3>
+                    <p>The Gulab Jamuns taste amazing and have a perfect texture. However, I found them a bit too sweet for my taste. Would be great if there was a less sweet option available.</p>
+                </div>
+            </div>
+            
+            <div class="review-form">
+                <h3>Write a Review</h3>
+                <form>
+                    <div class="form-group">
+                        <label>Your Rating</label>
+                        <div class="rating-input">
+                            <i class="far fa-star" data-rating="1"></i>
+                            <i class="far fa-star" data-rating="2"></i>
+                            <i class="far fa-star" data-rating="3"></i>
+                            <i class="far fa-star" data-rating="4"></i>
+                            <i class="far fa-star" data-rating="5"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="review-title">Review Title</label>
+                        <input type="text" id="review-title" placeholder="Give your review a title">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="review-text">Your Review</label>
+                        <textarea id="review-text" rows="5" placeholder="Share your experience with this product"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Products -->
+    <section class="related-products">
+        <div class="container">
+            <div class="section-header">
+                <h2>You May Also Like</h2>
+                <p>Discover more delicious sweets</p>
+            </div>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-badge">Bestseller</div>
+                    <div class="product-image">
+                        <img src="assets/rasgulla.jpg" alt="Rasgulla">
+                        <div class="product-actions">
+                            <button class="wishlist-action"><i class="far fa-heart"></i></button>
+                            <button class="quick-view"><i class="fas fa-eye"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Rasgulla</h3>
+                        <p>Spongy cottage cheese balls in light sugar syrup</p>
+                        <div class="product-meta">
+                            <span class="price">₹200</span>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span>(142)</span>
+                            </div>
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-badge">New</div>
+                    <div class="product-image">
+                        <img src="assets/chocolate-barfi.jpg" alt="Chocolate Barfi">
+                        <div class="product-actions">
+                            <button class="wishlist-action"><i class="far fa-heart"></i></button>
+                            <button class="quick-view"><i class="fas fa-eye"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Chocolate Barfi</h3>
+                        <p>Rich condensed milk fudge with premium cocoa</p>
+                        <div class="product-meta">
+                            <span class="price">₹250</span>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span>(96)</span>
+                            </div>
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-badge">Limited</div>
+                    <div class="product-image">
+                        <img src="assets/kaju-katli.jpg" alt="Kaju Katli">
+                        <div class="product-actions">
+                            <button class="wishlist-action"><i class="far fa-heart"></i></button>
+                            <button class="quick-view"><i class="fas fa-eye"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Kaju Katli</h3>
+                        <p>Delicate cashew fudge with edible silver leaf</p>
+                        <div class="product-meta">
+                            <span class="price">₹350</span>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span>(87)</span>
+                            </div>
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <img src="assets/logo.png" alt="DhaabaSweet Logo">
+                        <h2>Dhaaba<span>Sweet</span></h2>
+                    </div>
+                    <p>Crafting authentic Indian sweets with passion since 1993.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#products">Our Sweets</a></li>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="index.html#testimonials">Testimonials</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Categories</h3>
+                    <ul>
+                        <li><a href="#">Traditional Sweets</a></li>
+                        <li><a href="#">Fusion Flavors</a></li>
+                        <li><a href="#">Seasonal Specials</a></li>
+                        <li><a href="#">Gift Boxes</a></li>
+                        <li><a href="#">Corporate Orders</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Customer Care</h3>
+                    <ul>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Return Policy</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 DhaabaSweet. All rights reserved. Crafted with <i class="fas fa-heart"></i> in India</p>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                    <i class="fab fa-google-pay"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shopping Cart Sidebar -->
+    <div class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Cart (<span class="cart-count">0</span>)</h3>
+            <button class="close-cart"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items">
+            <!-- Cart items will be dynamically added here -->
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Your cart is empty</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span class="total-amount">₹0</span>
+            </div>
+            <button class="btn btn-primary checkout-btn">Proceed to Checkout</button>
+        </div>
+    </div>
+    
+    <!-- Search Overlay -->
+    <div class="search-overlay">
+        <div class="search-container">
+            <input type="text" placeholder="Search for sweets..." id="search-input">
+            <button class="close-search"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Product detail specific JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            // Quantity selector
+            const decreaseBtn = document.getElementById('decrease-qty');
+            const increaseBtn = document.getElementById('increase-qty');
+            const quantityInput = document.getElementById('quantity');
+            
+            decreaseBtn.addEventListener('click', function() {
+                let value = parseInt(quantityInput.value);
+                if (value > 1) {
+                    quantityInput.value = value - 1;
+                }
+            });
+            
+            increaseBtn.addEventListener('click', function() {
+                let value = parseInt(quantityInput.value);
+                if (value < 10) {
+                    quantityInput.value = value + 1;
+                }
+            });
+            
+            // Thumbnail image selection
+            const thumbnails = document.querySelectorAll('.thumbnail-images img');
+            const mainImage = document.querySelector('.main-image img');
+            
+            thumbnails.forEach(thumb => {
+                thumb.addEventListener('click', function() {
+                    thumbnails.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    mainImage.src = this.src;
+                });
+            });
+            
+            // Rating input
+            const ratingStars = document.querySelectorAll('.rating-input i');
+            
+            ratingStars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const rating = parseInt(this.getAttribute('data-rating'));
+                    ratingStars.forEach((s, index) => {
+                        if (index < rating) {
+                            s.classList.remove('far');
+                            s.classList.add('fas');
+                        } else {
+                            s.classList.remove('fas');
+                            s.classList.add('far');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

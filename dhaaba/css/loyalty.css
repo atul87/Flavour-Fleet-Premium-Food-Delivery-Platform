@@ -1,0 +1,339 @@
+/* Loyalty Program Specific Styles */
+
+/* Hero Section */
+.loyalty-hero {
+  background: linear-gradient(135deg, rgba(138,43,226,0.8) 0%, rgba(255,107,107,0.8) 100%), url('../assets/loyalty-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  color: var(--white);
+  padding: var(--spacing-xxl) 0;
+  text-align: center;
+}
+
+.loyalty-hero-content h1 {
+  color: var(--white);
+  font-size: 3rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+.loyalty-hero-content p {
+  color: rgba(255,255,255,0.9);
+  font-size: 1.25rem;
+  max-width: 600px;
+  margin: 0 auto var(--spacing-lg);
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+/* How It Works */
+.how-it-works {
+  padding: var(--spacing-xl) 0;
+  background-color: var(--white);
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.step {
+  text-align: center;
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+}
+
+.step:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-lg);
+}
+
+.step-icon {
+  width: 80px;
+  height: 80px;
+  background-color: rgba(138,43,226,0.1);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--spacing-md);
+  font-size: 2rem;
+  color: var(--primary);
+}
+
+.step h3 {
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Points Calculator */
+.points-calculator {
+  padding: var(--spacing-xl) 0;
+  background: linear-gradient(135deg, rgba(138,43,226,0.05) 0%, rgba(78,205,196,0.05) 100%);
+}
+
+.calculator-content {
+  display: flex;
+  gap: var(--spacing-xl);
+  align-items: center;
+}
+
+.calculator-info {
+  flex: 1;
+}
+
+.points-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+}
+
+.points-item {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: flex-start;
+}
+
+.points-item i {
+  font-size: 1.5rem;
+  color: var(--primary);
+  min-width: 30px;
+  margin-top: 0.25rem;
+}
+
+.calculator {
+  flex: 1;
+  background-color: var(--white);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.calculator-form {
+  margin-bottom: var(--spacing-lg);
+}
+
+.calculator-form label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-weight: 500;
+}
+
+.calculator-form input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: var(--radius-md);
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  margin-bottom: var(--spacing-md);
+}
+
+.calculator-form input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.calculator-result {
+  text-align: center;
+}
+
+.result-card {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: var(--white);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+}
+
+.result-card h3 {
+  color: var(--white);
+  margin-bottom: var(--spacing-md);
+}
+
+.points-value {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--spacing-sm);
+}
+
+.points-value span:first-child {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.points-value span:last-child {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+/* Rewards Tiers */
+.rewards-tiers {
+  padding: var(--spacing-xl) 0;
+  background-color: var(--white);
+}
+
+.tiers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.tier {
+  border: 2px solid #eee;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  transition: all 0.3s ease;
+}
+
+.tier:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+}
+
+.tier.featured {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  transform: translateY(-10px);
+}
+
+.tier.featured .tier-header {
+  background-color: var(--primary);
+  color: var(--white);
+  margin: -var(--spacing-lg) -var(--spacing-lg) var(--spacing-lg);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.tier-header {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid #eee;
+}
+
+.tier-header h3 {
+  margin-bottom: 0.25rem;
+}
+
+.tier-header p {
+  margin: 0;
+  color: var(--gray);
+}
+
+.tier.featured .tier-header p {
+  color: rgba(255,255,255,0.8);
+}
+
+.tier ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.tier li {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.tier li i.fa-check {
+  color: var(--success);
+}
+
+.tier li i.fa-times {
+  color: var(--danger);
+}
+
+/* Join Program */
+.join-program {
+  padding: var(--spacing-xl) 0;
+  background: linear-gradient(135deg, rgba(138,43,226,0.1) 0%, rgba(255,107,107,0.1) 100%);
+}
+
+.join-content {
+  display: flex;
+  gap: var(--spacing-xl);
+  align-items: center;
+  background-color: var(--white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.join-info {
+  flex: 1;
+  padding: var(--spacing-xl);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: var(--white);
+}
+
+.join-info h2 {
+  color: var(--white);
+}
+
+.join-info p {
+  color: rgba(255,255,255,0.9);
+}
+
+.join-form {
+  flex: 1;
+  padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .loyalty-hero-content h1 {
+    font-size: 2.5rem;
+  }
+  
+  .calculator-content {
+    flex-direction: column;
+  }
+  
+  .join-content {
+    flex-direction: column;
+  }
+  
+  .join-info {
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .loyalty-hero {
+    padding: var(--spacing-xl) 0;
+  }
+  
+  .loyalty-hero-content h1 {
+    font-size: 2rem;
+  }
+  
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .steps {
+    grid-template-columns: 1fr;
+  }
+  
+  .tiers {
+    grid-template-columns: 1fr;
+  }
+  
+  .tier.featured {
+    transform: none;
+  }
+}
