@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loyalty Program - DhaabaSweet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/product.css">
+    <link rel="icon" href="assets/logo.png" type="image/png">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="assets/logo.png" alt="DhaabaSweet Logo">
+                <h1>Dhaaba<span>Sweet</span></h1>
+            </div>
+            
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#products">Sweets</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#testimonials">Reviews</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-actions">
+                <button class="search-btn"><i class="fas fa-search"></i></button>
+                <button class="wishlist-btn"><i class="fas fa-heart"></i></button>
+                <button class="cart-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </button>
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Loyalty Program Hero -->
+    <section class="loyalty-hero">
+        <div class="container">
+            <div class="loyalty-hero-content">
+                <h1>Sweet Rewards Program</h1>
+                <p>Earn points for every purchase and unlock delicious rewards!</p>
+                <div class="hero-buttons">
+                    <a href="#join" class="btn btn-primary">Join Now</a>
+                    <a href="#benefits" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="benefits">
+        <div class="container">
+            <div class="section-header">
+                <h2>How Our Loyalty Program Works</h2>
+                <p>Earn points and enjoy exclusive benefits</p>
+            </div>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h3>Join Free</h3>
+                    <p>Sign up for our loyalty program at no cost</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <h3>Shop & Earn</h3>
+                    <p>Earn 1 point for every ₹10 spent</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <h3>Redeem Rewards</h3>
+                    <p>Exchange points for discounts and free items</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3>Exclusive Perks</h3>
+                    <p>Enjoy VIP benefits as you level up</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Points Calculator -->
+    <section class="points-calculator">
+        <div class="container">
+            <div class="calculator-content">
+                <div class="calculator-info">
+                    <h2>Calculate Your Points</h2>
+                    <p>See how many points you can earn on your next purchase</p>
+                    
+                    <div class="points-info">
+                        <div class="points-item">
+                            <i class="fas fa-rupee-sign"></i>
+                            <div>
+                                <h3>₹10 = 1 Point</h3>
+                                <p>Earn points on every purchase</p>
+                            </div>
+                        </div>
+                        
+                        <div class="points-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <div>
+                                <h3>No Expiry</h3>
+                                <p>Your points never expire</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="calculator">
+                    <div class="calculator-form">
+                        <label for="order-amount">Order Amount (₹)</label>
+                        <input type="number" id="order-amount" placeholder="Enter order amount" value="500">
+                        <button class="btn btn-primary" id="calculate-btn">Calculate Points</button>
+                    </div>
+                    
+                    <div class="calculator-result">
+                        <div class="result-card">
+                            <h3>You'll Earn</h3>
+                            <div class="points-value">
+                                <span id="points-earned">50</span>
+                                <span>Points</span>
+                            </div>
+                            <p>Worth ₹<span id="points-value">50</span> off your next order</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rewards Tiers -->
+    <section class="rewards-tiers">
+        <div class="container">
+            <div class="section-header">
+                <h2>Rewards Tiers</h2>
+                <p>Unlock more benefits as you earn points</p>
+            </div>
+            
+            <div class="tiers">
+                <div class="tier">
+                    <div class="tier-header">
+                        <h3>Silver Sweetie</h3>
+                        <p>0-499 points</p>
+                    </div>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Welcome discount on first order</li>
+                        <li><i class="fas fa-check"></i> Birthday treat</li>
+                        <li><i class="fas fa-times"></i> Exclusive flavors</li>
+                        <li><i class="fas fa-times"></i> Priority delivery</li>
+                        <li><i class="fas fa-times"></i> VIP events</li>
+                    </ul>
+                </div>
+                
+                <div class="tier">
+                    <div class="tier-header">
+                        <h3>Golden Delight</h3>
+                        <p>500-1999 points</p>
+                    </div>
+                    <ul>
+                        <li><i class="fas fa-check"></i> 5% off all orders</li>
+                        <li><i class="fas fa-check"></i> Birthday treat</li>
+                        <li><i class="fas fa-check"></i> Exclusive flavors</li>
+                        <li><i class="fas fa-times"></i> Priority delivery</li>
+                        <li><i class="fas fa-times"></i> VIP events</li>
+                    </ul>
+                </div>
+                
+                <div class="tier featured">
+                    <div class="tier-header">
+                        <h3>Platinum Paradise</h3>
+                        <p>2000+ points</p>
+                    </div>
+                    <ul>
+                        <li><i class="fas fa-check"></i> 10% off all orders</li>
+                        <li><i class="fas fa-check"></i> Birthday treat</li>
+                        <li><i class="fas fa-check"></i> Exclusive flavors</li>
+                        <li><i class="fas fa-check"></i> Priority delivery</li>
+                        <li><i class="fas fa-check"></i> VIP events</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join Program -->
+    <section class="join-program" id="join">
+        <div class="container">
+            <div class="join-content">
+                <div class="join-info">
+                    <h2>Join Our Sweet Rewards Program</h2>
+                    <p>Start earning points today and enjoy delicious benefits!</p>
+                </div>
+                
+                <form class="join-form">
+                    <div class="form-group">
+                        <input type="text" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Email Address" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" placeholder="Phone Number" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="date" placeholder="Birthday (Optional)">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Join Now</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <img src="assets/logo.png" alt="DhaabaSweet Logo">
+                        <h2>Dhaaba<span>Sweet</span></h2>
+                    </div>
+                    <p>Crafting authentic Indian sweets with passion since 1993.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#products">Our Sweets</a></li>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="index.html#testimonials">Testimonials</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Categories</h3>
+                    <ul>
+                        <li><a href="#">Traditional Sweets</a></li>
+                        <li><a href="#">Fusion Flavors</a></li>
+                        <li><a href="#">Seasonal Specials</a></li>
+                        <li><a href="#">Gift Boxes</a></li>
+                        <li><a href="#">Corporate Orders</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Customer Care</h3>
+                    <ul>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Return Policy</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 DhaabaSweet. All rights reserved. Crafted with <i class="fas fa-heart"></i> in India</p>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                    <i class="fab fa-google-pay"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shopping Cart Sidebar -->
+    <div class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Cart (<span class="cart-count">0</span>)</h3>
+            <button class="close-cart"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items">
+            <!-- Cart items will be dynamically added here -->
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Your cart is empty</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span class="total-amount">₹0</span>
+            </div>
+            <button class="btn btn-primary checkout-btn">Proceed to Checkout</button>
+        </div>
+    </div>
+    
+    <!-- Search Overlay -->
+    <div class="search-overlay">
+        <div class="search-container">
+            <input type="text" placeholder="Search for sweets..." id="search-input">
+            <button class="close-search"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Loyalty program specific JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const orderAmountInput = document.getElementById('order-amount');
+            const calculateBtn = document.getElementById('calculate-btn');
+            const pointsEarned = document.getElementById('points-earned');
+            const pointsValue = document.getElementById('points-value');
+            
+            // Calculate points when button is clicked
+            calculateBtn.addEventListener('click', calculatePoints);
+            
+            // Calculate points when input changes
+            orderAmountInput.addEventListener('input', calculatePoints);
+            
+            function calculatePoints() {
+                const amount = parseFloat(orderAmountInput.value) || 0;
+                const points = Math.floor(amount / 10);
+                pointsEarned.textContent = points;
+                pointsValue.textContent = points;
+            }
+            
+            // Initialize calculation
+            calculatePoints();
+            
+            // Join form submission
+            const joinForm = document.querySelector('.join-form');
+            if (joinForm) {
+                joinForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Thank you for joining our loyalty program! Check your email for confirmation.');
+                    joinForm.reset();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

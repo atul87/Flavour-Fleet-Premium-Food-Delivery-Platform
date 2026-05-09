@@ -1,0 +1,2 @@
+This is a placeholder for the favicon.
+In a real implementation, you would place your actual favicon.ico file here.

@@ -1,0 +1,969 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kwality Wall's - Premium Ice Creams & Desserts</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link href="styles.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+      <div class="spinner"></div>
+      <p>Loading deliciousness...</p>
+    </div>
+
+    <!-- Header -->
+    <header class="kw-header sticky-top shadow-sm">
+      <nav class="navbar navbar-expand-lg">
+        <div class="container">
+          <a class="navbar-brand fw-bold text-danger" href="#">
+            <img
+              src="https://kwalitywalls-cascaron-9c3e15.netlify.app/assets/img/download.jpg"
+              alt="Kwality Wall's"
+              style="height: 40px"
+            />
+            Kwality Wall's
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarsExample"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarsExample">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#products">Products</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#about">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#contact">Contact</a>
+              </li>
+            </ul>
+            <div class="d-flex align-items-center gap-3">
+              <a
+                class="btn btn-light position-relative"
+                href="#"
+                id="cartButton"
+              >
+                <i class="bi bi-bag"></i>
+                <span
+                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                  id="cartCount"
+                  >0</span
+                >
+              </a>
+              <button class="btn btn-outline-light" id="loginButton">
+                Login
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Login Modal -->
+    <div
+      class="modal fade"
+      id="loginModal"
+      tabindex="-1"
+      aria-labelledby="loginModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loginModalLabel">
+              Login to Your Account
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="loginForm" novalidate>
+              <div class="mb-3">
+                <label for="email" class="form-label fw-medium"
+                  >Email address</label
+                >
+                <input
+                  type="email"
+                  class="form-control rounded-3"
+                  id="email"
+                  placeholder="you@example.com"
+                  required
+                />
+                <div class="invalid-feedback" id="emailError">
+                  Please enter a valid email address.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label fw-medium"
+                  >Password</label
+                >
+                <div class="input-group">
+                  <input
+                    type="password"
+                    class="form-control rounded-start-3"
+                    id="password"
+                    placeholder="Min. 6 characters"
+                    required
+                  />
+                  <button
+                    class="btn btn-outline-secondary rounded-end-3"
+                    type="button"
+                    id="toggleLoginPassword"
+                    tabindex="-1"
+                  >
+                    <i class="bi bi-eye" id="toggleLoginIcon"></i>
+                  </button>
+                </div>
+                <div class="invalid-feedback" id="passwordError">
+                  Password must be at least 6 characters.
+                </div>
+              </div>
+              <button
+                type="submit"
+                class="btn btn-danger w-100 rounded-pill py-2 mt-1"
+              >
+                Login
+              </button>
+            </form>
+            <div class="mt-3 text-center">
+              <p class="mb-0">
+                Don't have an account?
+                <a href="#" id="showSignup" class="fw-semibold text-danger"
+                  >Sign up</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div
+      class="modal fade"
+      id="signupModal"
+      tabindex="-1"
+      aria-labelledby="signupModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="signupModalLabel">Create an Account</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="signupForm" novalidate>
+              <div class="mb-3">
+                <label for="signupName" class="form-label fw-medium"
+                  >Full Name</label
+                >
+                <input
+                  type="text"
+                  class="form-control rounded-3"
+                  id="signupName"
+                  placeholder="John Doe"
+                  required
+                />
+                <div class="invalid-feedback" id="signupNameError">
+                  Please enter your full name.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="signupEmail" class="form-label fw-medium"
+                  >Email address</label
+                >
+                <input
+                  type="email"
+                  class="form-control rounded-3"
+                  id="signupEmail"
+                  placeholder="you@example.com"
+                  required
+                />
+                <div class="invalid-feedback" id="signupEmailError">
+                  Please enter a valid email address.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="signupPassword" class="form-label fw-medium"
+                  >Password</label
+                >
+                <div class="input-group">
+                  <input
+                    type="password"
+                    class="form-control rounded-start-3"
+                    id="signupPassword"
+                    placeholder="Min. 6 characters"
+                    required
+                  />
+                  <button
+                    class="btn btn-outline-secondary rounded-end-3"
+                    type="button"
+                    id="toggleSignupPassword"
+                    tabindex="-1"
+                  >
+                    <i class="bi bi-eye" id="toggleSignupIcon"></i>
+                  </button>
+                </div>
+                <div class="invalid-feedback" id="signupPasswordError">
+                  Password must be at least 6 characters.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="signupConfirmPassword" class="form-label fw-medium"
+                  >Confirm Password</label
+                >
+                <input
+                  type="password"
+                  class="form-control rounded-3"
+                  id="signupConfirmPassword"
+                  placeholder="Re-enter your password"
+                  required
+                />
+                <div class="invalid-feedback" id="signupConfirmError">
+                  Passwords do not match.
+                </div>
+              </div>
+              <!-- Password Strength Meter -->
+              <div
+                class="mb-3"
+                id="passwordStrengthContainer"
+                style="display: none"
+              >
+                <div class="d-flex justify-content-between mb-1">
+                  <small class="text-muted">Password Strength</small>
+                  <small id="passwordStrengthLabel" class="fw-semibold"
+                    >Weak</small
+                  >
+                </div>
+                <div class="progress" style="height: 6px; border-radius: 10px">
+                  <div
+                    id="passwordStrengthBar"
+                    class="progress-bar"
+                    role="progressbar"
+                    style="width: 0%; border-radius: 10px"
+                  ></div>
+                </div>
+              </div>
+              <button
+                type="submit"
+                class="btn btn-danger w-100 rounded-pill py-2 mt-1"
+              >
+                Create Account
+              </button>
+            </form>
+            <div class="mt-3 text-center">
+              <p class="mb-0">
+                Already have an account?
+                <a href="#" id="showLogin" class="fw-semibold text-danger"
+                  >Login</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cart Offcanvas -->
+    <div
+      class="offcanvas offcanvas-end"
+      tabindex="-1"
+      id="cartOffcanvas"
+      aria-labelledby="cartOffcanvasLabel"
+    >
+      <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title fw-bold" id="cartOffcanvasLabel">
+          Your Cart
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="offcanvas-body d-flex flex-column">
+        <div id="cartItems" class="flex-grow-1 overflow-auto mb-3">
+          <!-- Cart items will be populated here -->
+          <p class="text-center mt-5" id="emptyCartMessage">
+            <i class="bi bi-cart-x fs-1 text-muted d-block mb-3"></i>
+            Your cart is empty.<br />Start exploring our delicious treats!
+          </p>
+        </div>
+        <div class="mt-auto border-top pt-3">
+          <h5 class="mb-3 fw-bold">Total: ₹<span id="cartTotal">0</span></h5>
+          <div class="d-grid gap-2">
+            <button
+              type="button"
+              class="btn btn-secondary rounded-pill py-2"
+              data-bs-dismiss="offcanvas"
+            >
+              Continue Shopping
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger rounded-pill py-2"
+              id="checkoutButton"
+            >
+              Checkout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div
+      class="modal fade"
+      id="productModal"
+      tabindex="-1"
+      aria-labelledby="productModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+          <div class="modal-header border-0 position-absolute end-0 z-1">
+            <button
+              type="button"
+              class="btn-close bg-white rounded-circle p-2 shadow-sm"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              style="margin: 10px"
+            ></button>
+          </div>
+          <div class="modal-body p-0">
+            <div class="row g-0">
+              <div
+                class="col-md-6 d-flex align-items-center justify-content-center p-4 bg-light"
+                style="
+                  border-radius: var(--bs-modal-border-radius) 0 0
+                    var(--bs-modal-border-radius);
+                "
+              >
+                <img
+                  src=""
+                  id="modalProductImage"
+                  class="img-fluid rounded-4 shadow-sm"
+                  alt="Product Image"
+                  style="max-height: 400px; object-fit: contain"
+                />
+              </div>
+              <div
+                class="col-md-6 p-4 p-md-5 d-flex flex-column justify-content-center"
+              >
+                <span
+                  class="badge bg-danger mb-2 align-self-start"
+                  id="modalProductCategory"
+                  >Category</span
+                >
+                <h3 class="fw-bold mb-2" id="modalProductName">Product Name</h3>
+                <h4 class="text-danger fw-bold mb-4">
+                  ₹<span id="modalProductPrice">0</span>
+                </h4>
+                <p
+                  class="text-muted mb-4 lead"
+                  id="modalProductDesc"
+                  style="font-size: 1.1rem"
+                >
+                  Description goes here.
+                </p>
+
+                <h6
+                  class="fw-bold text-uppercase text-muted"
+                  style="letter-spacing: 1px; font-size: 0.85rem"
+                >
+                  Ingredients
+                </h6>
+                <p class="small text-muted mb-4" id="modalProductIngredients">
+                  Milk, Sugar, Cream, Natural Flavors.
+                </p>
+
+                <h6
+                  class="fw-bold text-uppercase text-muted"
+                  style="letter-spacing: 1px; font-size: 0.85rem"
+                >
+                  Nutrition
+                </h6>
+                <p class="small text-muted mb-4" id="modalProductNutrition">
+                  Energy 180 kcal · Protein 3 g · Carbs 22 g.
+                </p>
+
+                <h6
+                  class="fw-bold text-uppercase text-muted"
+                  style="letter-spacing: 1px; font-size: 0.85rem"
+                >
+                  Reviews
+                </h6>
+                <div id="modalProductReviews" class="small text-muted mb-4">
+                  Loved for its rich flavor and smooth finish.
+                </div>
+
+                <button
+                  class="btn btn-danger btn-lg w-100 mt-auto rounded-pill py-3"
+                  id="modalAddToCartButton"
+                >
+                  <i class="bi bi-cart-plus me-2"></i> Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="content">
+        <h1 class="display-1">Kwality Wall's</h1>
+        <p class="tagline typewriter">Taste the Sweetness of Happiness</p>
+        <div class="cta-buttons d-flex gap-3 justify-content-center">
+          <a class="btn btn-danger btn-lg" href="#products">
+            <i class="bi bi-bag-fill me-2"></i>Shop Now
+          </a>
+          <a href="#about" class="btn btn-outline-danger btn-lg">
+            <i class="bi bi-emoji-smile me-2"></i>Explore Flavors
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="container my-5">
+      <div
+        class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4"
+      >
+        <h2 class="fw-bold mb-3 mb-md-0">Our Delicious Treats</h2>
+        <div class="w-100" style="max-width: 300px">
+          <input
+            type="text"
+            id="searchInput"
+            class="form-control rounded-pill px-4"
+            placeholder="Search products..."
+          />
+        </div>
+      </div>
+
+      <!-- Category Filters -->
+      <div
+        class="d-flex flex-wrap gap-2 justify-content-center mb-5"
+        id="categoryFilters"
+      >
+        <button
+          class="btn btn-danger rounded-pill px-4 filter-btn active"
+          data-filter="all"
+        >
+          All Treats
+        </button>
+        <button
+          class="btn btn-outline-danger rounded-pill px-4 filter-btn"
+          data-filter="Cones"
+        >
+          Cones
+        </button>
+        <button
+          class="btn btn-outline-danger rounded-pill px-4 filter-btn"
+          data-filter="Sundaes"
+        >
+          Sundaes
+        </button>
+        <button
+          class="btn btn-outline-danger rounded-pill px-4 filter-btn"
+          data-filter="Cakes"
+        >
+          Cakes
+        </button>
+        <button
+          class="btn btn-outline-danger rounded-pill px-4 filter-btn"
+          data-filter="Ice Creams"
+        >
+          Ice Creams
+        </button>
+      </div>
+
+      <div class="row g-4" id="productsContainer">
+        <!-- Products will be populated here by JavaScript -->
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6">
+            <div class="about-content">
+              <h2 class="display-5 fw-bold mb-4">About Kwality Wall's</h2>
+              <p class="lead mb-4">
+                For over decades, Kwality Wall's has been India's most beloved
+                ice cream brand, bringing joy and sweetness to millions of
+                families across the nation.
+              </p>
+              <p class="mb-4">
+                From our signature cones and sundaes to premium cakes and
+                desserts, every product is crafted with the finest ingredients
+                and utmost care. We believe in creating moments of happiness
+                that bring people together.
+              </p>
+              <div class="d-flex gap-4 mb-4">
+                <div class="text-center">
+                  <h3 class="fw-bold stats-counter" data-target="50">0</h3>
+                  <p class="small text-muted">Flavors</p>
+                </div>
+                <div class="text-center">
+                  <h3 class="fw-bold stats-counter" data-target="1000000">0</h3>
+                  <p class="small text-muted">Happy Customers</p>
+                </div>
+                <div class="text-center">
+                  <h3 class="fw-bold stats-counter" data-target="25">0</h3>
+                  <p class="small text-muted">Years of Excellence</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="about-image">
+              <img
+                src="https://kwalitywalls-cascaron-9c3e15.netlify.app/assets/img/kwality-walls-ice-cream-distributor.jpg"
+                alt="Kwality Wall's Story"
+                class="img-fluid rounded-4 shadow-lg"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Offers Carousel -->
+    <section class="container my-5">
+      <div
+        id="offersCarousel"
+        class="carousel slide offer-banner"
+        data-bs-ride="carousel"
+        data-bs-interval="3500"
+      >
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img
+              src="https://kwalitywalls-cascaron-9c3e15.netlify.app/assets/img/kwality-walls-ice-cream-distributor.jpg"
+              class="d-block w-100 kenburns"
+              alt="Summer Specials"
+            />
+            <div class="carousel-caption caption-anim d-none d-md-block">
+              <h5>Summer Specials</h5>
+              <p>Cool off with refreshing mango and strawberry delights!</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img
+              src="https://kwalitywalls-cascaron-9c3e15.netlify.app/assets/img/344519-6.webp"
+              class="d-block w-100 kenburns"
+              alt="BOGO Offer"
+            />
+            <div class="carousel-caption caption-anim d-none d-md-block">
+              <h5>Buy 1 Get 1 Free</h5>
+              <p>On selected cones and cups. Limited time!</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img
+              src="https://kwalitywalls-cascaron-9c3e15.netlify.app/assets/img/61na83APhZL._UF894,1000_QL80_.jpg"
+              class="d-block w-100 kenburns"
+              alt="New Flavors"
+            />
+            <div class="carousel-caption caption-anim d-none d-md-block">
+              <h5>New Flavors</h5>
+              <p>Try our Cookies & Cream and Belgian Chocolate.</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img
+              src="https://kwalitywalls-cascaron-9c3e15.netlify.app/assets/img/cf523f91358158ec7e2d79b59f4575cf.jpg"
+              class="d-block w-100 kenburns"
+              alt="Premium Collection"
+            />
+            <div class="carousel-caption caption-anim d-none d-md-block">
+              <h5>Premium Collection</h5>
+              <p>Indulge in our finest ice cream creations!</p>
+            </div>
+          </div>
+        </div>
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#offersCarousel"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#offersCarousel"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Testimonial Section -->
+    <section class="testimonial-slider">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="display-5 fw-bold">What Our Customers Say</h2>
+          <p class="lead text-muted">Hear from our happy customers</p>
+        </div>
+        <div class="testimonial-container d-flex justify-content-center">
+          <div class="testimonial-card active" data-index="0">
+            <div class="stars mb-3">★★★★★</div>
+            <p class="testimonial-text">
+              "Best ice cream in town! The flavors are incredible and the
+              service is amazing."
+            </p>
+            <h6 class="testimonial-author mt-3">- Sarah Johnson</h6>
+          </div>
+
+          <div class="testimonial-card" data-index="1">
+            <div class="stars mb-3">★★★★★</div>
+            <p class="testimonial-text">
+              "Kwality Wall's has been our family favorite for years. Quality
+              never disappoints!"
+            </p>
+            <h6 class="testimonial-author mt-3">- Mike Chen</h6>
+          </div>
+
+          <div class="testimonial-card" data-index="2">
+            <div class="stars mb-3">★★★★★</div>
+            <p class="testimonial-text">
+              "The cakes are absolutely delicious. Perfect for every
+              celebration!"
+            </p>
+            <h6 class="testimonial-author mt-3">- Emma Wilson</h6>
+          </div>
+        </div>
+        <div class="text-center mt-4">
+          <button class="btn btn-outline-danger" id="prevTestimonial">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          <button class="btn btn-danger mx-2" id="addTestimonial">
+            Add Your Review
+          </button>
+          <button class="btn btn-outline-danger" id="nextTestimonial">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Add Testimonial Modal -->
+    <div
+      class="modal fade"
+      id="testimonialModal"
+      tabindex="-1"
+      aria-labelledby="testimonialModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="testimonialModalLabel">
+              Share Your Experience
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="testimonialForm">
+              <div class="mb-3">
+                <label for="testimonialName" class="form-label"
+                  >Your Name</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="testimonialName"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="testimonialText" class="form-label"
+                  >Your Review</label
+                >
+                <textarea
+                  class="form-control"
+                  id="testimonialText"
+                  rows="3"
+                  required
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="testimonialRating" class="form-label">Rating</label>
+                <select class="form-control" id="testimonialRating" required>
+                  <option value="5">★★★★★ 5 Stars</option>
+                  <option value="4">★★★★☆ 4 Stars</option>
+                  <option value="3">★★★☆☆ 3 Stars</option>
+                  <option value="2">★★☆☆☆ 2 Stars</option>
+                  <option value="1">★☆☆☆☆ 1 Star</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-danger">
+                Submit Review
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+      <div class="container text-center">
+        <h2 class="display-5 fw-bold mb-4">Stay Sweet with Updates</h2>
+        <p class="lead mb-4">
+          Subscribe to get the latest offers, new flavors, and sweet deals!
+        </p>
+        <form class="newsletter-form" id="newsletterForm">
+          <input
+            type="email"
+            class="newsletter-input"
+            id="newsletterEmail"
+            placeholder="Enter your email address"
+            required
+          />
+          <button type="submit" class="btn btn-light btn-lg mt-3">
+            Subscribe Now
+          </button>
+        </form>
+        <div id="newsletterMessage" class="mt-3"></div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="container my-5">
+      <div class="bg-light p-4 rounded-3">
+        <h4 class="fw-bold">Contact Us</h4>
+        <form id="contactForm">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="contactName" class="form-label">Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="contactName"
+                required
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="contactEmail" class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="contactEmail"
+                required
+              />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="contactSubject" class="form-label">Subject</label>
+            <input
+              type="text"
+              class="form-control"
+              id="contactSubject"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="contactMessage" class="form-label">Message</label>
+            <textarea
+              class="form-control"
+              id="contactMessage"
+              rows="4"
+              required
+            ></textarea>
+          </div>
+          <button type="submit" class="btn btn-danger">Send Message</button>
+        </form>
+        <div id="contactFormMessage" class="mt-3"></div>
+      </div>
+    </section>
+
+    <!-- Enhanced Footer -->
+    <footer class="kw-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 mb-4">
+            <h5 class="fw-bold mb-3">Kwality Wall's</h5>
+            <p class="text-light">
+              Bringing sweetness and joy to every moment with our premium ice
+              creams, cones, sundaes, and desserts.
+            </p>
+            <div class="social-icons mt-3">
+              <a href="#" aria-label="Facebook"
+                ><i class="bi bi-facebook"></i
+              ></a>
+              <a href="#" aria-label="Instagram"
+                ><i class="bi bi-instagram"></i
+              ></a>
+              <a href="#" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+              <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-6 mb-4">
+            <h6 class="fw-bold mb-3">Quick Links</h6>
+            <ul class="list-unstyled">
+              <li>
+                <a class="text-light text-decoration-none" href="#">Home</a>
+              </li>
+              <li>
+                <a class="text-light text-decoration-none" href="#products"
+                  >Products</a
+                >
+              </li>
+              <li>
+                <a href="#about" class="text-light text-decoration-none"
+                  >About</a
+                >
+              </li>
+              <li>
+                <a href="#contact" class="text-light text-decoration-none"
+                  >Contact</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-2 col-md-6 mb-4">
+            <h6 class="fw-bold mb-3">Categories</h6>
+            <ul class="list-unstyled">
+              <li>
+                <a class="text-light text-decoration-none" href="#"
+                  >Ice Creams</a
+                >
+              </li>
+              <li>
+                <a class="text-light text-decoration-none" href="#">Cones</a>
+              </li>
+              <li>
+                <a class="text-light text-decoration-none" href="#">Sundaes</a>
+              </li>
+              <li>
+                <a class="text-light text-decoration-none" href="#">Cakes</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-4 mb-4">
+            <h6 class="fw-bold mb-3">Contact Info</h6>
+            <p class="text-light mb-2">
+              <i class="bi bi-geo-alt me-2"></i>123 Sweet Street, Ice Cream City
+            </p>
+            <p class="text-light mb-2">
+              <i class="bi bi-telephone me-2"></i>+91 98765 43210
+            </p>
+            <p class="text-light mb-2">
+              <i class="bi bi-envelope me-2"></i>hello@kwalitywalls.com
+            </p>
+          </div>
+        </div>
+        <hr class="border-light" />
+        <div class="row">
+          <div class="col-md-6">
+            <p class="text-light mb-0">
+              © 2024 Kwality Wall's. All rights reserved.
+            </p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <a class="text-light text-decoration-none me-3" href="#"
+              >Privacy Policy</a
+            >
+            <a class="text-light text-decoration-none" href="#"
+              >Terms of Service</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <div class="floating-icons">
+      <div class="floating-icon" style="left: 20%; animation-delay: 0s">🍦</div>
+      <div class="floating-icon" style="left: 40%; animation-delay: -5s">
+        🍨
+      </div>
+      <div class="floating-icon" style="left: 60%; animation-delay: -10s">
+        🧁
+      </div>
+      <div class="floating-icon" style="left: 80%; animation-delay: -15s">
+        🍰
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div
+      class="toast-container position-fixed bottom-0 end-0 p-4"
+      style="z-index: 1080"
+    >
+      <div
+        id="liveToast"
+        class="toast align-items-center text-bg-success border-0 shadow-lg rounded-4"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
+        <div class="d-flex">
+          <div class="toast-body d-flex align-items-center">
+            <strong class="me-2" id="toastTitle">Kwality Wall's</strong>
+            <i class="bi bi-check-circle-fill fs-5 me-2" id="toastIcon"></i>
+            <span id="toastMessage" class="fw-medium">Message here.</span>
+          </div>
+          <button
+            type="button"
+            class="btn-close btn-close-white me-3 m-auto"
+            data-bs-dismiss="toast"
+            aria-label="Close"
+          ></button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
