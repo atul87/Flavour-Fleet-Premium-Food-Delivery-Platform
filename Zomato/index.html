@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Zomato Pizza - Delicious Pizza Delivery</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Order delicious pizza online with fast delivery. Custom pizza builder, loyalty program, and real-time tracking.">
+    <meta name="keywords" content="pizza, delivery, order online, custom pizza, fast delivery">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css">
+    <link rel="stylesheet" href="zomato.css">
+    <link rel="icon" type="image/png" href="image/logo.png">
+    <!-- Schema Markup for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "name": "Zomato Pizza",
+      "image": "image/logo.png",
+      "description": "Delicious pizza with fast delivery",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "89, Ring Road",
+        "addressLocality": "New Delhi",
+        "addressCountry": "India"
+      },
+      "telephone": "+91 9893 304 801",
+      "servesCuisine": "Italian Pizza"
+    }
+    </script>
+</head>
+
+<body>
+    <div id="home" class="container-fluid top-header">
+        <nav class="navbar-expand-lg navbar-dark fixed-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-4">
+                        <a class="navbar-brand" href="#">
+                            <img src="image/logo.png" alt="Zomato Pizza Logo">
+                        </a>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-2">
+                        <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
+                            <ul class="navbar-nav ml-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link" aria-current="page" href="#home">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#categories">Category</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#menu">Menu List</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#delivery">Our Services</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#testimonials">Testimonial</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#contact">Contact Us</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-6 social-media">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapsibleNavbar">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <a href="#">
+                            <i class="fa fa-search" aria-label="Search"></i>
+                        </a>
+                        <a href="#" onclick="showCart()">
+                            <i class="fa fa-cart-plus" aria-label="Shopping Cart"></i>
+                            <span id="cart-count" class="badge bg-danger">0</span>
+                        </a>
+                        <a href="#">
+                            <i class="fa fa-user" aria-label="User Profile"></i>
+                        </a>
+                        <!-- Language Toggle -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="language-toggle">
+                            <label class="form-check-label" for="language-toggle">HI</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- Search Bar -->
+        <div class="container mt-5 pt-5">
+            <div class="row">
+                <div class="col-12">
+                    <div class="input-group mb-3">
+                        <input type="text" id="search-input" class="form-control"
+                            placeholder="Search for pizza, burgers, etc..." aria-label="Search">
+                        <button class="btn btn-danger" type="button" onclick="filterProducts()">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- BANNER Section -->
+        <div class="container-fluid">
+            <div class="banner-section">
+                <div class="row">
+                    <div class="col-lg-1 col-12"></div>
+                    <div class="col-lg-5 col-md-7 col-12">
+                        <div class="banner-detail">
+                            <h5>Best Choice</h5>
+                            <h1>ITALIAN PIZZA</h1>
+                            <p>Craving the perfect slice? Our handcrafted pizzas are made with fresh ingredients and
+                                authentic Italian techniques.</p>
+                            <div class="col-md-12 mt-3">
+                                <button class="btn button-1" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">Order Now</button>
+                                <button class="btn button-2" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">Full Menu</button>
+                                <br>
+                                <button class="btn btn-outline-light mt-3" onclick="showPizzaBuilder()">Build Your Own Pizza</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-5 col-12">
+                        <div class="banner-img">
+                            <img src="image/banner.png" alt="Delicious Italian Pizza" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Filters -->
+    <a id="categories"></a>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex flex-wrap justify-content-center">
+                    <button class="btn btn-outline-danger category-filter mx-2 mb-2" data-category="all">All</button>
+                    <button class="btn btn-outline-danger category-filter mx-2 mb-2"
+                        data-category="pizza">Pizza</button>
+                    <button class="btn btn-outline-danger category-filter mx-2 mb-2"
+                        data-category="burger">Burgers</button>
+                    <button class="btn btn-outline-danger category-filter mx-2 mb-2"
+                        data-category="pasta">Pasta</button>
+                    <button class="btn btn-outline-danger category-filter mx-2 mb-2"
+                        data-category="shakes">Shakes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!---------ADV Section-------->
+    <div class="container-fluid  main-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="top-banner">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <h2>SAVE 30%</h2>
+                                <h3>HamBurger'S Combo</h3>
+                                <p>Delicious hamburger with fries and drink combo at a special price!</p>
+                            </div>
+                            <div class="col-md-5">
+                                <div>
+                                    <img src="image/banner-1.png" alt="Hamburger Combo" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="top-banner">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <h2>SAVE 30%</h2>
+                                <h3>Burg'S Combo</h3>
+                                <p>Our signature burger with crispy fries and refreshing drink!</p>
+                            </div>
+                            <div class="col-md-5">
+                                <div>
+                                    <img src="image/banner-2.png" alt="Signature Burger Combo" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="top-banner">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <h2>SAVE 30%</h2>
+                                <h3>Pizza'S Combo</h3>
+                                <p>Large pizza with garlic bread and 2 drinks for the whole family!</p>
+                            </div>
+                            <div class="col-md-5">
+                                <div>
+                                    <img src="image/banner-3.png" alt="Family Pizza Combo" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="top-banner">
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <h2>SAVE 30%</h2>
+                                <h3>We Make The Best Restaurant!</h3>
+                                <p>Our chefs use only the freshest ingredients to create mouthwatering dishes that will
+                                    satisfy your cravings.</p>
+                            </div>
+                            <div class="col-lg-5">
+                                <div>
+                                    <img src="image/banner-4.png" alt="Fresh Ingredients" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="top-banner">
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <h2>SAVE 30%</h2>
+                                <h3>Why Taste Our Best Pizza Now?</h3>
+                                <p>Authentic Italian recipes, fresh dough made daily, and premium toppings for the
+                                    perfect pizza experience.</p>
+                            </div>
+                            <div class="col-lg-5">
+                                <div>
+                                    <img src="image/banner-5.png" alt="Authentic Italian Pizza" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!---------Category List--------->
+    <div class="container-fluid main-section bg-color">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-6">
+                    <div class="category-list">
+                        <img src="image/c-1.png" alt="Burger" loading="lazy">
+                        <h2>Burger</h2>
+                        <p>19 Restaurants Products</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-6">
+                    <div class="category-list">
+                        <img src="image/c-2.png" alt="Burger" loading="lazy">
+                        <h2>Burger</h2>
+                        <p>19 Restaurants Products</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-6">
+                    <div class="category-list">
+                        <img src="image/c-3.png" alt="Shakes" loading="lazy">
+                        <h2>Shakes</h2>
+                        <p>9 Restaurants Products</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-6">
+                    <div class="category-list">
+                        <img src="image/c-4.png" alt="Burger" loading="lazy">
+                        <h2>Burger</h2>
+                        <p>24 Restaurants Products</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-6">
+                    <div class="category-list">
+                        <img src="image/c-5.png" alt="Pasta" loading="lazy">
+                        <h2>Pasta</h2>
+                        <p>44 Restaurants Products</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-6">
+                    <div class="category-list">
+                        <img src="image/c-6.png" alt="Pizza" loading="lazy">
+                        <h2>Pizza</h2>
+                        <p>14 Restaurants Products</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-6">
+                    <div class="category-list">
+                        <img src="image/c-7.png" alt="Pizza" loading="lazy">
+                        <h2>Pizza</h2>
+                        <p>14 Restaurants Products</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-6">
+                    <div class="category-list">
+                        <img src="image/c-8.png" alt="Pizza" loading="lazy">
+                        <h2>Pizza</h2>
+                        <p>14 Restaurants Products</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!---------PRODUCT LIST-------->
+    <a id="menu"></a>
+    <div class="container-fluid  main-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="heading-section">
+                        <h3>Our Top Sell</h3>
+                        <h2>Checkout Our Top Sell Burger</h2>
+                        <div class="heading-borders">
+                            <span class="selected"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="famous-product">
+                        <h2>BEEF</h2>
+                        <h3>Bacon Cheese Burger</h3>
+                        <img src="image/p-1.png" alt="Bacon Cheese Burger" loading="lazy">
+                        <div class="price">
+                            <h4>$6.00 </h4>
+                            <p>220gr/600cal</p>
+                            <span>
+                                <button class="btn add-to-cart" data-product-id="1">
+                                    <i class="fa fa-plus"></i> Add
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="famous-product">
+                        <h2>BEEF</h2>
+                        <h3>Bacon Cheese Burger</h3>
+                        <img src="image/p-2.png" alt="Beef Burger" loading="lazy">
+                        <div class="price">
+                            <h4>$6.00 </h4>
+                            <p>220gr/600cal</p>
+                            <span>
+                                <button class="btn add-to-cart" data-product-id="2">
+                                    <i class="fa fa-plus"></i> Add
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="famous-product">
+                        <h2>BEEF</h2>
+                        <h3>Bacon Cheese Burger</h3>
+                        <img src="image/p-3.png" alt="Chicken Burger" loading="lazy">
+                        <div class="price">
+                            <h4>$6.00 </h4>
+                            <p>220gr/600cal</p>
+                            <span>
+                                <button class="btn add-to-cart" data-product-id="3">
+                                    <i class="fa fa-plus"></i> Add
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="famous-product">
+                        <h2>BEEF</h2>
+                        <h3>Bacon Cheese Burger</h3>
+                        <img src="image/p-4.png" alt="Veggie Burger" loading="lazy">
+                        <div class="price">
+                            <h4>$6.00 </h4>
+                            <p>220gr/600cal</p>
+                            <span>
+                                <button class="btn add-to-cart" data-product-id="4">
+                                    <i class="fa fa-plus"></i> Add
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="famous-product">
+                        <h2>BEEF</h2>
+                        <h3>Bacon Cheese Burger</h3>
+                        <img src="image/p-5.png" alt="Double Cheese Burger" loading="lazy">
+                        <div class="price">
+                            <h4>$6.00 </h4>
+                            <p>220gr/600cal</p>
+                            <span>
+                                <button class="btn add-to-cart" data-product-id="5">
+                                    <i class="fa fa-plus"></i> Add
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="famous-product">
+                        <h2>BEEF</h2>
+                        <h3>Bacon Cheese Burger</h3>
+                        <img src="image/p-6.png" alt="Spicy Burger" loading="lazy">
+                        <div class="price">
+                            <h4>$6.00 </h4>
+                            <p>220gr/600cal</p>
+                            <span>
+                                <button class="btn add-to-cart" data-product-id="6">
+                                    <i class="fa fa-plus"></i> Add
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="famous-product">
+                        <h2>BEEF</h2>
+                        <h3>Bacon Cheese Burger</h3>
+                        <img src="image/p-7.png" alt="Mushroom Burger" loading="lazy">
+                        <div class="price">
+                            <h4>$6.00 </h4>
+                            <p>220gr/600cal</p>
+                            <span>
+                                <button class="btn add-to-cart" data-product-id="7">
+                                    <i class="fa fa-plus"></i> Add
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="famous-product">
+                        <h2>BEEF</h2>
+                        <h3>Bacon Cheese Burger</h3>
+                        <img src="image/p-8.png" alt="BBQ Burger" loading="lazy">
+                        <div class="price">
+                            <h4>$6.00 </h4>
+                            <p>220gr/600cal</p>
+                            <span>
+                                <button class="btn add-to-cart" data-product-id="8">
+                                    <i class="fa fa-plus"></i> Add
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!---------ADV Section--------->
+    <a id="delivery"></a>
+    <div class="container-fluid main-section bg-color">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="adv-left">
+                        <img src="image/scooter.png" alt="Fast Delivery Scooter" loading="lazy">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="adv-right">
+                        <h2>Fastest Delivery</h2>
+                        <h3>Your Favorite Pizza, <br> on the Way! </h3>
+                        <p>Enjoy our fastest delivery service with real-time tracking. Your order will arrive hot and
+                            fresh in 30 minutes or less!</p>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="about-div">
+                                    <i class="fa fa-home"></i>
+                                    <p>Delivery in 30 minutes.</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4">
+                                <div class="about-div">
+                                    <i class="fa fa-hourglass"></i>
+                                    <p>Real-time tracking</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4">
+                                <div class="about-div">
+                                    <i class="fa fa-birthday-cake"></i>
+                                    <p>100% satisfaction</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-light mt-3" onclick="showOrderTracker()">Track Your Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!---------Testimonial Section--------->
+    <a id="testimonials"></a>
+    <div class="container-fluid  main-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="heading-section">
+                        <h3>Our Testimonials</h3>
+                        <h2>What Our Client Say's</h2>
+                        <div class="heading-borders">
+                            <span class="selected"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="demo-5 owl-carousel owl-theme">
+                        <div class="item">
+                            <div class="testimonial">
+                                <p>"The best pizza I've ever tasted! The delivery was super fast and the pizza arrived
+                                    hot and fresh. Will definitely order again!"</p>
+                                <div class="testimonial-img">
+                                    <img src="image/testimonial-1.png" alt="Customer Photo">
+                                </div>
+                                <div class="testimonial-user">
+                                    <h5>Nancy Bayers</h5>
+                                    <h6> Regular Customer</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="testimonial">
+                                <p>"Their custom pizza builder is amazing! I was able to create exactly what I wanted.
+                                    The loyalty program gives great rewards too!"</p>
+                                <div class="testimonial-img">
+                                    <img src="image/testimonial-2.png" alt="Customer Photo">
+                                </div>
+                                <div class="testimonial-user">
+                                    <h5>Rajesh Kumar</h5>
+                                    <h6> Pizza Enthusiast</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="testimonial">
+                                <p>"The real-time order tracking feature is so helpful. I love knowing exactly when my
+                                    food will arrive. Great service!"</p>
+                                <div class="testimonial-img">
+                                    <img src="image/testimonial-3.png" alt="Customer Photo">
+                                </div>
+                                <div class="testimonial-user">
+                                    <h5>Priya Sharma</h5>
+                                    <h6> Frequent Orderer</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="testimonial">
+                                <p>"Their multi-language support made ordering so easy. The pizza was delicious and
+                                    delivery was quick. Highly recommended!"</p>
+                                <div class="testimonial-img">
+                                    <img src="image/testimonial-4.png" alt="Customer Photo">
+                                </div>
+                                <div class="testimonial-user">
+                                    <h5>Amit Patel</h5>
+                                    <h6> New Customer</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--------FOOTER Section------->
+    <a id="contact"></a>
+    <div class="container-fluid footer-section" style="">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="footer-top">
+                        <h2>A Moments Of Delivered <br> On Right Time & Place </h2>
+                        <h3>90-9893-304-801</h3>
+                        <span class="border-bottoms"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h2>
+                        <img src="image/logo.png" alt="Footer Logo">
+                    </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>Our Company</h4>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="footer-menu">
+                                <ul>
+                                    <li><a href="#home">Home</a></li>
+                                    <li><a href="#menu">Menu</a></li>
+                                    <li><a href="#">About us</a></li>
+                                    <li><a href="#">Restaurant</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="footer-menu">
+                                <ul>
+                                    <li><a href="#menu">Quick Order</a></li>
+                                    <li><a href="#categories">Fast Food</a></li>
+                                    <li><a href="#">Blogging</a></li>
+                                    <li><a href="#contact">Contact Us</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h4>Opening Hours</h4>
+                    <table>
+                        <tr>
+                            <td>Mon-Fri...................</td>
+                            <td>8:00 am-12:00 pm</td>
+                        </tr>
+                        <tr>
+                            <td>Saturday.................</td>
+                            <td>8:00 am-12:00 pm</td>
+                        </tr>
+                        <tr>
+                            <td>Sunday....................</td>
+                            <td>Closed</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-4">
+                    <h4>Contact Us</h4>
+                    <div class="contact-info">
+                        <p>
+                            <span>
+                                <i class="fa fa-map-marker"></i>
+                            </span> 89, Ring Road, New Delhi , India
+                        </p>
+                        <p>
+                            <span>
+                                <i class="fa fa-phone"></i>
+                            </span> +91 9893 304 801
+                        </p>
+                        <p>
+                            <span>
+                                <i class="fa fa-envelope"></i>
+                            </span> info@zomatopizza.com
+                        </p>
+                        <ul>
+                            <li>
+                                <a href="#" aria-label="Instagram"><i class="fa fa-instagram"></i></a>
+                            </li>
+                            <li>
+                                <a href="#" aria-label="WhatsApp"><i class="fa fa-whatsapp"></i></a>
+                            </li>
+                            <li>
+                                <a href="#" aria-label="YouTube"><i class="fa fa-youtube"></i></a>
+                            </li>
+                            <li>
+                                <a href="#" aria-label="Twitter"><i class="fa fa-twitter"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!------------COPYRIGHT Section ----------->
+        <div class="container ">
+            <div class="row copyright">
+                <div class="col-md-6">
+                    <p>@ 2023 All Rights Reserved By Zomato Pizza</p>
+                </div>
+                <div class="col-md-6">
+                    <ul>
+                        <li>
+                            <a href="#">Service</a>
+                        </li>
+                        <li>
+                            <a href="#">Blog</a>
+                        </li>
+                        <li>
+                            <a href="#">Contact</a>
+                        </li>
+                        <li>
+                            <a href="#">Privacy Policy</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pizza Builder Modal -->
+    <div class="modal fade" id="pizzaBuilderModal" tabindex="-1" aria-labelledby="pizzaBuilderModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pizzaBuilderModalLabel">Build Your Own Pizza</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Select Size</h5>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="size" id="small" value="small"
+                                        checked>
+                                    <label class="form-check-label" for="small">Small - $8.00</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="size" id="medium" value="medium">
+                                    <label class="form-check-label" for="medium">Medium - $12.00</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="size" id="large" value="large">
+                                    <label class="form-check-label" for="large">Large - $16.00</label>
+                                </div>
+
+                                <h5 class="mt-3">Select Toppings</h5>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="pepperoni" value="pepperoni">
+                                    <label class="form-check-label" for="pepperoni">Pepperoni - $1.50</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="mushrooms" value="mushrooms">
+                                    <label class="form-check-label" for="mushrooms">Mushrooms - $1.00</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="cheese" value="cheese">
+                                    <label class="form-check-label" for="cheese">Extra Cheese - $2.00</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="olives" value="olives">
+                                    <label class="form-check-label" for="olives">Olives - $1.25</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="pizza-preview text-center">
+                                    <img src="image/pizza-preview.png" alt="Pizza Preview" class="img-fluid">
+                                    <h5 class="mt-3">Your Pizza</h5>
+                                    <p id="pizza-description">Small pizza with no toppings</p>
+                                    <h4 id="pizza-price">$8.00</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" onclick="addToCartCustomPizza()">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Tracker Modal -->
+    <div class="modal fade" id="orderTrackerModal" tabindex="-1" aria-labelledby="orderTrackerModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderTrackerModalLabel">Track Your Order</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" id="order-id" placeholder="Enter Order ID">
+                                    <button class="btn btn-danger" type="button" onclick="trackOrder()">Track</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div id="tracking-info" class="text-center d-none">
+                                    <h5>Order Status: <span id="order-status">Preparing</span></h5>
+                                    <p>Estimated Delivery: <span id="delivery-time">25-30 mins</span></p>
+                                    <div class="progress mt-3">
+                                        <div class="progress-bar" role="progressbar" style="width: 25%;"
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-2">
+                                        <small>Order Placed</small>
+                                        <small>Preparing</small>
+                                        <small>On the Way</small>
+                                        <small>Delivered</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login/Register Modal -->
+    <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="authModalLabel">Login or Register</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" id="authTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login"
+                                type="button" role="tab">Login</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register"
+                                type="button" role="tab">Register</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="authTabsContent">
+                        <div class="tab-pane fade show active" id="login" role="tabpanel">
+                            <form class="mt-3">
+                                <div class="mb-3">
+                                    <label for="login-email" class="form-label">Email address</label>
+                                    <input type="email" class="form-control" id="login-email">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="login-password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="login-password">
+                                </div>
+                                <button type="button" class="btn btn-danger" onclick="loginUser()">Login</button>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="register" role="tabpanel">
+                            <form class="mt-3">
+                                <div class="mb-3">
+                                    <label for="register-name" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="register-name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="register-email" class="form-label">Email address</label>
+                                    <input type="email" class="form-control" id="register-email">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="register-password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="register-password">
+                                </div>
+                                <button type="button" class="btn btn-danger" onclick="registerUser()">Register</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll To Top Button -->
+    <button id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">&#8679;</button>
+
+    <!-- JavaScript Files -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="zomato.js"></script>
+    <script>
+        // Initialize Owl Carousel
+        $(document).ready(function () {
+            $('.demo-5').owlCarousel({
+                loop: true,
+                margin: 10,
+                nav: true,
+                dots: true,
+                autoplay: true,
+                autoplayTimeout: 5000,
+                responsive: {
+                    0: { items: 1 },
+                    600: { items: 2 },
+                    1000: { items: 3 }
+                }
+            });
+        });
+
+        // Scroll to top button visibility
+        window.addEventListener('scroll', function() {
+            const btn = document.getElementById('scrollTopBtn');
+            if (window.scrollY > 300) {
+                btn.style.display = 'block';
+            } else {
+                btn.style.display = 'none';
+            }
+        });
+
+        // Set correct copyright year
+        const copyrightEl = document.querySelector('.copyright p');
+        if (copyrightEl) {
+            copyrightEl.textContent = `© ${new Date().getFullYear()} All Rights Reserved By Zomato Pizza`;
+        }
+
+        // Hook up user icon to auth modal
+        document.querySelector('.fa-user').parentElement.setAttribute('onclick', 'showAuthModal()');
+    </script>
+</body>
+
+</html>
