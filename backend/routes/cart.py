@@ -27,7 +27,7 @@ def _canonicalize_cart_item(data):
     menu_item = _get_menu_item(item_id)
     if menu_item:
         menu_item = normalize_menu_item(dict(menu_item))
-        return {
+        item = {
             'id': menu_item.get('item_id', item_id),
             'name': menu_item.get('name', data.get('name', 'Menu item')),
             'price': float(menu_item.get('price', 0)),
@@ -35,8 +35,13 @@ def _canonicalize_cart_item(data):
             'restaurant': menu_item.get('restaurant', data.get('restaurant', '')),
             'quantity': quantity,
         }
+        if data.get('customizations'):
+            item['customizations'] = data.get('customizations')
+        if data.get('instructions'):
+            item['instructions'] = str(data.get('instructions')).strip()
+        return item
 
-    return {
+    item = {
         'id': item_id,
         'name': data.get('name', 'Menu item'),
         'price': float(data.get('price', 0)),
@@ -44,6 +49,11 @@ def _canonicalize_cart_item(data):
         'restaurant': data.get('restaurant', ''),
         'quantity': quantity,
     }
+    if data.get('customizations'):
+        item['customizations'] = data.get('customizations')
+    if data.get('instructions'):
+        item['instructions'] = str(data.get('instructions')).strip()
+    return item
 
 
 def _sync_cart_items(uid, items):

@@ -3510,3 +3510,143 @@ body.has-mobile-cart #active-order-pill {
     height: 280px;
   }
 }
+
+/* ---------- Fleet Integration: Scrollable Filter Pills ---------- */
+/* Make pills horizontally scrollable on the menu page */
+.category-pills {
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  justify-content: flex-start !important;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 4px
+}
+
+.category-pills::-webkit-scrollbar {
+  display: none
+}
+
+/* ---------- Fleet Modals (Pizza Builder / Feature Details) ---------- */
+.fleet-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: fadeIn 0.2s ease
+}
+
+.fleet-modal.hidden {
+  display: none
+}
+
+.fleet-modal-panel {
+  position: relative;
+  background: var(--bg-secondary);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-2xl);
+  max-width: 500px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-xl);
+  animation: slideUp 0.25s ease
+}
+
+.fleet-modal-close {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast)
+}
+
+.fleet-modal-close:hover {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary)
+}
+
+.pizza-builder-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  margin-top: var(--space-lg)
+}
+
+.pizza-builder-form label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  font-size: 0.9rem;
+  font-weight: 500
+}
+
+.pizza-builder-form select,
+.pizza-builder-form textarea {
+  padding: var(--space-sm) var(--space-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-family: inherit;
+  resize: vertical
+}
+
+.builder-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md)
+}
+
+.builder-options label {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-sm);
+  cursor: pointer;
+  font-weight: 400
+}
+
+.feature-detail-note {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-top: var(--space-md)
+}
+
+/* Fleet brand badge */
+#fleet-modal-content .badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: var(--space-sm)
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0 }
+  to { transform: translateY(0); opacity: 1 }
+}

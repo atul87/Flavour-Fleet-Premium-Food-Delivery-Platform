@@ -223,11 +223,25 @@ function initSearch() {
 // ---------- Category Filter ----------
 function initCategoryFilter() {
     const pills = document.querySelectorAll('.pill[data-category]');
+    const initialCategory = new URLSearchParams(window.location.search).get('category');
+    if (initialCategory) {
+        _filterState.category = initialCategory.toLowerCase();
+    }
     pills.forEach(pill => {
+        if (initialCategory) {
+            pill.classList.toggle('active', pill.dataset.category === _filterState.category);
+        }
         pill.addEventListener('click', () => {
             pills.forEach(p => p.classList.remove('active'));
             pill.classList.add('active');
             _filterState.category = pill.dataset.category;
+            const url = new URL(window.location.href);
+            if (_filterState.category === 'all') {
+                url.searchParams.delete('category');
+            } else {
+                url.searchParams.set('category', _filterState.category);
+            }
+            window.history.replaceState({}, '', url);
             applyAllFilters();
         });
     });

@@ -10,6 +10,9 @@ menu_bp = Blueprint('menu', __name__, url_prefix='/api/menu')
 VEG_ITEM_IDS = {
     'p1', 'p4', 'i3', 'i5', 'm3', 'pa2', 'pa3', 'c3',
     'sa2', 'sa3', 'd1', 'd2', 'd3', 'd4',
+    'fp-1', 'fp-2', 'fp-builder',
+    'fi-1', 'fi-2', 'fi-3', 'fi-4', 'fi-5', 'fi-6',
+    'fs-1', 'fs-2', 'fs-3', 'fs-4', 'fs-5',
 }
 
 INR_PRICE_BY_ITEM_ID = {
@@ -22,6 +25,9 @@ INR_PRICE_BY_ITEM_ID = {
     'c1': 299, 'c2': 399, 'c3': 199,
     'sa1': 199, 'sa2': 249, 'sa3': 199,
     'd1': 149, 'd2': 169, 'd3': 179, 'd4': 119,
+    'fp-1': 329, 'fp-2': 429, 'fp-3': 459, 'fp-builder': 249,
+    'fi-1': 25, 'fi-2': 85, 'fi-3': 450, 'fi-4': 65, 'fi-5': 75, 'fi-6': 35,
+    'fs-1': 180, 'fs-2': 250, 'fs-3': 200, 'fs-4': 350, 'fs-5': 420,
 }
 
 

@@ -8,8 +8,19 @@ const DynamicRender = (() => {
     const API_BASE = '';
     const VEG_ITEM_IDS = new Set([
         'p1', 'p4', 'i3', 'i5', 'm3', 'pa2', 'pa3', 'c3',
-        'sa2', 'sa3', 'd1', 'd2', 'd3', 'd4'
+        'sa2', 'sa3', 'd1', 'd2', 'd3', 'd4',
+        'fp-1', 'fp-2', 'fp-builder',
+        'fi-1', 'fi-2', 'fi-3', 'fi-4', 'fi-5', 'fi-6',
+        'fs-1', 'fs-2', 'fs-3', 'fs-4', 'fs-5'
     ]);
+
+    function escapeAttr(value) {
+        return String(value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
 
     function inferIsVeg(item) {
         const explicit = item.is_veg;
@@ -55,6 +66,15 @@ const DynamicRender = (() => {
                 const rating = (Number(item.rating) || 4.5).toFixed(1);
                 const imgSrc = item.image || 'assets/images/default.png';
                 const category = (item.category || '').toLowerCase();
+                const itemId = item.item_id || item.id;
+                const brand = item.brand || item.restaurant || '';
+                const tags = Array.isArray(item.tags) ? item.tags : [];
+                const isPizzaBuilder = tags.includes('pizza-builder') || itemId === 'fp-builder';
+                const isFleetFeature = brand === 'Fleet Pizza' || brand === 'Fleet Ice Cream' || brand === 'Fleet Sweets';
+                const builderButton = isPizzaBuilder ? `<button class="feature-action-text" onclick="showPizzaBuilder(this)">Customize</button>` : '';
+                const detailButton = (category === 'icecream' || category === 'sweets') ? `<button class="feature-action-btn" onclick="showFeatureDetails('${escapeAttr(itemId)}','${escapeAttr(item.name)}','${escapeAttr(item.description || '')}')" aria-label="View details"><i class="fas fa-eye"></i></button>` : '';
+                const wishlistButton = category === 'sweets' ? `<button class="feature-action-btn" onclick="toggleFleetWishlist(this, '${escapeAttr(itemId)}')" aria-label="Toggle wishlist"><i class="far fa-heart"></i></button>` : '';
+                const secondaryActions = builderButton || detailButton || wishlistButton ? `<div class="feature-card-actions">${builderButton}${detailButton}${wishlistButton}</div>` : '';
 
                 return `
                 <div class="food-card tilt-card animate-on-scroll" data-category="${category}" data-veg="${isVeg ? 'yes' : 'no'}">
@@ -64,10 +84,12 @@ const DynamicRender = (() => {
                         <p class="food-desc">${item.description || ''}</p>
                     </div>
                     <div class="food-footer"><span class="food-price">₹${price}</span><span class="food-rating">⭐ ${rating}</span>
-                        <div class="cart-actions" data-id="${item.item_id}" data-name="${item.name}" data-price="${price}" data-image="${imgSrc}" data-restaurant="${item.restaurant || ''}">
+                        <div class="cart-actions" data-id="${escapeAttr(itemId)}" data-name="${escapeAttr(item.name)}" data-price="${price}" data-image="${escapeAttr(imgSrc)}" data-restaurant="${escapeAttr(item.restaurant || '')}">
                             <button class="add-to-cart-btn" onclick="addItem(this)">+</button>
                         </div>
                     </div>
+                    ${isFleetFeature ? `<div class="fleet-brand-row">${escapeAttr(brand)}</div>` : ''}
+                    ${secondaryActions}
                 </div>`;
             }).join('');
 
@@ -82,6 +104,7 @@ const DynamicRender = (() => {
 
             // Re-init scroll animations
             if (typeof initScrollAnimations === 'function') initScrollAnimations();
+            if (typeof applyAllFilters === 'function') applyAllFilters();
 
         } catch (err) {
             console.error('Menu fetch failed:', err);
@@ -122,7 +145,7 @@ const DynamicRender = (() => {
                 const priceLevel = (String(priceRange).match(/\$/g) || []).length || 0;
 
                 return `
-                <a href="menu.html" class="restaurant-card tilt-card animate-on-scroll" data-category="${category}" data-rating="${rating}" data-time="${parsedTime}" data-name="${name.toLowerCase()}" data-price-level="${priceLevel}">
+                <a href="menu.html?category=${category}" class="restaurant-card tilt-card animate-on-scroll" data-category="${category}" data-rating="${rating}" data-time="${parsedTime}" data-name="${name.toLowerCase()}" data-price-level="${priceLevel}">
                     <div class="card-image">
                         <img loading="lazy" src="${imgSrc}" alt="${r.name}">
                         <span class="delivery-badge">• ${deliveryTime} min</span>

@@ -164,6 +164,8 @@ async function renderCartPage() {
       <div class="cart-item-info">
         <h4>${item.name}</h4>
         <p class="cart-item-desc">${item.restaurant || ''}</p>
+        ${item.customizations ? `<p class="cart-item-desc">${Array.isArray(item.customizations) ? item.customizations.join(', ') : item.customizations}</p>` : ''}
+        ${item.instructions ? `<p class="cart-item-desc">Note: ${item.instructions}</p>` : ''}
         <p class="cart-item-price">${formatINR(item.price * item.quantity)}</p>
         <div class="quantity-control">
           <button onclick="changeQty('${item.id}', -1)">−</button>

@@ -36,29 +36,29 @@ def canonicalize_order_items(items):
         )
         if menu_item:
             menu_item = normalize_menu_item(dict(menu_item))
-            canonical_items.append(
-                {
-                    "id": menu_item.get("item_id", item_id),
-                    "name": menu_item.get("name", item.get("name", "Menu item")),
-                    "price": float(menu_item.get("price", 0)),
-                    "image": menu_item.get("image", item.get("image", "")),
-                    "restaurant": menu_item.get(
-                        "restaurant", item.get("restaurant", "")
-                    ),
-                    "quantity": quantity,
-                }
-            )
+            canonical_item = {
+                "id": menu_item.get("item_id", item_id),
+                "name": menu_item.get("name", item.get("name", "Menu item")),
+                "price": float(menu_item.get("price", 0)),
+                "image": menu_item.get("image", item.get("image", "")),
+                "restaurant": menu_item.get("restaurant", item.get("restaurant", "")),
+                "quantity": quantity,
+            }
         else:
-            canonical_items.append(
-                {
-                    "id": item_id,
-                    "name": item.get("name", "Menu item"),
-                    "price": float(item.get("price", 0)),
-                    "image": item.get("image", ""),
-                    "restaurant": item.get("restaurant", ""),
-                    "quantity": quantity,
-                }
-            )
+            canonical_item = {
+                "id": item_id,
+                "name": item.get("name", "Menu item"),
+                "price": float(item.get("price", 0)),
+                "image": item.get("image", ""),
+                "restaurant": item.get("restaurant", ""),
+                "quantity": quantity,
+            }
+
+        if item.get("customizations"):
+            canonical_item["customizations"] = item.get("customizations")
+        if item.get("instructions"):
+            canonical_item["instructions"] = str(item.get("instructions")).strip()
+        canonical_items.append(canonical_item)
 
     return canonical_items
 
